@@ -1,0 +1,26 @@
+{
+  "functions": {
+    "api/**/*.py": {
+      "maxDuration": 10,
+      "memory": 3008,
+      "regions": ["sao1", "gru1", "iad1", "lhr1", "hnd1"]
+    }
+  },
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=3600, stale-while-revalidate=86400" },
+        { "key": "CDN-Cache-Control", "value": "public, max-age=7200" }
+      ]
+    }
+  ],
+  "crons": [
+    { "path": "/api/cron/prewarm", "schedule": "*/30 * * * *" }
+  ],
+  "images": {
+    "sizes": [64, 128, 256, 512],
+    "domains": ["jne.gob.pe", "cdn.candidato.pe"],
+    "minimumCacheTTL": 86400
+  }
+}

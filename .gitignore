@@ -1,0 +1,11 @@
+﻿venv/
+__pycache__/
+*.pyc
+node_modules/
+.env
+checkpoint.json
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

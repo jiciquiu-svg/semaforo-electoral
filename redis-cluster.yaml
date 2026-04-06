@@ -1,0 +1,20 @@
+apiVersion: redis.redisop/v1beta1
+kind: RedisCluster
+metadata:
+  name: candidatos-cache
+spec:
+  clusterSize: 50
+  clusterVersion: 7.2.4
+  persistence:
+    enabled: true
+    storageSize: 100Gi
+  resources:
+    requests:
+      memory: "16Gi"
+      cpu: "4"
+    limits:
+      memory: "32Gi"
+      cpu: "8"
+  redisSentinel:
+    enabled: true
+    replicas: 3

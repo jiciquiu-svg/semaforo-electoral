@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+  }
+}
+
+@layer components {
+  .card-candidate {
+    @apply bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100;
+  }
+  
+  .nivel-badge {
+    @apply px-2 py-1 rounded-full text-xs font-semibold text-white;
+  }
+  
+  .nivel-verde {
+    @apply bg-green-500;
+  }
+  
+  .nivel-amarillo {
+    @apply bg-yellow-500;
+  }
+  
+  .nivel-naranja {
+    @apply bg-orange-500;
+  }
+  
+  .nivel-rojo {
+    @apply bg-red-600;
+  }
+  
+  .search-input {
+    @apply w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all;
+  }
+}
+
+@keyframes pulse-border {
+  0%, 100% {
+    border-color: rgba(239, 68, 68, 0.2);
+  }
+  50% {
+    border-color: rgba(239, 68, 68, 0.8);
+  }
+}
+
+.animate-pulse-border {
+  animation: pulse-border 2s ease-in-out infinite;
+}

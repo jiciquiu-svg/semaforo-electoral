@@ -1,0 +1,35 @@
+scenarios:
+  traffic_spike:
+    trigger: "requests_per_second > 1,000,000"
+    actions:
+      - name: "Activar Static Mode"
+        script: "enable_static_only_mode.sh"
+        duration: "inmediato"
+      - name: "Deshabilitar búsqueda avanzada"
+        script: "disable_algolia.sh"
+      - name: "Servir solo páginas cacheadas"
+      - name: "Queue system for non-critical requests"
+    recovery: "when rps < 500,000 for 5 minutes"
+  database_failure:
+    trigger: "database_primary_down > 30s"
+    actions:
+      - name: "Failover a réplica"
+        script: "promote_read_replica.sh"
+      - name: "Modo solo lectura"
+      - name: "Alertar equipo DBA"
+    recovery: "when primary restored"
+  ddos_attack:
+    trigger: "traffic_from_single_ip > 10,000 rpm"
+    actions:
+      - name: "Cloudflare Under Attack Mode"
+        script: "enable_under_attack_mode.sh"
+      - name: "Geo-blocking selectivo"
+      - name: "Rate limiting estricto: 10 req/min"
+    recovery: "after 30 minutes of normal traffic"
+  notebooklm_failure:
+    trigger: "notebooklm_api_errors > 50% for 5 min"
+    actions:
+      - name: "Fallback a datos cacheados"
+      - name: "Deshabilitar actualizaciones automáticas"
+      - name: "Queue para procesamiento posterior"
+    recovery: "when API recovers"

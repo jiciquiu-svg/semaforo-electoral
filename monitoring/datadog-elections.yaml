@@ -1,0 +1,40 @@
+dashboard:
+  title: "ELECCIONES 2026 - WAR ROOM"
+  layout_type: "free"
+  widgets:
+    - id: "requests_per_second"
+      definition:
+        type: "timeseries"
+        requests:
+          - q: "avg:vercel.requests{*} by {region}"
+        title: "Requests por segundo por región"
+    - id: "response_time_p95"
+      definition:
+        type: "query_value"
+        requests:
+          - q: "p95:api.response_time{*}"
+        title: "Tiempo de respuesta P95 (ms)"
+    - id: "cache_hit_ratio"
+      definition:
+        type: "query_value"
+        requests:
+          - q: "avg:redis.cache_hit_ratio{*}"
+        title: "Cache Hit Ratio (%)"
+    - id: "database_connections"
+      definition:
+        type: "timeseries"
+        requests:
+          - q: "avg:postgresql.connections{*}"
+        title: "Conexiones a base de datos"
+    - id: "error_rate"
+      definition:
+        type: "query_value"
+        requests:
+          - q: "avg:api.errors{*}.as_rate()"
+        title: "Tasa de error (%)"
+    - id: "top_candidates"
+      definition:
+        type: "toplist"
+        requests:
+          - q: "top(avg:search.count{*} by {candidate}, 10, 'mean')"
+        title: "Top 10 candidatos más buscados"

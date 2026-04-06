@@ -1,0 +1,13 @@
+strategies:
+  pre_elections:
+    - use_spot_instances: true
+    - scale_down_nightly: true
+    - estimated_cost: $15,000/mes
+    
+  election_week:
+    - full_enterprise: true
+    - estimated_cost: $50,000/semana
+    
+  post_elections:
+    - revert_to_standard: true
+    - estimated_cost: $10,000/mes
