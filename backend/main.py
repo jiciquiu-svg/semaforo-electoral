@@ -9,9 +9,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from typing import List, Optional, Dict, Any
 from datetime import datetime
+from dotenv import load_dotenv
 import uvicorn
 import os
 import json
+
+# Cargar variables de entorno (.env)
+load_dotenv()
 
 # Intentar importar dependencias opcionales con fallback
 try:

@@ -2,9 +2,14 @@ import time
 import json
 import psycopg2
 import argparse
+import os
 from psycopg2.extras import RealDictCursor
 from datetime import datetime
 from typing import List, Dict, Optional
+from dotenv import load_dotenv
+
+# Cargar variables del backend
+load_dotenv(dotenv_path='backend/.env')
 
 def parse_arguments():
     """Configura los argumentos de línea de comandos"""
@@ -58,15 +63,21 @@ class ExtractorMasivo:
     def conectar_bd(self):
         """Conectar a PostgreSQL"""
         try:
-            self.conn = psycopg2.connect(
-                host="localhost",
-                port=self.port,  # 🔴 CAMBIADO A 54333
-                database="candidatos_db",
-                user="admin",
-                password="dev_password_2026"
-            )
+            database_url = os.getenv("DATABASE_URL")
+            if database_url:
+                self.conn = psycopg2.connect(database_url)
+                print("✅ Conectado a Supabase/Railway vía DATABASE_URL")
+            else:
+                self.conn = psycopg2.connect(
+                    host="localhost",
+                    port=self.port,
+                    database="candidatos_db",
+                    user="admin",
+                    password="dev_password_2026"
+                )
+                print(f"✅ Conectado a PostgreSQL en puerto {self.port} (Local)")
+            
             self.cursor = self.conn.cursor(cursor_factory=RealDictCursor)
-            print(f"✅ Conectado a PostgreSQL en puerto {self.port}")
         except Exception as e:
             print(f"❌ Error al conectar a la BD: {e}")
             raise
