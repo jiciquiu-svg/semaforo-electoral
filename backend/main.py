@@ -69,8 +69,16 @@ def get_db_connection():
     """Obtener conexión a PostgreSQL con manejo de errores"""
     if not DB_AVAILABLE:
         return None
+        
+    database_url = os.getenv("DATABASE_URL")
+    
     try:
-        conn = psycopg2.connect(**DB_CONFIG)
+        if database_url:
+            # Conexión vía URL (Supabase / Railway)
+            conn = psycopg2.connect(database_url)
+        else:
+            # Conexión vía parámetros individuales (Local)
+            conn = psycopg2.connect(**DB_CONFIG)
         return conn
     except Exception as e:
         print(f"Error de conexión a DB: {e}")
@@ -86,9 +94,11 @@ MOCK_CANDIDATOS = [
         "nombres": "Ana María López García",
         "partido": "Partido Democrático",
         "cargo_postula": "senador",
+        "nivel": "verde",
         "nivel_criticidad": "verde",
         "color": "verde",
         "puntaje_transparencia": 85,
+        "mensaje": "✅ Sin alertas - Información completa",
         "mensaje_ciudadano": "✅ Sin alertas - Información completa",
         "alertas": []
     },
@@ -97,9 +107,11 @@ MOCK_CANDIDATOS = [
         "nombres": "Carlos Alberto Mendoza Ríos",
         "partido": "Partido Liberal",
         "cargo_postula": "diputado",
+        "nivel": "amarillo",
         "nivel_criticidad": "amarillo",
         "color": "amarillo",
         "puntaje_transparencia": 65,
+        "mensaje": "ℹ️ Ex congresista - Ver historial",
         "mensaje_ciudadano": "ℹ️ Ex congresista - Ver historial",
         "alertas": []
     },
@@ -108,9 +120,11 @@ MOCK_CANDIDATOS = [
         "nombres": "Roberto Javier Fernández Torres",
         "partido": "Partido Regional",
         "cargo_postula": "senador",
+        "nivel": "naranja",
         "nivel_criticidad": "naranja",
         "color": "naranja",
         "puntaje_transparencia": 42,
+        "mensaje": "⚠️ Alertas económicas detectadas",
         "mensaje_ciudadano": "⚠️ Alertas económicas detectadas",
         "alertas": [{"tipo": "variacion_patrimonial", "descripcion": "Patrimonio +150%"}]
     },
@@ -119,9 +133,11 @@ MOCK_CANDIDATOS = [
         "nombres": "María Elena Quispe Mamani",
         "partido": "Partido Indígena",
         "cargo_postula": "diputado",
+        "nivel": "naranja",
         "nivel_criticidad": "naranja",
         "color": "naranja",
         "puntaje_transparencia": 38,
+        "mensaje": "⚠️ En juicio oral por colusión",
         "mensaje_ciudadano": "⚠️ En juicio oral por colusión",
         "alertas": [{"tipo": "proceso_activo", "descripcion": "Juicio oral en curso"}]
     },
@@ -130,9 +146,11 @@ MOCK_CANDIDATOS = [
         "nombres": "Jorge Luis Paredes Castro",
         "partido": "Partido Nacionalista",
         "cargo_postula": "presidente",
+        "nivel": "rojo",
         "nivel_criticidad": "rojo",
         "color": "rojo",
         "puntaje_transparencia": 15,
+        "mensaje": "🔴 Sentencia firme por corrupción - INHABILITADO",
         "mensaje_ciudadano": "🔴 Sentencia firme por corrupción - INHABILITADO",
         "alertas": [{"tipo": "sentencia", "descripcion": "8 años de prisión"}]
     }
@@ -213,7 +231,7 @@ async def listar_candidatos(
     if conn:
         try:
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-            query = "SELECT dni, nombres_completos as nombres, partido, cargo_postula, nivel_criticidad, color, puntaje_transparencia, mensaje_ciudadano, alertas_activas as alertas FROM candidatos"
+            query = "SELECT dni, nombres_completos as nombres, partido, cargo_postula, nivel_criticidad as nivel, color, puntaje_transparencia, mensaje_ciudadano as mensaje, alertas_activas as alertas FROM candidatos"
             params = []
             conditions = []
             
@@ -301,7 +319,7 @@ async def buscar_candidatos(q: str = Query(..., min_length=2)):
         try:
             cursor = conn.cursor(cursor_factory=RealDictCursor)
             cursor.execute("""
-                SELECT dni, nombres_completos as nombres, partido, nivel_criticidad, color
+                SELECT dni, nombres_completos as nombres, partido, nivel_criticidad as nivel, color
                 FROM candidatos 
                 WHERE nombres_completos ILIKE %s OR partido ILIKE %s
                 LIMIT 20

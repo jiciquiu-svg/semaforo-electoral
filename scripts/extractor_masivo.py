@@ -32,6 +32,11 @@ def parse_arguments():
         type=int, 
         help='Número de lote para procesamiento por lotes'
     )
+    parser.add_argument(
+        '--cargo',
+        type=str,
+        help='Filtrar candidatos por cargo (ej. presidente, congresista)'
+    )
     return parser.parse_args()
 
 class ExtractorMasivo:
@@ -66,63 +71,26 @@ class ExtractorMasivo:
             print(f"❌ Error al conectar a la BD: {e}")
             raise
     
-    def obtener_lista_presidenciales(self) -> List[Dict]:
-        """
-        Extrae los 36 candidatos presidenciales
-        Fuente: RPP / Andina / JNE
-        """
-        print("📋 PASO 1: Obteniendo lista de 36 candidatos presidenciales...")
-        presidenciales = [
-            {"dni": "40703162", "nombre": "Candidato Real Prueba", "partido": "Partido Prueba"},
-            {"dni": "00000001", "nombre": "Candidato 1", "partido": "Partido A"},
-            {"dni": "00000002", "nombre": "Candidato 2", "partido": "Partido B"}
-        ]
-        print(f"✅ {len(presidenciales)} candidatos presidenciales identificados")
-        return presidenciales
-    
-    def obtener_lista_congresales(self) -> List[Dict]:
-        """
-        Extrae los candidatos a senadores y diputados
-        Fuente: JNE - Plataforma Electoral
-        """
-        print("📋 PASO 2: Obteniendo candidatos al Congreso...")
-        congresales = []
-        print(f"✅ {len(congresales)} candidatos al Congreso identificados")
-        return congresales
-    
-    def construir_lista_maestra(self):
-        """Construye la lista completa de ~10,000 candidatos"""
+    def construir_lista_maestra(self, cargo: Optional[str] = None):
+        """Lee la lista de candidatos desde la base de datos"""
         print("=" * 60)
-        print("🎯 CONSTRUYENDO LISTA MAESTRA DE 10,000 CANDIDATOS")
+        print("🎯 LEYENDO LISTA MAESTRA DE CANDIDATOS DESDE BD")
         print("=" * 60)
-        presidenciales = self.obtener_lista_presidenciales()
-        congresales = self.obtener_lista_congresales()
-        self.lista_maestra = presidenciales + congresales
-        print(f"\n📊 RESUMEN LISTA MAESTRA:")
-        print(f"   - Presidenciales: {len(presidenciales)}")
-        print(f"   - Congresales: {len(congresales)}")
-        print(f"   - TOTAL: {len(self.lista_maestra)} candidatos")
-        self.guardar_lista_maestra()
+        
+        query = "SELECT dni, nombres_completos as nombre, partido FROM candidatos"
+        params = []
+        
+        if cargo:
+            query += " WHERE cargo_postula = %s"
+            params.append(cargo)
+            print(f"📋 Filtrando por cargo: {cargo}")
+            
+        self.cursor.execute(query, params)
+        resultados = self.cursor.fetchall()
+        
+        self.lista_maestra = [dict(row) for row in resultados]
+        print(f"\n📊 TOTAL ENCONTRADOS: {len(self.lista_maestra)} candidatos")
         return self.lista_maestra
-    
-    def guardar_lista_maestra(self):
-        """Guarda la lista maestra en BD para control"""
-        for candidato in self.lista_maestra:
-            self.cursor.execute("""
-                INSERT INTO candidatos (dni, nombres_completos, partido, ultima_actualizacion)
-                VALUES (%s, %s, %s, %s)
-                ON CONFLICT (dni) DO UPDATE 
-                SET nombres_completos = EXCLUDED.nombres_completos,
-                    partido = EXCLUDED.partido,
-                    ultima_actualizacion = EXCLUDED.ultima_actualizacion
-            """, (
-                candidato.get('dni'),
-                candidato.get('nombre'),
-                candidato.get('partido'),
-                datetime.now()
-            ))
-        self.conn.commit()
-        print(f"💾 Lista maestra guardada en BD ({len(self.lista_maestra)} registros)")
     
     def extraer_hoja_vida_jne(self, dni: str) -> Optional[Dict]:
         """Extrae hoja de vida desde JNE Declara+"""
@@ -249,19 +217,8 @@ class ExtractorMasivo:
         else:
             print(f"🔄 Procesando: {nombre} ({dni})")
             
-        # Asegurar candidato base (con valores por defecto para evitar violar restricciones NOT NULL)
-        try:
-            self.cursor.execute("""
-                INSERT INTO candidatos (dni, nombres_completos, cargo_postula, partido, ultima_actualizacion)
-                VALUES (%s, %s, %s, %s, %s)
-                ON CONFLICT (dni) DO UPDATE 
-                SET nombres_completos = EXCLUDED.nombres_completos,
-                    ultima_actualizacion = EXCLUDED.ultima_actualizacion
-            """, (dni, nombre, 'DESCONOCIDO', 'DESCONOCIDO', datetime.now()))
-            self.conn.commit()
-        except Exception as e:
-            self.conn.rollback()
-            print(f"⚠️ Error base (candidatos): {e}")
+        # Omitimos el INSERT del candidato base porque los candidatos ya existen en la DB.
+        # Esto previene errores de "null value in column cargo_postula" y evita sobrescritura.
 
         fuentes = [
             ('hoja_vida', self.extraer_hoja_vida_jne),
@@ -309,10 +266,10 @@ class ExtractorMasivo:
         """, (datetime.now(), dni))
         self.conn.commit()
 
-    def ejecutar_procesamiento_masivo(self, limite: int = None):
+    def ejecutar_procesamiento_masivo(self, limite: int = None, cargo: str = None):
         """Ejecuta el procesamiento masivo"""
         if not self.lista_maestra:
-            self.construir_lista_maestra()
+            self.construir_lista_maestra(cargo)
         
         candidatos = self.lista_maestra[:limite] if limite else self.lista_maestra
         print(f"\n🚀 Iniciando procesamiento masivo para {len(candidatos)} candidatos")
@@ -333,23 +290,15 @@ if __name__ == "__main__":
         extractor.modo_prueba = True
         
     if args.dni:
-        # Procesar un solo candidato
         print(f"🎯 Procesando candidato específico: DNI {args.dni}")
         candidato = {'dni': args.dni, 'nombre': f'Candidato_{args.dni}'}
         extractor.procesar_candidato(candidato)
-        
-    elif args.limite:
-        # Procesar con límite
-        print(f"📊 Procesando primeros {args.limite} candidatos")
-        extractor.ejecutar_procesamiento_masivo(limite=args.limite)
-        
     elif args.lote:
-        # Procesar por lote específico
         print(f"📦 Procesando lote {args.lote}")
-        # Lógica para procesar lote específico
-        pass
-        
     else:
-        # Procesamiento completo
-        print("🚀 Iniciando procesamiento masivo completo")
-        extractor.ejecutar_procesamiento_masivo()
+        cargo_filtro = getattr(args, 'cargo', None)
+        msg = "🚀 Iniciando procesamiento masivo"
+        if cargo_filtro: msg += f" para cargo: {cargo_filtro}"
+        if getattr(args, 'limite', None): msg += f" (límite: {args.limite})"
+        print(msg)
+        extractor.ejecutar_procesamiento_masivo(limite=args.limite, cargo=cargo_filtro)
