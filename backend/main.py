@@ -257,12 +257,39 @@ async def listar_candidatos(
             
             cursor.execute(query, params)
             results = cursor.fetchall()
+
+            # Obtener estadísticas resumidas
+            cursor.execute("""
+                SELECT 
+                    nivel_criticidad, 
+                    COUNT(*) as cantidad 
+                FROM candidatos 
+                GROUP BY nivel_criticidad
+            """)
+            stats_rows = cursor.fetchall()
+            stats_map = {
+                "total": 0,
+                "rojos": 0,
+                "naranjas": 0,
+                "amarillos": 0,
+                "verdes": 0
+            }
+            for row in stats_rows:
+                nivel = row['nivel_criticidad']
+                cant = row['cantidad']
+                stats_map["total"] += cant
+                if nivel == 'rojo': stats_map["rojos"] = cant
+                elif nivel == 'naranja': stats_map["naranjas"] = cant
+                elif nivel == 'amarillo': stats_map["amarillos"] = cant
+                elif nivel == 'verde': stats_map["verdes"] = cant
+
             cursor.close()
             conn.close()
             
             return {
                 "candidatos": results,
-                "total": len(results),
+                "total": stats_map["total"],
+                "estadisticas": stats_map,
                 "filters": {"partido": partido, "nivel": nivel, "busqueda": busqueda}
             }
         except Exception as e:
@@ -291,26 +318,63 @@ async def listar_candidatos(
 
 @app.get("/api/candidatos/{dni}")
 async def obtener_candidato(dni: str):
-    """Obtener candidato por DNI"""
+    """Obtener candidato completo por DNI (Perfil Rico)"""
     
     conn = get_db_connection()
     if conn:
         try:
             cursor = conn.cursor(cursor_factory=RealDictCursor)
+            
+            # 1. Datos básicos
             cursor.execute("SELECT * FROM candidatos WHERE dni = %s", (dni,))
-            result = cursor.fetchone()
+            candidato = cursor.fetchone()
+            
+            if not candidato:
+                cursor.close()
+                conn.close()
+                raise HTTPException(status_code=404, detail=f"Candidato con DNI {dni} no encontrado")
+                
+            # 2. Formación Académica
+            cursor.execute("""
+                SELECT tipo, institucion, titulo, grado, anio_inicio, anio_fin, sunedu_registro, fuente 
+                FROM formacion_academica 
+                WHERE candidato_dni = %s 
+                ORDER BY anio_fin DESC NULLS LAST
+            """, (dni,))
+            candidato['formacion'] = cursor.fetchall()
+            
+            # 3. Experiencia Laboral
+            cursor.execute("""
+                SELECT sector, institucion, cargo, fecha_inicio, fecha_fin, funciones, fuente 
+                FROM experiencia_laboral 
+                WHERE candidato_dni = %s 
+                ORDER BY fecha_inicio DESC NULLS LAST
+            """, (dni,))
+            candidato['experiencia'] = cursor.fetchall()
+            
+            # 4. Declaraciones Juradas
+            cursor.execute("""
+                SELECT fecha_declaracion, patrimonio_total, ingresos_anuales, url_fuente, fecha_extraccion 
+                FROM declaraciones_juradas 
+                WHERE candidato_dni = %s 
+                ORDER BY fecha_declaracion DESC NULLS LAST
+            """, (dni,))
+            candidato['declaraciones'] = cursor.fetchall()
+            
             cursor.close()
             conn.close()
+            return candidato
             
-            if result:
-                return result
+        except HTTPException:
+            raise
         except Exception as e:
-            pass
+            if conn: conn.close()
+            print(f"Error recuperando perfil rico: {e}")
     
-    # Buscar en mock
+    # Fallback to mock (solo datos básicos)
     for c in MOCK_CANDIDATOS:
         if c["dni"] == dni:
-            return c
+            return {**c, "formacion": [], "experiencia": [], "declaraciones": [], "source": "mock_limited"}
     
     raise HTTPException(status_code=404, detail=f"Candidato con DNI {dni} no encontrado")
 
