@@ -157,7 +157,7 @@ export default function SegundaVuelta() {
   if (ganador) {
     const esAgujeroNegro = ganador.id === '3'
     return (
-      <div className={\`min-h-screen flex items-center justify-center p-6 \${esAgujeroNegro ? 'bg-gradient-to-br from-gray-900 to-black' : 'bg-gradient-to-br from-yellow-400 to-orange-500'}\`}>
+      <div className={`min-h-screen flex items-center justify-center p-6 ${esAgujeroNegro ? 'bg-gradient-to-br from-gray-900 to-black' : 'bg-gradient-to-br from-yellow-400 to-orange-500'}`}>
         <motion.div
           initial={{ scale: 0.9, opacity: 0, rotateY: 0 }}
           animate={{ scale: 1, opacity: 1, rotateY: 360 }}
@@ -226,9 +226,9 @@ export default function SegundaVuelta() {
           <motion.div
             key={cand.id}
             whileHover={{ y: -8, scale: 1.02 }}
-            className={\`relative rounded-2xl overflow-hidden cursor-pointer transition-all \${
+            className={`relative rounded-2xl overflow-hidden cursor-pointer transition-all ${
               cand.id === '3' ? 'bg-gradient-to-b from-gray-800 to-gray-900 border border-white/10' : ''
-            }\`}
+            }`}
             style={{ backgroundColor: cand.id !== '3' ? cand.color + '20' : undefined }}
             onClick={() => setMostrarDatos(true)}
           >
@@ -299,7 +299,7 @@ export default function SegundaVuelta() {
                     {/* Keiko */}
                     <div 
                       onClick={() => votar(cat.id, '1')}
-                      className={\`p-3 rounded-xl cursor-pointer transition-all \${votado === '1' ? 'bg-red-600/30 border border-red-500' : 'bg-white/5 hover:bg-white/10'}\`}
+                      className={`p-3 rounded-xl cursor-pointer transition-all ${votado === '1' ? 'bg-red-600/30 border border-red-500' : 'bg-white/5 hover:bg-white/10'}`}
                     >
                       <div className="flex justify-between text-xs mb-1">
                         <span className="text-white/60">Keiko</span>
@@ -319,7 +319,7 @@ export default function SegundaVuelta() {
                     {/* Roberto Sánchez */}
                     <div 
                       onClick={() => votar(cat.id, '2')}
-                      className={\`p-3 rounded-xl cursor-pointer transition-all \${votado === '2' ? 'bg-blue-600/30 border border-blue-500' : 'bg-white/5 hover:bg-white/10'}\`}
+                      className={`p-3 rounded-xl cursor-pointer transition-all ${votado === '2' ? 'bg-blue-600/30 border border-blue-500' : 'bg-white/5 hover:bg-white/10'}`}
                     >
                       <div className="flex justify-between text-xs mb-1">
                         <span className="text-white/60">Sánchez</span>
@@ -361,15 +361,15 @@ export default function SegundaVuelta() {
               <button
                 onClick={calcularGanador}
                 disabled={Object.keys(votos).length < 3}
-                className={\`flex-1 py-4 rounded-xl font-black text-lg transition-all \${
+                className={`flex-1 py-4 rounded-xl font-black text-lg transition-all ${
                   Object.keys(votos).length >= 3
                     ? 'bg-gradient-to-r from-red-600 to-blue-600 text-white shadow-xl active:scale-95'
                     : 'bg-white/10 text-white/30 cursor-not-allowed'
-                }\`}
+                }`}
               >
                 {Object.keys(votos).length >= 3 
                   ? '✅ DECLARAR GANADOR DE LA SEGUNDA VUELTA' 
-                  : \`🔒 VOTA EN \${3 - Object.keys(votos).length} CATEGORÍAS MÁS\`}
+                  : `🔒 VOTA EN ${3 - Object.keys(votos).length} CATEGORÍAS MÁS`}
               </button>
             </div>
           </motion.div>
