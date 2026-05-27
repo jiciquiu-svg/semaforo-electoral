@@ -1,0 +1,27 @@
+{
+  "name": "Semáforo Electoral 2026 - Segunda Vuelta",
+  "short_name": "Balotaje2026",
+  "description": "Simula tu voto informado para la segunda vuelta presidencial y monitorea la tendencia del voto blanco o viciado.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0A0E1A",
+  "theme_color": "#CC0000",
+  "lang": "es",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23CC0000'/><text y='.9em' font-size='80' x='10'>🚦</text></svg>",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["government", "utilities"],
+  "shortcuts": [
+    {
+      "name": "Simular Balotaje",
+      "url": "./index.html",
+      "description": "Acceder a la cédula de segunda vuelta"
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+COMPARACIÓN FINAL: DB vs JNE OFICIAL (37 organizaciones)
+================================================================================
+
+  # | PARTIDO JNE OFICIAL                                          |  EN DB
+--------------------------------------------------------------------------------
+  1 | AHORA NACION - AN                                            |   170 ✅
+  2 | ALIANZA ELECTORAL VENCEREMOS                                 |   171 ✅
+  3 | ALIANZA PARA EL PROGRESO                                     |   170 ✅
+  4 | AVANZA PAIS - PARTIDO DE INTEGRACION SOCIAL                  |   170 ✅
+  5 | FE EN EL PERU                                                |   126 ✅
+  6 | FUERZA POPULAR                                               |   170 ✅
+  7 | FUERZA Y LIBERTAD                                            |   170 ✅
+  8 | JUNTOS POR EL PERU                                           |   154 ✅
+  9 | LIBERTAD POPULAR                                             |   170 ✅
+ 10 | PARTIDO APRISTA PERUANO                                      |   171 ✅
+ 11 | PARTIDO CIVICO OBRAS                                         |   153 ✅
+ 12 | PARTIDO DE LOS TRABAJADORES Y EMPRENDEDORES PTE - PERU       |   132 ✅
+ 13 | PARTIDO DEL BUEN GOBIERNO                                    |   165 ✅
+ 14 | PARTIDO DEMOCRATA UNIDO PERU                                 |   169 ✅
+ 15 | PARTIDO DEMOCRATA VERDE                                      |   169 ✅
+ 16 | PARTIDO DEMOCRATICO FEDERAL                                  |   131 ✅
+ 17 | PARTIDO DEMOCRATICO SOMOS PERU                               |   172 ✅
+ 18 | PARTIDO FRENTE DE LA ESPERANZA 2021                          |   153 ✅
+ 19 | PARTIDO MORADO                                               |   135 ✅
+ 20 | PARTIDO PAIS PARA TODOS                                      |   172 ✅
+ 21 | PARTIDO PATRIOTICO DEL PERU                                  |   131 ✅
+ 22 | PARTIDO POLITICO COOPERACION POPULAR                         |   169 ✅
+ 23 | PARTIDO POLITICO INTEGRIDAD DEMOCRATICA                      |   171 ✅
+ 24 | PARTIDO POLITICO NACIONAL PERU LIBRE                         |   169 ✅
+ 25 | PARTIDO POLITICO PERU ACCION                                 |   154 ✅
+ 26 | PARTIDO POLITICO PERU PRIMERO                                |   170 ✅
+ 27 | PARTIDO POLITICO PRIN                                        |   157 ✅
+ 28 | PARTIDO SICREO                                               |    69 ✅
+ 29 | PERU MODERNO                                                 |   128 ✅
+ 30 | PODEMOS PERU                                                 |   169 ✅
+ 31 | PRIMERO LA GENTE - COMUNIDAD, ECOLOGIA, LIBERTAD Y PROGRESO  |   143 ✅
+ 32 | PROGRESEMOS                                                  |   167 ✅
+ 33 | RENOVACION POPULAR                                           |   171 ✅
+ 34 | SALVEMOS AL PERU                                             |   138 ✅
+ 35 | UN CAMINO DIFERENTE                                          |   171 ✅
+ 36 | UNIDAD NACIONAL                                              |   170 ✅
+ 37 | FRENTE POPULAR AGRICOLA FIA DEL PERU                         |   168 ✅
+--------------------------------------------------------------------------------
+Encontrados: 37/37
+
+⚠️ PARTIDOS EN DB QUE NO ESTÁN EN LAS 37 OFICIALES:
+  - "PARTIDO CIUDADANOS POR EL PERU" (49 candidatos)
+
+  Detalle "PARTIDO CIUDADANOS POR EL PERU":
+    diputados: 28
+    senadores: 21
+
+================================================================================
+TOTAL DB: 38 partidos, 5857 candidatos
+TOTAL JNE: 37 organizaciones
+COINCIDENCIA: 37/37

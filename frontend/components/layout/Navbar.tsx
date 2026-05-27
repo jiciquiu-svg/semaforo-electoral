@@ -9,6 +9,9 @@ export function Navbar() {
           <Link href="/">Inicio</Link>
           <Link href="/">Candidatos</Link>
           <a href="#" className="hover:text-primary">Contacto</a>
+          <Link href="/segunda-vuelta" className="bg-slate-900 px-3 py-1 rounded-md text-white hover:text-yellow-400 transition-colors font-medium">
+            🗳️ SEGUNDA VUELTA
+          </Link>
         </nav>
       </div>
     </header>

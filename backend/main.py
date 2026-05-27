@@ -4,18 +4,21 @@ Candidato al Desnudo API - Transparencia Electoral Perú 2026
 Versión robusta con manejo de errores
 """
 
-from fastapi import FastAPI, HTTPException, Query
+# Cargar variables de entorno antes que el resto de componentes
+from dotenv import load_dotenv
+load_dotenv()
+
+from fastapi import FastAPI, HTTPException, Query, BackgroundTasks, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from typing import List, Optional, Dict, Any
 from datetime import datetime
-from dotenv import load_dotenv
+from pydantic import BaseModel, Field, validator
+from services.jne_client import jne_client
+from api.analytics import router as analytics_router
 import uvicorn
 import os
 import json
-
-# Cargar variables de entorno (.env)
-load_dotenv()
 
 # Intentar importar dependencias opcionales con fallback
 try:
@@ -40,10 +43,13 @@ except ImportError:
 app = FastAPI(
     title="Candidato al Desnudo API",
     description="API de transparencia electoral para Perú 2026",
-    version="2.0.0",
+    version="2.1.0",
     docs_url="/docs",
     redoc_url="/redoc"
 )
+
+# Registrar Routers
+app.include_router(analytics_router)
 
 # =====================================================
 # CONFIGURACIÓN CORS (para frontend)
@@ -160,6 +166,49 @@ MOCK_CANDIDATOS = [
     }
 ]
 
+@app.get("/api/proxy-image")
+async def proxy_image(url: str = Query(..., description="URL de la imagen del JNE")):
+    """
+    Proxy para cargar imágenes del JNE que bloquean el hotlinking directo.
+    """
+    import httpx
+    
+    headers = {
+        "Referer": "https://votoinformado.jne.gob.pe/home",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    }
+    
+    try:
+        async with httpx.AsyncClient() as client:
+            resp = await client.get(url, headers=headers, timeout=10.0)
+            if resp.status_code != 200:
+                raise HTTPException(status_code=resp.status_code, detail="No se pudo obtener la imagen del JNE")
+            
+            return Response(content=resp.content, media_type=resp.headers.get("Content-Type", "image/jpeg"))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error en el proxy: {str(e)}")
+
+# ============================================================
+# INICIO DE SERVIDOR
+# ============================================================
+
+# =====================================================
+# MODELOS DE ENTRADA
+# =====================================================
+
+class CandidateCreate(BaseModel):
+    dni: str = Field(..., min_length=8, max_length=8, description="DNI del candidato (8 dígitos)")
+    nombres_completos: str
+    partido: str
+    cargo_postula: str = "senador"
+    url_hoja_vida: Optional[str] = None
+
+    @validator('dni')
+    def validate_dni_digits(cls, v):
+        if not v.isdigit():
+            raise ValueError('El DNI debe contener solo dígitos')
+        return v
+
 # =====================================================
 # ENDPOINTS PRINCIPALES
 # =====================================================
@@ -169,17 +218,143 @@ async def root():
     """Endpoint raíz con información de la API"""
     return {
         "name": "Candidato al Desnudo API",
-        "version": "2.0.0",
+        "version": "2.1.0",
         "status": "operational",
         "endpoints": {
             "health": "/health",
             "health_db": "/api/health/db",
             "candidatos": "/api/candidatos",
+            "create_candidato": "[POST] /api/candidatos",
             "buscar": "/api/buscar?q=texto",
             "estadisticas": "/api/estadisticas",
             "docs": "/docs"
         }
     }
+
+# =====================================================
+# TAREAS EN SEGUNDO PLANO (ENRIQUECIMIENTO)
+# =====================================================
+
+async def enrich_candidate_data(dni: str, url_hoja_vida: Optional[str] = None):
+    """Tarea para validar y enriquecer datos desde el JNE v\u00eda HTML Parsing"""
+    print(f"🚀 Iniciando enriquecimiento en segundo plano para DNI: {dni}")
+    
+    if not url_hoja_vida:
+        # Fallback a URL est\u00e1ndar si no se provee
+        url_hoja_vida = f"https://declara.jne.gob.pe/DeclaraPublico/HojaVida?dni={dni}"
+
+    try:
+        # 1. Obtener datos enriquecidos (BS4 Parsing / API JSON)
+        datos = await jne_client.enriquecer_candidato(dni, url_hoja_vida)
+        
+        if datos:
+            print(f"✅ Datos obtenidos para {dni}. Actualizando DB...")
+            conn = get_db_connection()
+            if conn:
+                cur = conn.cursor()
+                # 1.1 Actualizar Candidato
+                cur.execute("""
+                    UPDATE candidatos 
+                    SET foto_url = %s,
+                        url_hoja_vida = %s,
+                        ingresos_total = %s,
+                        tiene_sentencias = %s,
+                        tipo_sentencia = %s,
+                        ultima_actualizacion = %s
+                    WHERE dni = %s
+                """, (
+                    datos.get("foto_url"),
+                    url_hoja_vida,
+                    datos.get("ingresos_total", 0.0),
+                    datos.get("tiene_sentencias", False),
+                    datos.get("tipo_sentencia"),
+                    datetime.now(),
+                    dni
+                ))
+
+                # 1.2 Formación Académica (Limpiar e Insertar)
+                cur.execute("DELETE FROM formacion_academica WHERE candidato_dni = %s", (dni,))
+                for f in datos.get("formacion", []):
+                    cur.execute("""
+                        INSERT INTO formacion_academica (candidato_dni, tipo, institucion, titulo, grado, anio_fin, fuente)
+                        VALUES (%s, %s, %s, %s, %s, %s, %s)
+                    """, (dni, f['tipo'], f['institucion'], f['titulo'], f['grado'], f['anio_fin'], 'JNE'))
+
+                # 1.3 Experiencia Laboral
+                cur.execute("DELETE FROM experiencia_laboral WHERE candidato_dni = %s", (dni,))
+                for e in datos.get("experiencia", []):
+                    cur.execute("""
+                        INSERT INTO experiencia_laboral (candidato_dni, sector, institucion, cargo, fecha_inicio, fecha_fin, fuente)
+                        VALUES (%s, %s, %s, %s, %s, %s, %s)
+                    """, (dni, e['sector'], e['institucion'], e['cargo'], str(e['anio_inicio']), str(e['anio_fin']), 'JNE'))
+
+                # 1.4 Declaraciones Juradas
+                cur.execute("DELETE FROM declaraciones_juradas WHERE candidato_dni = %s", (dni,))
+                cur.execute("""
+                    INSERT INTO declaraciones_juradas (candidato_dni, ingresos_anuales, url_fuente, fecha_extraccion)
+                    VALUES (%s, %s, %s, %s)
+                """, (dni, datos.get("ingresos_total"), url_hoja_vida, datetime.now()))
+
+                # 1.5 Sentencias
+                if datos.get("tiene_sentencias"):
+                    cur.execute("DELETE FROM sentencias WHERE candidato_dni = %s", (dni,))
+                    cur.execute("""
+                        INSERT INTO sentencias (candidato_dni, delito, enlace_fuente)
+                        VALUES (%s, %s, %s)
+                    """, (dni, datos.get("detalle_sentencias"), url_hoja_vida))
+
+                conn.commit()
+                cur.close()
+                conn.close()
+                print(f"🎉 Enriquecimiento integral finalizado para DNI {dni}")
+        else:
+            print(f"⚠️ No se pudo obtener información enriquecida para {dni}")
+            
+    except Exception as e:
+        print(f"❌ Error en tarea de enriquecimiento: {str(e)}")
+
+@app.post("/api/candidatos")
+async def crear_candidato(candidato: CandidateCreate, background_tasks: BackgroundTasks):
+    """
+    Registra un nuevo candidato y dispara validación en segundo plano.
+    """
+    # 1. Verificar si ya existe en la base de datos
+    conn = get_db_connection()
+    if conn:
+        try:
+            cursor = conn.cursor()
+            cursor.execute("SELECT dni FROM candidatos WHERE dni = %s", (candidato.dni,))
+            if cursor.fetchone():
+                cursor.close()
+                conn.close()
+                raise HTTPException(status_code=400, detail=f"El candidato con DNI {candidato.dni} ya existe")
+            
+            # 2. Insertar básico
+            cursor.execute("""
+                INSERT INTO candidatos (dni, nombres_completos, partido, cargo_postula, url_hoja_vida, ultima_actualizacion)
+                VALUES (%s, %s, %s, %s, %s, %s)
+            """, (candidato.dni, candidato.nombres_completos, candidato.partido, candidato.cargo_postula, candidato.url_hoja_vida, datetime.now()))
+            
+            conn.commit()
+            cursor.close()
+            conn.close()
+            
+            # 3. Disparar tarea en segundo plano
+            background_tasks.add_task(enrich_candidate_data, candidato.dni, candidato.url_hoja_vida)
+            
+            return {
+                "message": "Candidato registrado exitosamente. Validación en curso.",
+                "dni": candidato.dni,
+                "status": "enrichment_started"
+            }
+            
+        except HTTPException:
+            raise
+        except Exception as e:
+            if conn: conn.close()
+            raise HTTPException(status_code=500, detail=f"Error al guardar: {str(e)}")
+    
+    raise HTTPException(status_code=503, detail="Servicio de base de datos no disponible")
 
 @app.get("/health")
 async def health():
@@ -226,16 +401,28 @@ async def listar_candidatos(
     offset: int = Query(0, ge=0),
     partido: Optional[str] = None,
     nivel: Optional[str] = None,
-    busqueda: Optional[str] = None
+    busqueda: Optional[str] = None,
+    cargo: Optional[str] = None,
+    region: Optional[str] = None,
+    tipo_senador: Optional[str] = None  # 'nacional' o 'regional'
 ):
-    """Listar candidatos con filtros"""
+    """Listar candidatos con filtros robustos incluyendo cargo y region"""
     
+    # Mapping PWA/Frontend to DB values
+    cargo_map = {
+        'presidente': 'presidente',
+        'senador': 'senadores',
+        'diputado': 'diputados',
+        'parlamento_andino': 'parlamento_andino'
+    }
+    db_cargo = cargo_map.get(cargo, cargo)
+
     # Intentar obtener de BD
     conn = get_db_connection()
     if conn:
         try:
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-            query = "SELECT dni, nombres_completos as nombres, partido, cargo_postula, nivel_criticidad as nivel, color, puntaje_transparencia, mensaje_ciudadano as mensaje, alertas_activas as alertas FROM candidatos"
+            query = "SELECT dni, nombres_completos as nombres, partido, cargo_postula, nivel_criticidad as nivel, color, puntaje_transparencia, mensaje_ciudadano as mensaje, alertas_activas as alertas, foto_url, distrito_electoral FROM candidatos"
             params = []
             conditions = []
             
@@ -248,6 +435,18 @@ async def listar_candidatos(
             if busqueda:
                 conditions.append("nombres_completos ILIKE %s")
                 params.append(f"%{busqueda}%")
+            if db_cargo:
+                conditions.append("cargo_postula = %s")
+                params.append(db_cargo)
+            if region:
+                # Búsqueda flexible para distrito_electoral (ej: 'LIMA' busca 'DISTRITO MULTIPLE - LIMA')
+                conditions.append("distrito_electoral ILIKE %s")
+                params.append(f"%{region}%")
+            if tipo_senador:
+                if tipo_senador == 'nacional':
+                    conditions.append("distrito_electoral = 'DISTRITO UNICO'")
+                elif tipo_senador == 'regional':
+                    conditions.append("distrito_electoral != 'DISTRITO UNICO'")
             
             if conditions:
                 query += " WHERE " + " AND ".join(conditions)
@@ -257,6 +456,7 @@ async def listar_candidatos(
             
             cursor.execute(query, params)
             results = cursor.fetchall()
+
 
             # Obtener estadísticas resumidas
             cursor.execute("""
@@ -468,13 +668,13 @@ async def general_exception_handler(request, exc):
 
 if __name__ == "__main__":
     print("=" * 50)
-    print("🚀 CANDIDATO AL DESNUDO API - VERSIÓN ROBUSTA")
+    print("CANDIDATO AL DESNUDO API - VERSION ROBUSTA")
     print("=" * 50)
-    print(f"📦 Base de datos: {'Disponible' if DB_AVAILABLE else 'No instalada'}")
-    print(f"🔌 HTTPX: {'Disponible' if HTTPX_AVAILABLE else 'No instalado'}")
+    print(f"Base de datos: {'Disponible' if DB_AVAILABLE else 'No instalada'}")
+    print(f"HTTPX: {'Disponible' if HTTPX_AVAILABLE else 'No instalado'}")
     print("=" * 50)
-    print("📍 Servidor corriendo en: http://localhost:8001")
-    print("📚 Documentación: http://localhost:8001/docs")
+    print("Servidor corriendo en: http://localhost:8001")
+    print("Documentacion: http://localhost:8001/docs")
     print("=" * 50)
     
     port = int(os.getenv("PORT", 8001))

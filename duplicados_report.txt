@@ -1,0 +1,36 @@
+DUPLICADOS DETECTADOS:
+======================================================================
+
+GRUPO 1: ALIANZA PARA EL PROGRESO
+  -> "Alianza para el Progreso" (1 candidatos) <-- FUSIONAR
+  -> "ALIANZA PARA EL PROGRESO" (169 candidatos) <-- MANTENER
+
+GRUPO 2: FUERZA POPULAR
+  -> "Fuerza Popular" (1 candidatos) <-- FUSIONAR
+  -> "FUERZA POPULAR" (169 candidatos) <-- MANTENER
+
+GRUPO 3: FUERZA Y LIBERTAD
+  -> "Fuerza y Libertad" (1 candidatos) <-- FUSIONAR
+  -> "FUERZA Y LIBERTAD" (169 candidatos) <-- MANTENER
+
+GRUPO 4: LIBERTAD POPULAR
+  -> "Libertad Popular" (1 candidatos) <-- FUSIONAR
+  -> "LIBERTAD POPULAR" (169 candidatos) <-- MANTENER
+
+GRUPO 5: PARTIDO MORADO
+  -> "Partido Morado" (1 candidatos) <-- FUSIONAR
+  -> "PARTIDO MORADO" (134 candidatos) <-- MANTENER
+
+GRUPO 6: PROGRESEMOS
+  -> "Progresemos" (1 candidatos) <-- FUSIONAR
+  -> "PROGRESEMOS" (166 candidatos) <-- MANTENER
+
+GRUPO 7: UNIDAD NACIONAL
+  -> "Unidad Nacional" (1 candidatos) <-- FUSIONAR
+  -> "UNIDAD NACIONAL" (169 candidatos) <-- MANTENER
+
+======================================================================
+Total grupos duplicados: 7
+
+Registro de prueba a eliminar:
+  DNI: 00100037, Nombre: Candidato de Prueba, Partido: Partido Test

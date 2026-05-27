@@ -1,0 +1,102 @@
+AHORA NACION - AN: Distribución por cargo
+============================================================
+  diputados: 121
+  parlamento_andino: 16
+  presidente: 2
+  presidentes: 3
+  senadores: 28
+
+
+SENADORES POR PARTIDO (todos):
+============================================================
+    30  JUNTOS POR EL PERU
+    30  FRENTE POPULAR AGRICOLA FIA DEL PERU
+    30  PARTIDO POLITICO PRIN
+    30  PARTIDO MORADO
+    30  PARTIDO DEMOCRATICO SOMOS PERU
+    30  UN CAMINO DIFERENTE
+    30  PARTIDO PAIS PARA TODOS
+    30  ALIANZA ELECTORAL VENCEREMOS
+    30  FE EN EL PERU
+    29  FUERZA POPULAR
+    29  PROGRESEMOS
+    29  SALVEMOS AL PERU
+    29  PARTIDO POLITICO INTEGRIDAD DEMOCRATICA
+    29  PARTIDO POLITICO PERU PRIMERO
+    29  PARTIDO APRISTA PERUANO
+    29  PARTIDO CIVICO OBRAS
+    29  ALIANZA PARA EL PROGRESO
+    29  PARTIDO POLITICO COOPERACION POPULAR
+    29  RENOVACION POPULAR
+    28  PRIMERO LA GENTE - COMUNIDAD, ECOLOGIA, LIBERTAD Y PROGRESO
+    28  AHORA NACION - AN
+    28  AVANZA PAIS - PARTIDO DE INTEGRACION SOCIAL
+    28  UNIDAD NACIONAL
+    28  LIBERTAD POPULAR
+    28  PERU MODERNO
+    28  PARTIDO PATRIOTICO DEL PERU
+    28  PARTIDO DEMOCRATA UNIDO PERU
+    28  PARTIDO DEL BUEN GOBIERNO
+    28  PARTIDO SICREO
+    28  FUERZA Y LIBERTAD
+    28  PARTIDO FRENTE DE LA ESPERANZA 2021
+    27  PODEMOS PERU
+    27  PARTIDO DEMOCRATA VERDE
+    27  PARTIDO POLITICO PERU ACCION
+    27  PARTIDO DE LOS TRABAJADORES Y EMPRENDEDORES PTE - PERU
+    27  PARTIDO POLITICO NACIONAL PERU LIBRE
+    27  PARTIDO DEMOCRATICO FEDERAL
+
+
+COLUMNAS EN TABLA CANDIDATOS:
+============================================================
+  id: integer
+  dni: character varying
+  nombres_completos: text
+  partido: text
+  cargo_postula: character varying
+  edad: integer
+  profesion: text
+  numero_cedula: integer
+  estado_habilitado: boolean
+  fuente_datos: text
+  hoja_vida_url: text
+  plan_gobierno_url: text
+  nivel_criticidad: character varying
+  color: character varying
+  mensaje_ciudadano: text
+  alertas_activas: jsonb
+  puntaje_transparencia: integer
+  ultima_actualizacion: timestamp without time zone
+  foto_url: text
+  url_hoja_vida: text
+  ingresos_total: numeric
+  tiene_sentencias: boolean
+  tipo_sentencia: text
+
+
+EJEMPLO SENADOR AHORA NACION:
+============================================================
+  id: 754
+  dni: 07803059
+  nombres_completos: ALEXANDRA LIZINCA CUGLER DYRSSEN
+  partido: AHORA NACION - AN
+  cargo_postula: senadores
+  edad: None
+  profesion: None
+  numero_cedula: None
+  estado_habilitado: True
+  fuente_datos: None
+  hoja_vida_url: None
+  plan_gobierno_url: None
+  nivel_criticidad: verde
+  color: verde
+  mensaje_ciudadano: Información en verificación
+  alertas_activas: []
+  puntaje_transparencia: 0
+  ultima_actualizacion: 2026-04-08 21:00:30.281021
+  foto_url: None
+  url_hoja_vida: https://votoinformado.jne.gob.pe/hoja-vida/2857/07803059/243877
+  ingresos_total: None
+  tiene_sentencias: False
+  tipo_sentencia: None

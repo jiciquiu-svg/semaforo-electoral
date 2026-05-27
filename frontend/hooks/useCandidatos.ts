@@ -15,7 +15,7 @@ export function useCandidatos(filters: Filters) {
   if (filters.region) params.append('region', filters.region)
   if (filters.cargo) params.append('cargo', filters.cargo)
   if (filters.nivel) params.append('nivel', filters.nivel)
-  if (filters.busqueda) params.append('q', filters.busqueda)
+  if (filters.busqueda) params.append('busqueda', filters.busqueda)
 
   const url = `/api/candidatos?${params.toString()}`
   

@@ -1,0 +1,401 @@
+RELACION DE CANDIDATOS POR PARTIDO POLITICO
+Elecciones Generales Peru 2026
+======================================================================
+
+Ahora Nación: 2 candidatos
+AHORA NACION - AN: 168 candidatos
+ALIANZA ELECTORAL VENCEREMOS: 169 candidatos
+Alianza para el Progreso: 1 candidatos
+ALIANZA PARA EL PROGRESO: 169 candidatos
+Alianza Venceremos: 1 candidatos
+APRA: 1 candidatos
+Avanza País: 1 candidatos
+AVANZA PAIS - PARTIDO DE INTEGRACION SOCIAL: 169 candidatos
+Cooperación Popular: 1 candidatos
+Demócrata Verde: 1 candidatos
+Democrático Federal: 1 candidatos
+FE EN EL PERU: 125 candidatos
+Fe en el Perú: 1 candidatos
+Frente de la Esperanza: 1 candidatos
+FRENTE POPULAR AGRICOLA FIA DEL PERU: 168 candidatos
+Fuerza Popular: 1 candidatos
+FUERZA POPULAR: 169 candidatos
+Fuerza y Libertad: 1 candidatos
+FUERZA Y LIBERTAD: 169 candidatos
+Integridad Democrática: 1 candidatos
+JUNTOS POR EL PERU: 153 candidatos
+Juntos por el Perú: 1 candidatos
+Libertad Popular: 1 candidatos
+LIBERTAD POPULAR: 169 candidatos
+País para Todos: 2 candidatos
+PARTIDO APRISTA PERUANO: 170 candidatos
+PARTIDO CIUDADANOS POR EL PERU: 49 candidatos
+PARTIDO CIVICO OBRAS: 153 candidatos
+PARTIDO DE LOS TRABAJADORES Y EMPRENDEDORES PTE - PERU: 132 candidatos
+PARTIDO DEL BUEN GOBIERNO: 165 candidatos
+PARTIDO DEMOCRATA UNIDO PERU: 169 candidatos
+PARTIDO DEMOCRATA VERDE: 168 candidatos
+PARTIDO DEMOCRATICO FEDERAL: 130 candidatos
+PARTIDO DEMOCRATICO SOMOS PERU: 170 candidatos
+PARTIDO FRENTE DE LA ESPERANZA 2021: 152 candidatos
+Partido Morado: 1 candidatos
+PARTIDO MORADO: 134 candidatos
+PARTIDO PAIS PARA TODOS: 170 candidatos
+PARTIDO PATRIOTICO DEL PERU: 131 candidatos
+PARTIDO POLITICO COOPERACION POPULAR: 168 candidatos
+PARTIDO POLITICO INTEGRIDAD DEMOCRATICA: 170 candidatos
+PARTIDO POLITICO NACIONAL PERU LIBRE: 168 candidatos
+PARTIDO POLITICO PERU ACCION: 152 candidatos
+PARTIDO POLITICO PERU PRIMERO: 169 candidatos
+PARTIDO POLITICO PRIN: 155 candidatos
+PARTIDO SICREO: 68 candidatos
+Partido Test: 1 candidatos
+Perú Acción: 2 candidatos
+Perú Libre: 1 candidatos
+PERU MODERNO: 127 candidatos
+Perú Moderno: 1 candidatos
+Perú Primero: 1 candidatos
+PODEMOS PERU: 168 candidatos
+Podemos Perú: 1 candidatos
+Primero la Gente: 1 candidatos
+PRIMERO LA GENTE - COMUNIDAD, ECOLOGIA, LIBERTAD Y PROGRESO: 142 candidatos
+PRIN: 2 candidatos
+Progresemos: 1 candidatos
+PROGRESEMOS: 166 candidatos
+RENOVACION POPULAR: 170 candidatos
+Renovación Popular: 1 candidatos
+SALVEMOS AL PERU: 137 candidatos
+Salvemos al Perú: 1 candidatos
+SíCreo: 1 candidatos
+Somos Perú: 2 candidatos
+UN CAMINO DIFERENTE: 171 candidatos
+Unidad Nacional: 1 candidatos
+UNIDAD NACIONAL: 169 candidatos
+Venceremos: 1 candidatos
+
+======================================================================
+TOTAL GENERAL: 5858 candidatos en 70 partidos
+======================================================================
+
+DETALLE POR CARGO:
+----------------------------------------------------------------------
+
+>> Ahora Nación
+   presidente: 2
+
+>> AHORA NACION - AN
+   diputados: 121
+   parlamento_andino: 16
+   presidentes: 3
+   senadores: 28
+
+>> ALIANZA ELECTORAL VENCEREMOS
+   diputados: 120
+   parlamento_andino: 16
+   presidentes: 3
+   senadores: 30
+
+>> Alianza para el Progreso
+   presidente: 1
+
+>> ALIANZA PARA EL PROGRESO
+   diputados: 121
+   parlamento_andino: 16
+   Presidente: 1
+   presidentes: 2
+   senadores: 29
+
+>> Alianza Venceremos
+   presidente: 1
+
+>> APRA
+   presidente: 1
+
+>> Avanza País
+   presidente: 1
+
+>> AVANZA PAIS - PARTIDO DE INTEGRACION SOCIAL
+   diputados: 122
+   parlamento_andino: 16
+   presidentes: 3
+   senadores: 28
+
+>> Cooperación Popular
+   presidente: 1
+
+>> Demócrata Verde
+   presidente: 1
+
+>> Democrático Federal
+   presidente: 1
+
+>> FE EN EL PERU
+   diputados: 76
+   parlamento_andino: 16
+   presidentes: 3
+   senadores: 30
+
+>> Fe en el Perú
+   presidente: 1
+
+>> Frente de la Esperanza
+   presidente: 1
+
+>> FRENTE POPULAR AGRICOLA FIA DEL PERU
+   diputados: 122
+   parlamento_andino: 16
+   senadores: 30
+
+>> Fuerza Popular
+   presidente: 1
+
+>> FUERZA POPULAR
+   diputados: 122
+   parlamento_andino: 15
+   Presidente: 1
+   presidentes: 2
+   senadores: 29
+
+>> Fuerza y Libertad
+   presidente: 1
+
+>> FUERZA Y LIBERTAD
+   diputados: 122
+   parlamento_andino: 16
+   presidentes: 3
+   senadores: 28
+
+>> Integridad Democrática
+   presidente: 1
+
+>> JUNTOS POR EL PERU
+   diputados: 104
+   parlamento_andino: 16
+   presidentes: 3
+   senadores: 30
+
+>> Juntos por el Perú
+   presidente: 1
+
+>> Libertad Popular
+   presidente: 1
+
+>> LIBERTAD POPULAR
+   diputados: 122
+   parlamento_andino: 16
+   presidentes: 3
+   senadores: 28
+
+>> País para Todos
+   presidente: 2
+
+>> PARTIDO APRISTA PERUANO
+   diputados: 122
+   parlamento_andino: 16
+   presidentes: 3
+   senadores: 29
+
+>> PARTIDO CIUDADANOS POR EL PERU
+   diputados: 28
+   senadores: 21
+
+>> PARTIDO CIVICO OBRAS
+   diputados: 105
+   parlamento_andino: 16
+   presidentes: 3
+   senadores: 29
+
+>> PARTIDO DE LOS TRABAJADORES Y EMPRENDEDORES PTE - PERU
+   diputados: 86
+   parlamento_andino: 16
+   presidentes: 3
+   senadores: 27
+
+>> PARTIDO DEL BUEN GOBIERNO
+   diputados: 118
+   parlamento_andino: 16
+   presidentes: 3
+   senadores: 28
+
+>> PARTIDO DEMOCRATA UNIDO PERU
+   diputados: 122
+   parlamento_andino: 16
+   Presidente: 1
+   presidentes: 2
+   senadores: 28
+
+>> PARTIDO DEMOCRATA VERDE
+   diputados: 122
+   parlamento_andino: 16
+   presidentes: 3
+   senadores: 27
+
+>> PARTIDO DEMOCRATICO FEDERAL
+   diputados: 100
+   presidentes: 3
+   senadores: 27
+
+>> PARTIDO DEMOCRATICO SOMOS PERU
+   diputados: 121
+   parlamento_andino: 16
+   presidentes: 3
+   senadores: 30
+
+>> PARTIDO FRENTE DE LA ESPERANZA 2021
+   diputados: 121
+   presidentes: 3
+   senadores: 28
+
+>> Partido Morado
+   presidente: 1
+
+>> PARTIDO MORADO
+   diputados: 85
+   parlamento_andino: 16
+   presidentes: 3
+   senadores: 30
+
+>> PARTIDO PAIS PARA TODOS
+   diputados: 121
+   parlamento_andino: 16
+   presidentes: 3
+   senadores: 30
+
+>> PARTIDO PATRIOTICO DEL PERU
+   diputados: 84
+   parlamento_andino: 16
+   presidentes: 3
+   senadores: 28
+
+>> PARTIDO POLITICO COOPERACION POPULAR
+   diputados: 120
+   parlamento_andino: 16
+   presidentes: 3
+   senadores: 29
+
+>> PARTIDO POLITICO INTEGRIDAD DEMOCRATICA
+   diputados: 122
+   parlamento_andino: 16
+   presidentes: 3
+   senadores: 29
+
+>> PARTIDO POLITICO NACIONAL PERU LIBRE
+   diputados: 122
+   parlamento_andino: 16
+   presidentes: 3
+   senadores: 27
+
+>> PARTIDO POLITICO PERU ACCION
+   diputados: 122
+   presidentes: 3
+   senadores: 27
+
+>> PARTIDO POLITICO PERU PRIMERO
+   diputados: 121
+   parlamento_andino: 16
+   presidentes: 3
+   senadores: 29
+
+>> PARTIDO POLITICO PRIN
+   diputados: 106
+   parlamento_andino: 16
+   presidentes: 3
+   senadores: 30
+
+>> PARTIDO SICREO
+   diputados: 37
+   presidentes: 3
+   senadores: 28
+
+>> Partido Test
+   senador: 1
+
+>> Perú Acción
+   presidente: 2
+
+>> Perú Libre
+   presidente: 1
+
+>> PERU MODERNO
+   diputados: 80
+   parlamento_andino: 16
+   presidentes: 3
+   senadores: 28
+
+>> Perú Moderno
+   presidente: 1
+
+>> Perú Primero
+   presidente: 1
+
+>> PODEMOS PERU
+   diputados: 122
+   parlamento_andino: 16
+   presidentes: 3
+   senadores: 27
+
+>> Podemos Perú
+   presidente: 1
+
+>> Primero la Gente
+   presidente: 1
+
+>> PRIMERO LA GENTE - COMUNIDAD, ECOLOGIA, LIBERTAD Y PROGRESO
+   diputados: 96
+   parlamento_andino: 15
+   presidentes: 3
+   senadores: 28
+
+>> PRIN
+   presidente: 2
+
+>> Progresemos
+   presidente: 1
+
+>> PROGRESEMOS
+   diputados: 118
+   parlamento_andino: 16
+   presidentes: 3
+   senadores: 29
+
+>> RENOVACION POPULAR
+   diputados: 122
+   parlamento_andino: 16
+   presidentes: 3
+   senadores: 29
+
+>> Renovación Popular
+   presidente: 1
+
+>> SALVEMOS AL PERU
+   diputados: 89
+   parlamento_andino: 16
+   presidentes: 3
+   senadores: 29
+
+>> Salvemos al Perú
+   presidente: 1
+
+>> SíCreo
+   presidente: 1
+
+>> Somos Perú
+   presidente: 2
+
+>> UN CAMINO DIFERENTE
+   diputados: 122
+   parlamento_andino: 16
+   presidentes: 3
+   senadores: 30
+
+>> Unidad Nacional
+   presidente: 1
+
+>> UNIDAD NACIONAL
+   diputados: 122
+   parlamento_andino: 16
+   presidentes: 3
+   senadores: 28
+
+>> Venceremos
+   presidente: 1

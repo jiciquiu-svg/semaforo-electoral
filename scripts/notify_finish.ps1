@@ -1,0 +1,1 @@
+Add-Type -AssemblyName PresentationFramework; while ($true) { $count = (Get-CimInstance Win32_Process | Where-Object CommandLine -match 'mass_enricher.py' | Measure-Object).Count; if ($count -eq 0) { [System.Windows.MessageBox]::Show('¡El enriquecimiento masivo ha finalizado exitosamente!', 'Semáforo Electoral', 'OK', 'Information'); break; } Start-Sleep -Seconds 30 }

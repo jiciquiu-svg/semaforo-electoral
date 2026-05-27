@@ -1,0 +1,45 @@
+VERIFICACIÓN: SENADORES - AHORA NACION - AN
+Fuente JNE: https://votoinformado.jne.gob.pe/senadores?partido=2980
+================================================================================
+
+Total senadores en DB: 28
+
+  # | DNI        | NOMBRE                                        | FOTO
+--------------------------------------------------------------------------------
+  1 | 07803059   | ALEXANDRA LIZINCA CUGLER DYRSSEN              | ❌
+  2 | 09099445   | ALFONSO CERNA VASQUEZ                         | ✅
+  3 | 07250445   | ANTONIO LUIS JORGE MALDONADO PAREDES          | ✅
+  4 | 21545374   | CARMEN PATRICIA CORREA ARANGOITIA             | ✅
+  5 | 05293154   | CLAIRE MARINELLA PINEDO OCHOA                 | ✅
+  6 | 29666418   | DAVID RUBEN MAYTA SALLUCA                     | ✅
+  7 | 16767746   | ENRIQUE BARTUREN ALARCON                      | ✅
+  8 | 08558627   | FORTUNATO ALVA DAVILA                         | ✅
+  9 | 40106921   | GARDENIA RUTH JIMENEZ VILLAVICENCIO           | ✅
+ 10 | 06272152   | GRACIELA ALVARADO AVALOS                      | ✅
+ 11 | 32855132   | HIPOLITO MARCIAL UCEDA PEREDA                 | ✅
+ 12 | 07755878   | JAIME RICARDO DELGADO ZEGARRA                 | ✅
+ 13 | 29470620   | JAVIER CORRALES VALENCIA                      | ✅
+ 14 | 09347247   | JUAN GUSTAVO MINAYA GOÑY                      | ❌
+ 15 | 09434755   | JUDITH ESPERANZA CABELLOS LUYO                | ✅
+ 16 | 01127044   | LUIS ALBERTO PAREDES ROJAS                    | ❌
+ 17 | 31616560   | LUZ AURELIA ALVARADO CACERES                  | ❌
+ 18 | 01149309   | MAGALLY VASQUEZ URIARTE                       | ❌
+ 19 | 04742579   | MARIA ISABEL MENDOZA SILVA                    | ✅
+ 20 | 16520088   | MERCEDES MARIA BOYER BARRIENTOS               | ✅
+ 21 | 26705695   | MIRTHA ESTHER VASQUEZ CHUQUILIN               | ✅
+ 22 | 06444169   | RODIL TELLO ESPINOZA                          | ✅
+ 23 | 06762849   | ROGER ALEJANDRO RUMRRILL GARCIA               | ✅
+ 24 | 29285160   | ROSIO EULALIA ZEVALLOS URDAY                  | ✅
+ 25 | 40204874   | RUTH LUQUE IBARRA                             | ✅
+ 26 | 40318653   | TANIA CAROLINE CANTA HILARIO                  | ✅
+ 27 | 08761632   | TITO ROBERTO VILCHEZ VILCHEZ                  | ✅
+ 28 | 80146948   | VILMA OLGA JAMANCA MENACHO                    | ✅
+
+
+================================================================================
+RESUMEN COMPLETO AHORA NACION - AN:
+  diputados: 121
+  parlamento_andino: 16
+  presidente: 2
+  presidentes: 3
+  senadores: 28

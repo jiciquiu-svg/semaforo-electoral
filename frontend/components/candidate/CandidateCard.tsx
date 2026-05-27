@@ -31,6 +31,13 @@ const nivelColores = {
   rojo: 'border-red-200 hover:border-red-300 animate-pulse-border'
 }
 
+const nivelBadgeColors: Record<string, string> = {
+  verde: 'bg-green-500',
+  amarillo: 'bg-yellow-500',
+  naranja: 'bg-orange-500',
+  rojo: 'bg-red-600'
+}
+
 export function CandidateCard({ candidato }: CandidateCardProps) {
   const scoreColor = 
     candidato.puntaje_transparencia >= 70 ? 'text-green-600' :
@@ -55,7 +62,7 @@ export function CandidateCard({ candidato }: CandidateCardProps) {
               </p>
             </div>
             <div className="flex flex-col items-end">
-              <div className={`nivel-badge bg-${candidato.color}-500`}>
+              <div className={`nivel-badge ${nivelBadgeColors[candidato.nivel] || 'bg-gray-500'}`}>
                 {candidato.nivel.toUpperCase()}
               </div>
             </div>
@@ -92,7 +99,7 @@ export function CandidateCard({ candidato }: CandidateCardProps) {
         </div>
 
         {/* Alert Count */}
-        {candidato.alertas.length > 0 && (
+        {Array.isArray(candidato.alertas) && candidato.alertas.length > 0 && (
           <div className="px-4 py-2 bg-red-50 border-t border-red-100">
             <div className="flex items-center gap-1 text-xs text-red-600">
               <AlertTriangle className="w-3 h-3" />

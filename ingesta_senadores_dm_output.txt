@@ -1,0 +1,42 @@
+Ô£à Columna distrito_electoral a├▒adida
+Ô£à 1058 senadores existentes marcados como DISTRITO UNICO
+Ô£à Token obtenido: 34526e85-e21a-46fa-b...
+  AMAZONAS             | API:   0 | Nuevos:   0 | Existentes:   0
+  ANCASH               | API:   0 | Nuevos:   0 | Existentes:   0
+  APURIMAC             | API:   0 | Nuevos:   0 | Existentes:   0
+  AREQUIPA             | API:   0 | Nuevos:   0 | Existentes:   0
+  AYACUCHO             | API:   0 | Nuevos:   0 | Existentes:   0
+  CAJAMARCA            | API:   0 | Nuevos:   0 | Existentes:   0
+  CALLAO               | API:   0 | Nuevos:   0 | Existentes:   0
+  CUSCO                | API:   0 | Nuevos:   0 | Existentes:   0
+  HUANCAVELICA         | API:   0 | Nuevos:   0 | Existentes:   0
+  HUANUCO              | API:   0 | Nuevos:   0 | Existentes:   0
+  ICA                  | API:   0 | Nuevos:   0 | Existentes:   0
+  JUNIN                | API:   0 | Nuevos:   0 | Existentes:   0
+  LA LIBERTAD          | API:   0 | Nuevos:   0 | Existentes:   0
+  LAMBAYEQUE           | API:   0 | Nuevos:   0 | Existentes:   0
+  LIMA                 | API:   0 | Nuevos:   0 | Existentes:   0
+  LORETO               | API:   0 | Nuevos:   0 | Existentes:   0
+  MADRE DE DIOS        | API:   0 | Nuevos:   0 | Existentes:   0
+  MOQUEGUA             | API:   0 | Nuevos:   0 | Existentes:   0
+  PASCO                | API:   0 | Nuevos:   0 | Existentes:   0
+  PIURA                | API:   0 | Nuevos:   0 | Existentes:   0
+  PUNO                 | API:   0 | Nuevos:   0 | Existentes:   0
+  SAN MARTIN           | API:   0 | Nuevos:   0 | Existentes:   0
+  TACNA                | API:   0 | Nuevos:   0 | Existentes:   0
+  TUMBES               | API:   0 | Nuevos:   0 | Existentes:   0
+  UCAYALI              | API:   0 | Nuevos:   0 | Existentes:   0
+  EXTRANJERO           | API:   0 | Nuevos:   0 | Existentes:   0
+
+============================================================
+RESULTADO FINAL:
+  Senadores nuevos (Dist. M├║ltiple): 0
+  Ya exist├¡an en DB: 0
+
+  Distribuci├│n de senadores:
+    DISTRITO UNICO: 1058
+
+  TOTAL CANDIDATOS EN DB: 5808
+============================================================
+
+Reporte guardado: ingesta_senadores_dm.txt
