@@ -303,9 +303,9 @@ export default function SegundaVuelta() {
                     >
                       <div className="flex justify-between text-xs mb-1">
                         <span className="text-white/60">Keiko</span>
-                        <span className="text-red-400 font-bold">{candidatosData[0].estadisticas[cat.id as keyof typeof candidatosData[0].estadisticas].puntaje} pts</span>
+                        <span className="text-red-400 font-bold">{candidatosData[0].estadisticas[cat.id as keyof Candidato['estadisticas']].puntaje} pts</span>
                       </div>
-                      <p className="text-white text-[10px] line-clamp-2">{candidatosData[0].estadisticas[cat.id as keyof typeof candidatosData[0].estadisticas].detalle}</p>
+                      <p className="text-white text-[10px] line-clamp-2">{candidatosData[0].estadisticas[cat.id as keyof Candidato['estadisticas']].detalle}</p>
                     </div>
 
                     {/* Categoría */}
@@ -323,9 +323,9 @@ export default function SegundaVuelta() {
                     >
                       <div className="flex justify-between text-xs mb-1">
                         <span className="text-white/60">Sánchez</span>
-                        <span className="text-blue-400 font-bold">{candidatosData[1].estadisticas[cat.id as keyof typeof candidatosData[1].estadisticas].puntaje} pts</span>
+                        <span className="text-blue-400 font-bold">{candidatosData[1].estadisticas[cat.id as keyof Candidato['estadisticas']].puntaje} pts</span>
                       </div>
-                      <p className="text-white text-[10px] line-clamp-2">{candidatosData[1].estadisticas[cat.id as keyof typeof candidatosData[1].estadisticas].detalle}</p>
+                      <p className="text-white text-[10px] line-clamp-2">{candidatosData[1].estadisticas[cat.id as keyof Candidato['estadisticas']].detalle}</p>
                     </div>
                   </div>
                 )
