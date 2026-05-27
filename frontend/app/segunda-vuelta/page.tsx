@@ -105,15 +105,30 @@ const CATEGORIAS = [
 // COMPONENTE PRINCIPAL
 // ============================================================
 
+import { getSessionId, hasVoted, registrarVoto } from '@/lib/session'
+
 export default function SegundaVuelta() {
   const [candidatos] = useState<Candidato[]>(candidatosData)
   const [votos, setVotos] = useState<Record<string, string>>({})
   const [ganador, setGanador] = useState<Candidato | null>(null)
   const [mostrarDatos, setMostrarDatos] = useState(false)
   const [concurrencia, setConcurrencia] = useState(15840)
+  
+  // Control de votos
+  const [yaVoto, setYaVoto] = useState(false)
+  const [sessionId, setSessionId] = useState('')
+  const [votoRegistrando, setVotoRegistrando] = useState(false)
 
-  // Simular concurrencia en tiempo real
+  // Simular concurrencia en tiempo real y verificar voto
   useEffect(() => {
+    const id = getSessionId()
+    if (id) {
+      setSessionId(id)
+      hasVoted(id).then(votado => {
+        if (votado) setYaVoto(true)
+      })
+    }
+
     const interval = setInterval(() => {
       setConcurrencia(prev => prev + (Math.floor(Math.random() * 80) - 30))
     }, 4000)
@@ -124,7 +139,14 @@ export default function SegundaVuelta() {
     setVotos(prev => ({ ...prev, [categoriaId]: ganadorId }))
   }
 
-  const calcularGanador = () => {
+  const calcularGanador = async () => {
+    if (yaVoto) {
+      alert('⚠️ Ya has participado en esta simulación. Solo se permite un voto por persona.')
+      return
+    }
+
+    setVotoRegistrando(true)
+
     let puntos: Record<string, number> = { '1': 0, '2': 0, '3': 0 }
     
     CATEGORIAS.forEach(cat => {
@@ -145,12 +167,55 @@ export default function SegundaVuelta() {
     
     const ganadorEncontrado = candidatos.find(c => c.id === ganadorId)
     setGanador(ganadorEncontrado || null)
+
+    if (ganadorEncontrado) {
+      const registrado = await registrarVoto(sessionId, ganadorEncontrado.id, ganadorEncontrado.nombre, votos)
+      if (registrado) {
+        setYaVoto(true)
+        console.log('✅ Voto registrado exitosamente')
+      } else {
+        console.error('❌ Error al registrar voto')
+      }
+    }
+    
+    setVotoRegistrando(false)
   }
 
   const reiniciar = () => {
+    // Si ya votó en base de datos, NO reiniciar la simulación
+    if (yaVoto) {
+      window.location.reload()
+      return
+    }
     setVotos({})
     setGanador(null)
     setMostrarDatos(false)
+  }
+
+  // Pantalla de bloqueo si ya votó y no hay ganador recién calculado
+  if (yaVoto && !ganador) {
+    return (
+      <div className="min-h-screen bg-olympus-bg flex items-center justify-center p-4">
+        <motion.div 
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          className="bg-olympus-surface border border-olympus-border shadow-[0_0_30px_rgba(0,242,254,0.15)] rounded-2xl p-8 text-center max-w-md w-full"
+        >
+          <div className="text-6xl mb-4 drop-shadow-[0_0_15px_rgba(0,242,254,0.5)]">🗳️</div>
+          <h2 className="text-2xl font-black text-olympus-text mb-2 tracking-tight">¡GRACIAS POR PARTICIPAR!</h2>
+          <p className="text-olympus-muted mb-4 text-sm">Ya has emitido tu voto en esta simulación electoral desde este dispositivo.</p>
+          <div className="bg-olympus-bg p-3 rounded-lg border border-olympus-border/50 mb-6">
+            <p className="text-olympus-cyan text-xs font-bold uppercase tracking-widest">Tu voto está registrado</p>
+          </div>
+          <button
+            onClick={() => window.location.reload()}
+            className="w-full bg-olympus-surface hover:bg-olympus-border text-olympus-text font-bold px-6 py-3 rounded-xl transition-all border border-olympus-border shadow-md text-sm"
+          >
+            Ver Resultados de Encuesta
+          </button>
+        </motion.div>
+      </div>
+    )
   }
 
   // Pantalla de resultado final
@@ -357,16 +422,18 @@ export default function SegundaVuelta() {
             <div className="mt-4 md:mt-6 flex gap-3 sticky bottom-0 bg-olympus-bg/95 py-3 md:py-4 z-10 border-t border-olympus-border">
               <button
                 onClick={calcularGanador}
-                disabled={Object.keys(votos).length < 3}
+                disabled={Object.keys(votos).length < 3 || votoRegistrando}
                 className={`flex-1 py-3 md:py-4 rounded-xl font-black text-xs md:text-lg transition-all ${
-                  Object.keys(votos).length >= 3
+                  Object.keys(votos).length >= 3 && !votoRegistrando
                     ? 'bg-olympus-cyan text-olympus-bg shadow-[0_0_20px_rgba(0,242,254,0.4)] active:scale-95'
                     : 'bg-olympus-surface border border-olympus-border text-olympus-muted cursor-not-allowed'
                 }`}
               >
-                {Object.keys(votos).length >= 3 
-                  ? '✅ DECLARAR GANADOR' 
-                  : `🔒 VOTA EN ${3 - Object.keys(votos).length} CATEGORÍAS MÁS`}
+                {votoRegistrando 
+                  ? '⏳ REGISTRANDO VOTO...' 
+                  : (Object.keys(votos).length >= 3 
+                      ? '✅ DECLARAR GANADOR' 
+                      : `🔒 VOTA EN ${3 - Object.keys(votos).length} CATEGORÍAS MÁS`)}
               </button>
             </div>
           </motion.div>
