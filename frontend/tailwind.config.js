@@ -14,6 +14,15 @@ module.exports = {
         rojo: '#ef4444',
         primary: '#1e3a8a',
         secondary: '#3b82f6',
+        olympus: {
+          bg: "#070b13",
+          surface: "#111c2e",
+          border: "#1b2a47",
+          cyan: "#00f2fe",
+          mint: "#05ffa1",
+          text: "#f4f6fa",
+          muted: "#788da5"
+        }
       },
       animation: {
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
