@@ -1,9 +1,1 @@
-{
-  "/_not-found": "app/_not-found.js",
-  "/admin/votacion/page": "app/admin/votacion/page.js",
-  "/candidato/[dni]/page": "app/candidato/[dni]/page.js",
-  "/juego-visual/page": "app/juego-visual/page.js",
-  "/page": "app/page.js",
-  "/segunda-vuelta/page": "app/segunda-vuelta/page.js",
-  "/juego/page": "app/juego/page.js"
-}
+{}
