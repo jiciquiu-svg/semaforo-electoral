@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { CheckCircle2, Flame, AlertTriangle, Shield, CheckCircle, ChevronRight, Info } from 'lucide-react'
 import { getSessionId, hasVoted, registrarVoto } from '@/lib/session'
-import { ChatBox } from './ChatBox'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001'
 
@@ -188,7 +187,7 @@ export default function SegundaVueltaPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#070b13] flex flex-col justify-between p-4 md:p-6 overflow-y-auto text-[#f4f6fa] select-none font-sans">
+    <div className="min-h-screen bg-[#070b13] flex flex-col justify-between p-4 md:p-6 overflow-hidden text-[#f4f6fa] select-none font-sans">
       
       {/* Header Panel */}
       <header className="relative flex flex-col sm:flex-row justify-between items-center border border-[#1b2a47] bg-[#111c2e] p-4 rounded-2xl shadow-lg gap-2">
@@ -331,11 +330,6 @@ export default function SegundaVueltaPage() {
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
-
-      {/* Live Chat Section */}
-      <div className="w-full flex justify-center my-4">
-        <ChatBox />
       </div>
 
       {/* Footer Info Panel */}

@@ -17,6 +17,7 @@ from pydantic import BaseModel, Field, validator
 from services.jne_client import jne_client
 from api.analytics import router as analytics_router
 from api.segunda_vuelta import router as segunda_vuelta_router
+from api.comentarios import router as comentarios_router
 import uvicorn
 import os
 import json
@@ -52,6 +53,7 @@ app = FastAPI(
 # Registrar Routers
 app.include_router(analytics_router)
 app.include_router(segunda_vuelta_router)
+app.include_router(comentarios_router)
 
 # =====================================================
 # CONFIGURACIÓN CORS (para frontend)
