@@ -7,6 +7,7 @@ import { Send, Heart, MessageCircle, X, Minimize2 } from 'lucide-react'
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001'
 
 const getSessionId = () => {
+  if (typeof window === 'undefined') return ''
   let id = localStorage.getItem('chat_session_id')
   if (!id) {
     id = `${Date.now()}-${Math.random().toString(36).substring(2)}`
@@ -24,7 +25,12 @@ export function ChatBox() {
   const [minimizado, setMinimizado] = useState(false)
   const [mostrarModalNombre, setMostrarModalNombre] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
-  const sessionId = getSessionId()
+  
+  const [sessionId, setSessionId] = useState('')
+
+  useEffect(() => {
+    setSessionId(getSessionId())
+  }, [])
 
   useEffect(() => {
     const nombreGuardado = localStorage.getItem('chat_nombre')
@@ -36,6 +42,8 @@ export function ChatBox() {
   }, [])
 
   useEffect(() => {
+    if (!sessionId) return
+
     const cargarComentarios = async () => {
       try {
         const res = await fetch(`${API_URL}/api/comentarios/listar?limit=50`)
