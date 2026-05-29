@@ -22,7 +22,7 @@ export function ChatBox() {
   const [usuarioNombre, setUsuarioNombre] = useState('')
   const [cargando, setCargando] = useState(false)
   const [activos, setActivos] = useState(0)
-  const [minimizado, setMinimizado] = useState(false)
+  const [minimizado, setMinimizado] = useState(true)
   const [mostrarModalNombre, setMostrarModalNombre] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   
@@ -36,8 +36,6 @@ export function ChatBox() {
     const nombreGuardado = localStorage.getItem('chat_nombre')
     if (nombreGuardado) {
       setUsuarioNombre(nombreGuardado)
-    } else {
-      setMostrarModalNombre(true)
     }
   }, [])
 
@@ -134,7 +132,13 @@ export function ChatBox() {
       {/* Botón flotante para abrir el chat (cuando está minimizado) */}
       {minimizado && (
         <button
-          onClick={() => setMinimizado(false)}
+          onClick={() => {
+            setMinimizado(false)
+            const nombreGuardado = localStorage.getItem('chat_nombre')
+            if (!nombreGuardado) {
+              setMostrarModalNombre(true)
+            }
+          }}
           className="fixed bottom-6 right-6 z-50 bg-blue-600 hover:bg-blue-500 text-white p-3 rounded-full shadow-xl transition-all flex items-center gap-2"
         >
           <MessageCircle size={24} />

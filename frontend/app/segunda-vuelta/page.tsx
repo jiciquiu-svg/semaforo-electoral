@@ -313,23 +313,18 @@ export default function SegundaVueltaPage() {
                 }}
               />
 
-              {/* Logo & Giant Checkmark Overlay */}
+              {/* Selection Check Indicator (Top-Right Corner Mint Check) */}
+              {esSeleccionado && (
+                <div className="absolute top-2 right-2 w-6 h-6 rounded-full border border-[#2dd4bf] bg-[#070b13]/80 flex items-center justify-center z-20 shadow-[0_0_10px_rgba(45,212,191,0.2)]">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#2dd4bf]" />
+                </div>
+              )}
+
+              {/* Logo */}
               <div className="relative flex items-center justify-center mb-3">
-                <div className={`transition-opacity duration-200 ${esSeleccionado ? 'opacity-20' : 'opacity-100'}`}>
+                <div className="transition-opacity duration-200 opacity-100">
                   {renderPartyLogo(cand.id)}
                 </div>
-                
-                {esSeleccionado && !cand.suboptions && (
-                  <div className="absolute inset-0 flex items-center justify-center z-10">
-                    <CheckCircle2 
-                      className="w-12 h-12 bg-[#111c2e] rounded-full animate-pulse" 
-                      style={{ 
-                        color: cand.color,
-                        filter: `drop-shadow(0 0 10px ${cand.color})` 
-                      }} 
-                    />
-                  </div>
-                )}
               </div>
 
               {/* Candidate name & Party (symmetrical card content) */}
@@ -465,50 +460,21 @@ export default function SegundaVueltaPage() {
               disabled={!selectedCandidate || votoRegistrando}
               className={`font-bold px-6 md:px-12 py-4 md:py-5 rounded-2xl flex flex-row items-center justify-center gap-2 md:gap-4 group transition-all border w-[90%] md:w-auto ${
                 selectedCandidate && !votoRegistrando
-                  ? 'text-[#070b13] cursor-pointer active:scale-95'
+                  ? 'text-white cursor-pointer active:scale-95'
                   : 'bg-[#111c2e]/60 border-[#1b2a47] text-[#788da5] cursor-not-allowed opacity-50'
               }`}
               style={
                 selectedCandidate && !votoRegistrando
                   ? {
-                      backgroundColor: (() => {
-                        const selectedObj = candidatosData.find(c => {
-                          if (c.id === selectedCandidate) return true
-                          if (c.suboptions?.some(s => s.id === selectedCandidate)) return true
-                          return false
-                        })
-                        if (selectedObj) {
-                          if (selectedObj.id === '3') {
-                            const sub = selectedObj.suboptions?.find(s => s.id === selectedCandidate)
-                            return sub ? sub.color : selectedObj.color
-                          }
-                          return selectedObj.color
-                        }
-                        return '#05ffa1'
-                      })(),
+                      backgroundColor: '#2dd4bf',
                       borderColor: 'transparent',
-                      boxShadow: `0 0 20px ${
-                        (() => {
-                          const selectedObj = candidatosData.find(c => {
-                            if (c.id === selectedCandidate) return true
-                            if (c.suboptions?.some(s => s.id === selectedCandidate)) return true
-                            return false
-                          })
-                          if (selectedObj) {
-                            if (selectedObj.id === '3') {
-                              const sub = selectedObj.suboptions?.find(s => s.id === selectedCandidate)
-                              return sub ? sub.color : selectedObj.color
-                            }
-                            return selectedObj.color
-                          }
-                          return '#05ffa1'
-                        })()
-                      }66`
+                      boxShadow: '0 0 20px rgba(45,212,191,0.4)',
+                      color: '#ffffff'
                     }
                   : undefined
               }
             >
-              <Flame className={`group-hover:animate-pulse w-5 h-5 md:w-6 md:h-6 ${selectedCandidate ? 'text-zinc-900' : 'text-[#788da5]'}`} />
+              <Flame className={`group-hover:animate-pulse w-5 h-5 md:w-6 md:h-6 ${selectedCandidate ? 'text-white' : 'text-[#788da5]'}`} />
               <span className="text-sm md:text-xl text-center leading-tight uppercase tracking-wider font-extrabold">
                 {votoRegistrando ? 'REGISTRANDO VOTO...' : 'CONFIRMA TU VOTO'}
               </span>
