@@ -51,3 +51,29 @@
 .animate-pulse-border {
   animation: pulse-border 2s ease-in-out infinite;
 }
+
+@keyframes logo-fade {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes check-fade {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.animate-logo-fade {
+  animation: logo-fade 3s ease-in-out infinite;
+}
+
+.animate-check-fade {
+  animation: check-fade 3s ease-in-out infinite;
+}

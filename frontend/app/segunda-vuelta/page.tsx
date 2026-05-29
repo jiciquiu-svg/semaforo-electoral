@@ -315,25 +315,20 @@ export default function SegundaVueltaPage() {
 
               {/* Logo & Giant Checkmark Overlay with dynamic complementary opacities */}
               <div className="relative flex items-center justify-center mb-3">
-                <motion.div 
-                  animate={esSeleccionado && !cand.suboptions ? { opacity: [1, 0, 1] } : { opacity: 1 }}
-                  transition={esSeleccionado && !cand.suboptions ? { repeat: Infinity, duration: 3, ease: "easeInOut" } : undefined}
-                  className="w-full flex justify-center items-center"
+                <div 
+                  className={`w-full flex justify-center items-center ${
+                    esSeleccionado && !cand.suboptions ? 'animate-logo-fade' : ''
+                  }`}
                 >
                   {renderPartyLogo(cand.id)}
-                </motion.div>
+                </div>
                 
                 {esSeleccionado && !cand.suboptions && (
-                  <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
-                    <motion.div
-                      animate={{ opacity: [0, 1, 0] }}
-                      transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-                    >
-                      <CheckCircle2 
-                        className="w-12 h-12 bg-[#111c2e] text-[#20df92] rounded-full shadow-[0_0_15px_rgba(32,223,146,0.25)]" 
-                        strokeWidth={1.2}
-                      />
-                    </motion.div>
+                  <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none animate-check-fade">
+                    <CheckCircle2 
+                      className="w-12 h-12 bg-[#111c2e] text-[#20df92] rounded-full shadow-[0_0_15px_rgba(32,223,146,0.25)]" 
+                      strokeWidth={1.2}
+                    />
                   </div>
                 )}
               </div>
