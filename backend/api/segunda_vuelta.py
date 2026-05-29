@@ -51,10 +51,10 @@ async def verificar_voto(request: Request):
 
 @router.post("/registrar")
 async def registrar_voto(request: Request, voto: VotoRequest):
-    """Registra un nuevo voto"""
+    """Registra un nuevo voto y actualiza los resultados agregados"""
     try:
         conn = get_db_connection()
-        cursor = conn.cursor()
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
         
         # Verificar que no exista
         cursor.execute(
@@ -70,7 +70,7 @@ async def registrar_voto(request: Request, voto: VotoRequest):
         client_ip = request.client.host if request.client else "unknown"
         user_agent = request.headers.get('user-agent', 'unknown')
         
-        # Insertar voto
+        # 1. Insertar en log de votos para control de duplicados
         cursor.execute("""
             INSERT INTO votos_segunda_vuelta 
             (session_id, candidato_id, candidato_nombre, votos_categorias, ip_address, user_agent, fecha_voto)
@@ -85,11 +85,47 @@ async def registrar_voto(request: Request, voto: VotoRequest):
             datetime.now()
         ))
         
+        # 2. Incrementar el voto en resultados_segunda_vuelta
+        cursor.execute("""
+            UPDATE resultados_segunda_vuelta
+            SET votos = votos + 1, updated_at = NOW()
+            WHERE candidato_id = %s
+        """, (voto.candidato_id,))
+        
+        # 3. Calcular la suma total de todos los votos en resultados_segunda_vuelta
+        cursor.execute("SELECT SUM(votos) as total FROM resultados_segunda_vuelta")
+        total_row = cursor.fetchone()
+        total_votos = int(total_row['total']) if total_row and total_row['total'] is not None else 1
+        
+        # 4. Recalcular los porcentajes de todas las opciones
+        cursor.execute("""
+            UPDATE resultados_segunda_vuelta
+            SET porcentaje = ROUND(votos * 100.0 / %s, 3)
+        """, (total_votos,))
+        
+        # 5. Obtener estadísticas actualizadas para responder
+        cursor.execute("""
+            SELECT candidato_id, candidato_nombre, votos, porcentaje
+            FROM resultados_segunda_vuelta
+            ORDER BY votos DESC
+        """)
+        por_candidato = cursor.fetchall()
+        
         conn.commit()
         cursor.close()
         conn.close()
         
-        return {"status": "ok", "message": "Voto registrado exitosamente"}
+        for item in por_candidato:
+            item['porcentaje'] = float(item['porcentaje']) if item['porcentaje'] is not None else 0.0
+            
+        return {
+            "status": "ok",
+            "message": "Voto registrado exitosamente",
+            "estadisticas": {
+                "total_votos": total_votos,
+                "votos_por_candidato": por_candidato
+            }
+        }
         
     except HTTPException:
         raise
@@ -99,32 +135,35 @@ async def registrar_voto(request: Request, voto: VotoRequest):
 
 @router.get("/estadisticas")
 async def get_estadisticas():
-    """Obtiene estadísticas de votación"""
+    """Obtiene estadísticas de votación desde la tabla de resultados acumulados"""
     try:
         conn = get_db_connection()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         
-        # Total de votos
-        cursor.execute("SELECT COUNT(*) as total FROM votos_segunda_vuelta")
-        total = cursor.fetchone()
-        
-        # Votos por candidato
+        # Obtener votos por candidato
         cursor.execute("""
             SELECT 
+                candidato_id,
                 candidato_nombre,
-                COUNT(*) as votos,
-                ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM votos_segunda_vuelta), 2) as porcentaje
-            FROM votos_segunda_vuelta
-            GROUP BY candidato_nombre
+                votos,
+                porcentaje
+            FROM resultados_segunda_vuelta
             ORDER BY votos DESC
         """)
         por_candidato = cursor.fetchall()
         
+        # Suma total
+        cursor.execute("SELECT SUM(votos) as total FROM resultados_segunda_vuelta")
+        total = cursor.fetchone()
+        
         cursor.close()
         conn.close()
         
+        for item in por_candidato:
+            item['porcentaje'] = float(item['porcentaje']) if item['porcentaje'] is not None else 0.0
+            
         return {
-            "total_votos": total['total'] if total else 0,
+            "total_votos": int(total['total']) if total and total['total'] is not None else 0,
             "votos_por_candidato": por_candidato
         }
         

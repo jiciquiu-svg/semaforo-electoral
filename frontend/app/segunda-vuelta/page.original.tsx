@@ -26,7 +26,7 @@ const candidatosData: Candidate[] = [
   },
   {
     id: '3',
-    name: 'AGUJERO NEGRO',
+    name: 'NINGUNO DE LOS DOS',
     party: 'NINGUNO DE LOS DOS',
   }
 ]

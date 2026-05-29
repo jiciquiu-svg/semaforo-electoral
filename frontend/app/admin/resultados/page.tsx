@@ -7,6 +7,76 @@ import { motion } from 'framer-motion'
 // Usamos la misma lógica de conexión del frontend al backend
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001'
 
+interface OpcionCandidato {
+  id: string
+  name: string
+  party: string
+  colorClass: string
+  glow: string
+  borderClass: string
+  textClass: string
+  bgGradient: string
+  winnerTag: string
+}
+
+const OPCIONES: OpcionCandidato[] = [
+  { 
+    id: '1', 
+    name: 'Keiko Fujimori Higuchi', 
+    party: 'Fuerza Popular', 
+    colorClass: 'bg-orange-500', 
+    glow: 'shadow-[0_0_15px_rgba(249,115,22,0.5)]', 
+    borderClass: 'border-orange-500/50', 
+    textClass: 'text-orange-400', 
+    bgGradient: 'from-orange-500/10', 
+    winnerTag: 'bg-orange-500 text-white' 
+  },
+  { 
+    id: '2', 
+    name: 'Roberto Sánchez Palomino', 
+    party: 'Juntos por el Perú', 
+    colorClass: 'bg-red-500', 
+    glow: 'shadow-[0_0_15px_rgba(239,68,68,0.5)]', 
+    borderClass: 'border-red-500/50', 
+    textClass: 'text-red-400', 
+    bgGradient: 'from-red-500/10', 
+    winnerTag: 'bg-red-500 text-white' 
+  },
+  { 
+    id: '3', 
+    name: 'Ninguno (voto blanco/viciado)', 
+    party: 'Voto en blanco / viciado', 
+    colorClass: 'bg-gray-500', 
+    glow: 'shadow-[0_0_15px_rgba(107,114,128,0.5)]', 
+    borderClass: 'border-gray-500/50', 
+    textClass: 'text-gray-400', 
+    bgGradient: 'from-gray-500/10', 
+    winnerTag: 'bg-gray-500 text-white' 
+  },
+  { 
+    id: '4', 
+    name: 'Aún no sabe (indeciso)', 
+    party: 'Indeciso', 
+    colorClass: 'bg-yellow-500', 
+    glow: 'shadow-[0_0_15px_rgba(234,179,8,0.5)]', 
+    borderClass: 'border-yellow-500/50', 
+    textClass: 'text-yellow-400', 
+    bgGradient: 'from-yellow-500/10', 
+    winnerTag: 'bg-yellow-500 text-zinc-900' 
+  },
+  { 
+    id: '5', 
+    name: 'No votará (abstención declarada)', 
+    party: 'Abstención', 
+    colorClass: 'bg-purple-500', 
+    glow: 'shadow-[0_0_15px_rgba(139,92,246,0.5)]', 
+    borderClass: 'border-purple-500/50', 
+    textClass: 'text-purple-400', 
+    bgGradient: 'from-purple-500/10', 
+    winnerTag: 'bg-purple-500 text-white' 
+  }
+]
+
 export default function ResultadosPage() {
   const [estadisticas, setEstadisticas] = useState<any>(null)
   const [loading, setLoading] = useState(true)
@@ -41,6 +111,51 @@ export default function ResultadosPage() {
     </div>
   )
 
+  // Fusionar las opciones estáticas con las estadísticas dinámicas
+  const processedOpciones: any[] = []
+  const matchedIds = new Set<string>()
+
+  OPCIONES.forEach(op => {
+    const match = estadisticas?.votos_por_candidato?.find((c: any) => String(c.candidato_id) === op.id)
+    const votos = match ? Number(match.votos) : 0
+    const total = estadisticas?.total_votos || 0
+    const porcentaje = total > 0 ? Number(((votos * 100) / total).toFixed(2)) : 0
+    processedOpciones.push({
+      ...op,
+      votos,
+      porcentaje
+    })
+    if (match) {
+      matchedIds.add(op.id)
+    }
+  })
+
+  // Agregar cualquier otra opción devuelta por el backend que no esté en la lista estática
+  estadisticas?.votos_por_candidato?.forEach((c: any) => {
+    const idStr = String(c.candidato_id)
+    if (!matchedIds.has(idStr)) {
+      const total = estadisticas?.total_votos || 0
+      const votos = Number(c.votos)
+      const porcentaje = total > 0 ? Number(((votos * 100) / total).toFixed(2)) : 0
+      processedOpciones.push({
+        id: idStr,
+        name: c.candidato_nombre || `Opción ${idStr}`,
+        party: 'OTRO',
+        colorClass: 'bg-olympus-cyan',
+        glow: 'shadow-[0_0_15px_rgba(0,242,254,0.5)]',
+        borderClass: 'border-olympus-cyan',
+        textClass: 'text-olympus-cyan',
+        bgGradient: 'from-olympus-cyan/10',
+        winnerTag: 'bg-olympus-cyan text-zinc-900',
+        votos,
+        porcentaje
+      })
+    }
+  })
+
+  // Ordenar de mayor a menor votación
+  processedOpciones.sort((a, b) => b.votos - a.votos)
+
   return (
     <div className="min-h-screen bg-olympus-bg p-4 md:p-8 text-olympus-text font-sans">
       <div className="max-w-4xl mx-auto">
@@ -74,63 +189,37 @@ export default function ResultadosPage() {
 
         {/* Resultados por candidato */}
         <div className="space-y-6">
-          {estadisticas?.votos_por_candidato?.map((cand: any, idx: number) => {
-            // Asignar colores según el candidato
-            let candColor = "bg-olympus-cyan"
-            let glow = "shadow-[0_0_15px_rgba(0,242,254,0.5)]"
-            let textColor = "text-olympus-cyan"
-            let borderClass = "border-olympus-cyan"
-            let bgGradient = "from-olympus-cyan/10"
-            let winnerTagColor = "bg-olympus-cyan text-zinc-900"
-            
-            if (cand.candidato_nombre.includes("Keiko")) {
-              candColor = "bg-red-500"
-              glow = "shadow-[0_0_15px_rgba(239,68,68,0.5)]"
-              textColor = "text-red-400"
-              borderClass = "border-red-500/50"
-              bgGradient = "from-red-500/10"
-              winnerTagColor = "bg-red-500 text-white"
-            } else if (cand.candidato_nombre.includes("Roberto") || cand.candidato_nombre.includes("Sánchez")) {
-              candColor = "bg-blue-500"
-              glow = "shadow-[0_0_15px_rgba(59,130,246,0.5)]"
-              textColor = "text-blue-400"
-              borderClass = "border-blue-500/50"
-              bgGradient = "from-blue-500/10"
-              winnerTagColor = "bg-blue-500 text-white"
-            } else if (cand.candidato_nombre.includes("AGUJERO") || cand.candidato_nombre.includes("NINGUNO")) {
-              candColor = "bg-gray-400"
-              glow = "shadow-[0_0_15px_rgba(156,163,175,0.5)]"
-              textColor = "text-gray-400"
-              borderClass = "border-gray-500/50"
-              bgGradient = "from-gray-500/10"
-              winnerTagColor = "bg-gray-400 text-zinc-900"
-            }
-
+          {processedOpciones.map((cand: any, idx: number) => {
             // Para destacar al ganador
             const isWinner = idx === 0 && cand.votos > 0;
 
             return (
               <motion.div 
-                key={idx}
+                key={cand.id}
                 initial={{ x: -20, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
-                transition={{ delay: idx * 0.1 }}
-                className={`bg-olympus-surface border rounded-2xl p-6 relative overflow-hidden group transition-all ${isWinner ? `${borderClass} bg-gradient-to-r ${bgGradient} to-transparent` : 'border-olympus-border hover:border-olympus-border/80'}`}
+                transition={{ delay: idx * 0.05 }}
+                className={`bg-olympus-surface border rounded-2xl p-6 relative overflow-hidden group transition-all ${isWinner ? `${cand.borderClass} bg-gradient-to-r ${cand.bgGradient} to-transparent` : 'border-olympus-border hover:border-olympus-border/80'}`}
               >
                 {isWinner && (
-                  <div className={`absolute top-0 right-0 ${winnerTagColor} text-[10px] font-bold px-3 py-1 rounded-bl-xl uppercase`}>
+                  <div className={`absolute top-0 right-0 ${cand.winnerTag} text-[10px] font-bold px-3 py-1 rounded-bl-xl uppercase`}>
                     Líder Actual
                   </div>
                 )}
                 
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-2 mt-2">
                   <div className="flex items-center gap-3">
-                    <div className="text-xl md:text-3xl font-black text-white">
-                      {cand.candidato_nombre}
+                    <div>
+                      <div className="text-xl md:text-3xl font-black text-white">
+                        {cand.name}
+                      </div>
+                      <div className="text-xs font-mono text-olympus-muted uppercase tracking-wider mt-0.5">
+                        {cand.party}
+                      </div>
                     </div>
                   </div>
                   <div className="text-left md:text-right w-full md:w-auto flex justify-between md:block items-end">
-                    <div className={`text-4xl md:text-5xl font-black ${textColor} leading-none`}>
+                    <div className={`text-4xl md:text-5xl font-black ${cand.textClass} leading-none`}>
                       {cand.votos.toLocaleString()}
                     </div>
                     <div className="text-olympus-muted font-bold text-sm md:text-base mt-1">
@@ -145,7 +234,7 @@ export default function ResultadosPage() {
                     initial={{ width: 0 }}
                     animate={{ width: `${cand.porcentaje}%` }}
                     transition={{ duration: 1.5, ease: "easeOut" }}
-                    className={`h-full rounded-full ${candColor} ${glow}`}
+                    className={`h-full rounded-full ${cand.colorClass} ${cand.glow}`}
                   />
                   {/* Etiqueta de porcentaje dentro de la barra en pantallas grandes */}
                   <span className="absolute inset-y-0 right-2 hidden md:flex items-center text-[10px] font-bold text-white/50">
@@ -156,7 +245,7 @@ export default function ResultadosPage() {
             )
           })}
           
-          {(!estadisticas?.votos_por_candidato || estadisticas.votos_por_candidato.length === 0) && (
+          {processedOpciones.length === 0 && (
             <div className="text-center p-8 bg-olympus-surface border border-olympus-border rounded-xl border-dashed">
               <p className="text-olympus-muted font-bold">Aún no hay votos registrados.</p>
               <p className="text-xs text-olympus-muted mt-2">Los resultados aparecerán aquí automáticamente.</p>

@@ -9,10 +9,18 @@ import { LegalFooter } from '@/components/LegalFooter'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001'
 
+interface SubOption {
+  id: string
+  name: string
+  color: string
+}
+
 interface Candidate {
   id: string
   name: string
   party: string
+  color: string
+  suboptions?: SubOption[]
 }
 
 const candidatosData: Candidate[] = [
@@ -20,23 +28,31 @@ const candidatosData: Candidate[] = [
     id: '1',
     name: 'Keiko Fujimori Higuchi',
     party: 'Fuerza Popular',
+    color: '#f97316'
   },
   {
     id: '2',
     name: 'Roberto Sánchez Palomino',
     party: 'Juntos por el Perú',
+    color: '#ef4444'
   },
   {
     id: '3',
-    name: 'AGUJERO NEGRO',
+    name: 'NINGUNO DE LOS DOS',
     party: 'NINGUNO DE LOS DOS',
+    color: '#6b7280',
+    suboptions: [
+      { id: '3', name: 'Ninguno', color: '#6b7280' },
+      { id: '4', name: 'Aún no sabe', color: '#eab308' },
+      { id: '5', name: 'No votará', color: '#8b5cf6' }
+    ]
   }
 ]
 
 function renderPartyLogo(id: string) {
   if (id === '1') {
     return (
-      <div className="w-20 h-20 relative select-none rounded-full overflow-hidden shadow-lg border border-orange-500/20 bg-[#0a0b0d] flex items-center justify-center">
+      <div className="w-12 h-12 relative select-none rounded-full overflow-hidden shadow-lg border border-orange-500/20 bg-[#0a0b0d] flex items-center justify-center">
         <img 
           src="/logo_fuerza_popular.svg" 
           alt="Fuerza Popular" 
@@ -47,7 +63,7 @@ function renderPartyLogo(id: string) {
   }
   if (id === '2') {
     return (
-      <div className="w-20 h-20 relative select-none rounded-full overflow-hidden shadow-lg border border-emerald-500/20 bg-white flex items-center justify-center p-1">
+      <div className="w-12 h-12 relative select-none rounded-full overflow-hidden shadow-lg border border-red-500/20 bg-white flex items-center justify-center p-1">
         <img 
           src="/logo_juntos_por_el_peru.svg" 
           alt="Juntos por el Perú" 
@@ -57,12 +73,12 @@ function renderPartyLogo(id: string) {
     )
   }
   return (
-    <div className="w-20 h-20 bg-black rounded-full flex items-center justify-center shadow-2xl relative border border-slate-700 overflow-hidden select-none">
+    <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center shadow-2xl relative border border-slate-700 overflow-hidden select-none">
       <div className="absolute inset-0 bg-gradient-to-tr from-slate-900 via-zinc-800 to-neutral-900 opacity-60"></div>
-      <div className="w-14 h-14 rounded-full bg-[#070b13] border border-slate-800/80 shadow-[inset_0_0_15px_rgba(0,0,0,0.9)] flex items-center justify-center">
-        <span className="text-2xl opacity-60">⚫</span>
+      <div className="w-8 h-8 rounded-full bg-[#070b13] border border-slate-800/80 shadow-[inset_0_0_10px_rgba(0,0,0,0.9)] flex items-center justify-center">
+        <span className="text-sm opacity-60">⚫</span>
       </div>
-      <div className="absolute inset-1 border border-dashed border-slate-600/30 rounded-full animate-[spin_20s_linear_infinite]"></div>
+      <div className="absolute inset-0.5 border border-dashed border-slate-600/30 rounded-full animate-[spin_20s_linear_infinite]"></div>
     </div>
   )
 }
@@ -136,8 +152,33 @@ export default function SegundaVueltaPage() {
 
     setVotoRegistrando(true)
     try {
-      const candidatoObj = candidatosData.find(c => c.id === selectedCandidate)
-      if (!candidatoObj) return
+      let candidateName = ''
+      let candidateId = ''
+      
+      const rootMatch = candidatosData.find(c => c.id === selectedCandidate)
+      if (rootMatch) {
+        if (rootMatch.suboptions) {
+          const subMatch = rootMatch.suboptions.find(s => s.id === selectedCandidate)
+          candidateName = subMatch ? subMatch.name : rootMatch.name
+          candidateId = selectedCandidate
+        } else {
+          candidateName = rootMatch.name
+          candidateId = rootMatch.id
+        }
+      } else {
+        // Encontrar en suboptions del candidato '3'
+        const rootThree = candidatosData.find(c => c.id === '3')
+        const subMatch = rootThree?.suboptions?.find(s => s.id === selectedCandidate)
+        if (subMatch) {
+          candidateName = subMatch.name
+          candidateId = subMatch.id
+        }
+      }
+
+      if (!candidateId || !candidateName) {
+        setVotoRegistrando(false)
+        return
+      }
 
       // Anti-bot check: verificar que no haya votado antes en producción
       if (!isDevMode) {
@@ -150,14 +191,14 @@ export default function SegundaVueltaPage() {
         }
       }
 
-      const registrado = await registrarVoto(sessionId, candidatoObj.id, candidatoObj.name, {})
+      const registrado = await registrarVoto(sessionId, candidateId, candidateName, {})
       if (registrado) {
         if (!isDevMode) {
           setYaVoto(true)
-          localStorage.setItem('voted_candidate_id', candidatoObj.id)
+          localStorage.setItem('voted_candidate_id', candidateId)
         } else {
           // Retroalimentación visual temporal en desarrollo
-          alert(`✅ Voto registrado (Modo desarrollo bypass activo): ${candidatoObj.name}`)
+          alert(`✅ Voto registrado (Modo desarrollo bypass activo): ${candidateName}`)
           setSelectedCandidate(null)
         }
         
@@ -215,10 +256,13 @@ export default function SegundaVueltaPage() {
         </div>
       </header>
 
-      {/* Main Grid: Balotaje Cards */}
-      <main className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 my-4 flex-grow items-center">
+      {/* Main Grid: Balotaje Cards (max-w-4xl mx-auto for 40% more compact visual presentation) */}
+      <main className="max-w-4xl mx-auto w-full grid grid-cols-1 md:grid-cols-3 gap-4 my-4 flex-grow items-center">
         {candidatosData.map((cand) => {
-          const esSeleccionado = selectedCandidate === cand.id
+          const esSeleccionado = cand.suboptions 
+            ? ['3', '4', '5'].includes(selectedCandidate || '')
+            : selectedCandidate === cand.id
+          
           const porcentajeEnVivo = obtenerPorcentajeVoto(cand.id)
           const votosCount = obtenerVotosCount(cand.id)
 
@@ -226,74 +270,183 @@ export default function SegundaVueltaPage() {
             <div 
               key={cand.id}
               onClick={() => {
-                if (!yaVoto) setSelectedCandidate(cand.id)
+                // If it doesn't have suboptions, clicking the card selects the candidate
+                if (!yaVoto && !cand.suboptions) setSelectedCandidate(cand.id)
               }}
-              className={`flex flex-col items-center justify-between h-[340px] bg-[#111c2e] border rounded-2xl p-6 shadow-2xl transition-all duration-300 relative group text-center overflow-hidden ${
-                yaVoto ? 'cursor-default' : 'cursor-pointer active:scale-[0.98]'
+              className={`flex flex-col items-center justify-between h-[270px] bg-[#111c2e] border rounded-2xl p-4 shadow-2xl transition-all duration-300 relative group text-center overflow-hidden ${
+                yaVoto || cand.suboptions ? 'cursor-default' : 'cursor-pointer active:scale-[0.98]'
               } ${
                 esSeleccionado 
-                  ? 'border-[#05ffa1] shadow-[0_0_25px_rgba(5,255,161,0.25)]' 
+                  ? '' 
                   : (yaVoto ? 'border-[#1b2a47] opacity-40' : 'border-[#1b2a47] hover:border-[#00f2fe]/40')
               }`}
+              style={
+                esSeleccionado 
+                  ? { 
+                      borderColor: cand.id === '3' 
+                        ? (selectedCandidate === '4' ? '#eab308' : selectedCandidate === '5' ? '#8b5cf6' : '#6b7280') 
+                        : cand.color,
+                      boxShadow: `0 0 20px ${
+                        cand.id === '3' 
+                          ? (selectedCandidate === '4' ? 'rgba(234,179,8,0.25)' : selectedCandidate === '5' ? 'rgba(139,92,246,0.25)' : 'rgba(107,114,128,0.25)') 
+                          : cand.id === '1' ? 'rgba(249,115,22,0.25)' : 'rgba(239,68,68,0.25)'
+                      }`
+                    }
+                  : {}
+              }
             >
               {/* Glowing Top Horizontal Line (center-illuminated gradient, fading to transparent at the sides) */}
-              <div className={`absolute top-0 left-0 right-0 h-[2.5px] transition-all duration-300 z-10 ${
-                esSeleccionado 
-                  ? 'bg-gradient-to-r from-transparent via-[#05ffa1] to-transparent opacity-100' 
-                  : 'bg-gradient-to-r from-transparent via-[#00f2fe]/40 to-transparent opacity-100 group-hover:via-[#00f2fe]/80'
-              }`} />
+              <div 
+                className={`absolute top-0 left-0 right-0 h-[2px] transition-all duration-300 z-10 ${
+                  esSeleccionado 
+                    ? 'opacity-100' 
+                    : 'bg-gradient-to-r from-transparent via-[#00f2fe]/40 to-transparent opacity-100 group-hover:via-[#00f2fe]/80'
+                }`} 
+                style={{
+                  background: esSeleccionado 
+                    ? `linear-gradient(to right, transparent, ${
+                        cand.id === '3' 
+                          ? (selectedCandidate === '4' ? '#eab308' : selectedCandidate === '5' ? '#8b5cf6' : '#6b7280') 
+                          : cand.color
+                      }, transparent)`
+                    : undefined
+                }}
+              />
 
               {/* Logo & Giant Checkmark Overlay */}
-              <div className="relative flex items-center justify-center mb-6">
+              <div className="relative flex items-center justify-center mb-3">
                 <div className={`transition-opacity duration-200 ${esSeleccionado ? 'opacity-20' : 'opacity-100'}`}>
                   {renderPartyLogo(cand.id)}
                 </div>
                 
-                {esSeleccionado && (
+                {esSeleccionado && !cand.suboptions && (
                   <div className="absolute inset-0 flex items-center justify-center z-10">
-                    <CheckCircle2 className="w-20 h-20 text-[#05ffa1] drop-shadow-[0_0_15px_rgba(5,255,161,0.6)] bg-[#111c2e] rounded-full animate-pulse" />
+                    <CheckCircle2 
+                      className="w-12 h-12 bg-[#111c2e] rounded-full animate-pulse" 
+                      style={{ 
+                        color: cand.color,
+                        filter: `drop-shadow(0 0 10px ${cand.color})` 
+                      }} 
+                    />
                   </div>
                 )}
               </div>
 
               {/* Candidate name & Party (symmetrical card content) */}
-              <div className="flex flex-col items-center flex-grow justify-center">
-                <h3 className="font-black text-lg md:text-xl text-white tracking-tight leading-snug">
+              <div className="flex flex-col items-center flex-grow justify-center w-full">
+                <h3 className="font-black text-sm md:text-base text-white tracking-tight leading-snug text-center line-clamp-2 min-h-[40px] flex items-center justify-center">
                   {cand.name}
                 </h3>
-                <p className="text-xs text-[#788da5] font-mono mt-2 uppercase tracking-widest font-semibold">
+                <p className="text-xs md:text-sm text-[#00f2fe] font-mono mt-1 uppercase tracking-widest font-extrabold">
                   {cand.party}
                 </p>
+
+                {/* Suboptions buttons (rendered only if not voted and suboptions exist) */}
+                {!yaVoto && cand.suboptions && (
+                  <div className="flex flex-col gap-1.5 w-full mt-2 z-20">
+                    {cand.suboptions.map((sub) => {
+                      const esSubSeleccionado = selectedCandidate === sub.id
+                      return (
+                        <button
+                          key={sub.id}
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation() // Prevent card click
+                            setSelectedCandidate(sub.id)
+                          }}
+                          className={`w-full py-1 px-3 rounded-full text-[9px] md:text-xs font-bold transition-all border ${
+                            esSubSeleccionado
+                              ? ''
+                              : 'bg-[#070b13]/55 border-[#1b2a47] text-[#788da5] hover:border-[#00f2fe]/60 hover:text-white'
+                          }`}
+                          style={
+                            esSubSeleccionado
+                              ? {
+                                  backgroundColor: sub.color,
+                                  color: '#070b13',
+                                  borderColor: sub.color,
+                                  boxShadow: `0 0 10px ${sub.color}66`
+                                }
+                              : undefined
+                          }
+                        >
+                          {sub.name}
+                        </button>
+                      )
+                    })}
+                  </div>
+                )}
               </div>
 
               {/* Progress and Live Results */}
-              <div className="border-t border-[#1b2a47] w-full pt-4 mt-auto">
+              <div className="border-t border-[#1b2a47] w-full pt-2 mt-auto">
                 {yaVoto ? (
-                  <div className="flex flex-col gap-2 w-full">
-                    <div className="flex justify-between items-end">
-                      <span className="text-[9px] text-[#788da5] font-mono uppercase tracking-widest">Intención de Voto:</span>
-                      <span className={`text-xl font-black font-mono leading-none ${esSeleccionado ? 'text-[#05ffa1]' : 'text-white'}`}>
-                        {porcentajeEnVivo}
+                  cand.suboptions ? (
+                    <div className="flex flex-col gap-1.5 w-full mt-1 text-left">
+                      {cand.suboptions.map((sub) => {
+                        const subPorcentaje = obtenerPorcentajeVoto(sub.id)
+                        const subVotos = obtenerVotosCount(sub.id)
+                        const esSubSeleccionado = selectedCandidate === sub.id
+                        return (
+                          <div key={sub.id} className="flex flex-col gap-0.5 w-full">
+                            <div className="flex justify-between items-end">
+                              <span className="text-[7.5px] text-[#788da5] font-mono uppercase tracking-tight">{sub.name}:</span>
+                              <span 
+                                className="text-[9.5px] font-black font-mono leading-none"
+                                style={{ color: esSubSeleccionado ? sub.color : '#ffffff' }}
+                              >
+                                {subPorcentaje} ({subVotos})
+                              </span>
+                            </div>
+                            <div className="w-full bg-[#070b13] rounded-full h-1 overflow-hidden border border-[#1b2a47]/40">
+                              <motion.div 
+                                initial={{ width: 0 }}
+                                animate={{ width: subPorcentaje }}
+                                transition={{ duration: 1.5, ease: "easeOut" }}
+                                className="h-full rounded-full"
+                                style={{ backgroundColor: sub.color }}
+                              />
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  ) : (
+                    <div className="flex flex-col gap-1 w-full">
+                      <div className="flex justify-between items-end">
+                        <span className="text-[9px] text-[#788da5] font-mono uppercase tracking-widest">Intención de Voto:</span>
+                        <span 
+                          className="text-sm md:text-base font-black font-mono leading-none"
+                          style={{ color: esSeleccionado ? cand.color : '#ffffff' }}
+                        >
+                          {porcentajeEnVivo}
+                        </span>
+                      </div>
+                      <div className="w-full bg-[#070b13] rounded-full h-1.5 overflow-hidden border border-[#1b2a47]/50">
+                        <motion.div 
+                           initial={{ width: 0 }}
+                           animate={{ width: porcentajeEnVivo }}
+                           transition={{ duration: 1.5, ease: "easeOut" }}
+                           className={`h-full rounded-full ${
+                             cand.id === '1' ? 'bg-orange-500' : 'bg-red-500'
+                           }`}
+                        />
+                      </div>
+                      <span className="text-[7.5px] text-[#788da5] font-mono text-right leading-none">
+                        {votosCount.toLocaleString()} votos
                       </span>
                     </div>
-                    <div className="w-full bg-[#070b13] rounded-full h-2 overflow-hidden border border-[#1b2a47]/50">
-                      <motion.div 
-                        initial={{ width: 0 }}
-                        animate={{ width: porcentajeEnVivo }}
-                        transition={{ duration: 1.5, ease: "easeOut" }}
-                        className={`h-full rounded-full ${
-                          cand.id === '1' ? 'bg-orange-500' : (cand.id === '2' ? 'bg-emerald-500' : 'bg-slate-500')
-                        }`}
-                      />
-                    </div>
-                    <span className="text-[8px] text-[#788da5] font-mono text-right leading-none">
-                      {votosCount.toLocaleString()} votos
-                    </span>
-                  </div>
+                  )
                 ) : (
-                  <div className="flex items-center justify-center gap-2 py-1.5 text-[9px] font-mono font-bold text-[#00f2fe] tracking-widest uppercase animate-pulse">
-                    SELECCIONAR
-                  </div>
+                  cand.suboptions ? (
+                    <div className="flex items-center justify-center py-1 text-[8px] font-mono font-bold text-[#788da5] tracking-widest uppercase">
+                      ELIGE UNA OPCIÓN ARRIBA
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-center gap-2 py-1 text-[9px] font-mono font-bold text-[#00f2fe] tracking-widest uppercase animate-pulse">
+                      SELECCIONAR
+                    </div>
+                  )
                 )}
               </div>
             </div>
@@ -312,9 +465,48 @@ export default function SegundaVueltaPage() {
               disabled={!selectedCandidate || votoRegistrando}
               className={`font-bold px-6 md:px-12 py-4 md:py-5 rounded-2xl flex flex-row items-center justify-center gap-2 md:gap-4 group transition-all border w-[90%] md:w-auto ${
                 selectedCandidate && !votoRegistrando
-                  ? 'bg-olympus-mint text-zinc-950 shadow-[0_0_20px_rgba(5,255,161,0.4)] border-[#05ffa1]/50 cursor-pointer active:scale-95'
+                  ? 'text-[#070b13] cursor-pointer active:scale-95'
                   : 'bg-[#111c2e]/60 border-[#1b2a47] text-[#788da5] cursor-not-allowed opacity-50'
               }`}
+              style={
+                selectedCandidate && !votoRegistrando
+                  ? {
+                      backgroundColor: (() => {
+                        const selectedObj = candidatosData.find(c => {
+                          if (c.id === selectedCandidate) return true
+                          if (c.suboptions?.some(s => s.id === selectedCandidate)) return true
+                          return false
+                        })
+                        if (selectedObj) {
+                          if (selectedObj.id === '3') {
+                            const sub = selectedObj.suboptions?.find(s => s.id === selectedCandidate)
+                            return sub ? sub.color : selectedObj.color
+                          }
+                          return selectedObj.color
+                        }
+                        return '#05ffa1'
+                      })(),
+                      borderColor: 'transparent',
+                      boxShadow: `0 0 20px ${
+                        (() => {
+                          const selectedObj = candidatosData.find(c => {
+                            if (c.id === selectedCandidate) return true
+                            if (c.suboptions?.some(s => s.id === selectedCandidate)) return true
+                            return false
+                          })
+                          if (selectedObj) {
+                            if (selectedObj.id === '3') {
+                              const sub = selectedObj.suboptions?.find(s => s.id === selectedCandidate)
+                              return sub ? sub.color : selectedObj.color
+                            }
+                            return selectedObj.color
+                          }
+                          return '#05ffa1'
+                        })()
+                      }66`
+                    }
+                  : undefined
+              }
             >
               <Flame className={`group-hover:animate-pulse w-5 h-5 md:w-6 md:h-6 ${selectedCandidate ? 'text-zinc-900' : 'text-[#788da5]'}`} />
               <span className="text-sm md:text-xl text-center leading-tight uppercase tracking-wider font-extrabold">
