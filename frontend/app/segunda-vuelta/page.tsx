@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { CheckCircle2, Flame, AlertTriangle, Shield, CheckCircle, ChevronRight, Info } from 'lucide-react'
 import { getSessionId, hasVoted, registrarVoto } from '@/lib/session'
 import { ChatBox } from './ChatBox'
+import { LegalFooter } from '@/components/layout/LegalFooter'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001'
 
@@ -333,13 +334,8 @@ export default function SegundaVueltaPage() {
         </AnimatePresence>
       </div>
 
-      {/* Live Chat Section */}
-      <div className="w-full flex justify-center my-4">
-        <ChatBox />
-      </div>
-
       {/* Footer Info Panel */}
-      <footer className="flex flex-col md:flex-row justify-between items-center border border-[#1b2a47] bg-[#111c2e]/60 px-4 py-3 rounded-2xl gap-2 font-mono text-[9px] text-[#788da5]">
+      <footer className="flex flex-col md:flex-row justify-between items-center border border-[#1b2a47] bg-[#111c2e]/60 px-4 py-3 rounded-2xl gap-2 font-mono text-[9px] text-[#788da5] mb-6">
         <div className="flex items-center gap-1">
           <span>TIPO DE AMBIENTE: {isDevMode ? <span className="text-[#05ffa1] font-bold">DESARROLLO (VOTO LIBRE BYPASS)</span> : <span className="text-rose-500 font-bold">PRODUCCIÓN (RESTRICCIÓN LOCK ACTIVA)</span>}</span>
         </div>
@@ -353,6 +349,10 @@ export default function SegundaVueltaPage() {
           </span>
         </div>
       </footer>
+
+      {/* Floating Chat Box and Legal Footer */}
+      <ChatBox />
+      <LegalFooter />
     </div>
   )
 }
