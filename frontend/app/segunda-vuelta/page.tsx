@@ -313,18 +313,20 @@ export default function SegundaVueltaPage() {
                 }}
               />
 
-              {/* Selection Check Indicator (Top-Right Corner Mint Check) */}
-              {esSeleccionado && (
-                <div className="absolute top-2 right-2 w-6 h-6 rounded-full border border-[#2dd4bf] bg-[#070b13]/80 flex items-center justify-center z-20 shadow-[0_0_10px_rgba(45,212,191,0.2)]">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-[#2dd4bf]" />
-                </div>
-              )}
-
-              {/* Logo */}
+              {/* Logo & Giant Checkmark Overlay */}
               <div className="relative flex items-center justify-center mb-3">
-                <div className="transition-opacity duration-200 opacity-100">
+                <div className={`transition-opacity duration-200 ${esSeleccionado ? 'opacity-20' : 'opacity-100'}`}>
                   {renderPartyLogo(cand.id)}
                 </div>
+                
+                {esSeleccionado && !cand.suboptions && (
+                  <div className="absolute inset-0 flex items-center justify-center z-10">
+                    <CheckCircle2 
+                      className="w-12 h-12 bg-[#111c2e] text-[#2dd4bf] rounded-full animate-pulse shadow-[0_0_15px_rgba(45,212,191,0.25)]" 
+                      strokeWidth={1.2}
+                    />
+                  </div>
+                )}
               </div>
 
               {/* Candidate name & Party (symmetrical card content) */}
