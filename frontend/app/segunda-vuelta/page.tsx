@@ -313,18 +313,27 @@ export default function SegundaVueltaPage() {
                 }}
               />
 
-              {/* Logo & Giant Checkmark Overlay */}
+              {/* Logo & Giant Checkmark Overlay with dynamic complementary opacities */}
               <div className="relative flex items-center justify-center mb-3">
-                <div className={`transition-opacity duration-200 ${esSeleccionado ? 'opacity-20' : 'opacity-100'}`}>
+                <motion.div 
+                  animate={esSeleccionado && !cand.suboptions ? { opacity: [1, 0, 1] } : { opacity: 1 }}
+                  transition={esSeleccionado && !cand.suboptions ? { repeat: Infinity, duration: 3, ease: "easeInOut" } : undefined}
+                  className="w-full flex justify-center items-center"
+                >
                   {renderPartyLogo(cand.id)}
-                </div>
+                </motion.div>
                 
                 {esSeleccionado && !cand.suboptions && (
-                  <div className="absolute inset-0 flex items-center justify-center z-10">
-                    <CheckCircle2 
-                      className="w-12 h-12 bg-[#111c2e] text-[#2dd4bf] rounded-full animate-pulse shadow-[0_0_15px_rgba(45,212,191,0.25)]" 
-                      strokeWidth={1.2}
-                    />
+                  <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                    <motion.div
+                      animate={{ opacity: [0, 1, 0] }}
+                      transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+                    >
+                      <CheckCircle2 
+                        className="w-12 h-12 bg-[#111c2e] text-[#2dd4bf] rounded-full shadow-[0_0_15px_rgba(45,212,191,0.25)]" 
+                        strokeWidth={1.2}
+                      />
+                    </motion.div>
                   </div>
                 )}
               </div>
@@ -456,27 +465,36 @@ export default function SegundaVueltaPage() {
         <AnimatePresence>
           {!yaVoto ? (
             <motion.button
-              whileHover={selectedCandidate ? { scale: 1.05 } : {}}
-              whileTap={selectedCandidate ? { scale: 0.95 } : {}}
+              whileHover={selectedCandidate && !votoRegistrando ? { scale: 1.05 } : {}}
+              whileTap={selectedCandidate && !votoRegistrando ? { scale: 0.95 } : {}}
               onClick={confirmarVoto}
               disabled={!selectedCandidate || votoRegistrando}
               className={`font-bold px-6 md:px-12 py-4 md:py-5 rounded-2xl flex flex-row items-center justify-center gap-2 md:gap-4 group transition-all border w-[90%] md:w-auto ${
                 selectedCandidate && !votoRegistrando
-                  ? 'text-white cursor-pointer active:scale-95'
-                  : 'bg-[#111c2e]/60 border-[#1b2a47] text-[#788da5] cursor-not-allowed opacity-50'
+                  ? 'cursor-pointer active:scale-95'
+                  : 'cursor-not-allowed'
               }`}
               style={
-                selectedCandidate && !votoRegistrando
+                selectedCandidate
                   ? {
-                      backgroundColor: '#2dd4bf',
+                      backgroundColor: '#00FF00',
                       borderColor: 'transparent',
-                      boxShadow: '0 0 20px rgba(45,212,191,0.4)',
-                      color: '#ffffff'
+                      boxShadow: '0 0 20px rgba(0, 255, 0, 0.4)',
+                      color: '#000000',
+                      opacity: votoRegistrando ? 0.7 : 1
                     }
-                  : undefined
+                  : {
+                      backgroundColor: '#111c2e',
+                      borderColor: '#1b2a47',
+                      color: '#ffffff',
+                      opacity: 1
+                    }
               }
             >
-              <Flame className={`group-hover:animate-pulse w-5 h-5 md:w-6 md:h-6 ${selectedCandidate ? 'text-white' : 'text-[#788da5]'}`} />
+              <Flame 
+                className="group-hover:animate-pulse w-5 h-5 md:w-6 md:h-6" 
+                style={{ color: selectedCandidate ? '#000000' : '#ffffff' }}
+              />
               <span className="text-sm md:text-xl text-center leading-tight uppercase tracking-wider font-extrabold">
                 {votoRegistrando ? 'REGISTRANDO VOTO...' : 'CONFIRMA TU VOTO'}
               </span>
