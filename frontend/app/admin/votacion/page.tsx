@@ -45,6 +45,7 @@ export default function DashboardVotacion() {
       setLoading(false)
     } catch (error) {
       console.error("Error fetching stats:", error)
+      setLoading(false)
     }
   }
 
@@ -138,7 +139,7 @@ export default function DashboardVotacion() {
                   key={cand.candidato_dni} 
                   candidate={cand} 
                   index={idx} 
-                  topScore={ranking[0].votos_ganados} 
+                  topScore={ranking[0]?.votos_ganados || 0} 
                 />
               ))}
             </div>
@@ -239,7 +240,7 @@ function StatCard({ title, value, icon: Icon, color }: any) {
 }
 
 function RankingRow({ candidate, index, topScore }: { candidate: CandidatoStat, index: number, topScore: number }) {
-  const percentage = (candidate.votos_ganados / topScore) * 100
+  const percentage = topScore > 0 ? (candidate.votos_ganados / topScore) * 100 : 0
 
   return (
     <motion.div 
