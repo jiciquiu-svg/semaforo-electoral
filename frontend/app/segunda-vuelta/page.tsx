@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { CheckCircle2, Flame, AlertTriangle, Shield, CheckCircle, ChevronRight, Info } from 'lucide-react'
 import { getSessionId, hasVoted, registrarVoto } from '@/lib/session'
 import { ChatBox } from './ChatBox'
-import { LegalFooter } from '@/components/layout/LegalFooter'
+import { LegalFooter } from '@/components/LegalFooter'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001'
 
