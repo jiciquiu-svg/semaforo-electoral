@@ -52,30 +52,44 @@ const candidatosData: Candidate[] = [
 function renderPartyLogo(id: string) {
   if (id === '1') {
     return (
-      <div className="w-12 h-12 relative select-none rounded-full overflow-hidden shadow-lg border border-orange-500/20 bg-[#0a0b0d] flex items-center justify-center">
+      <div 
+        className="w-12 h-12 relative select-none rounded-full overflow-hidden shadow-lg border border-orange-500/20 bg-[#0a0b0d] flex items-center justify-center"
+        style={{ width: '48px', height: '48px' }}
+      >
         <img 
           src="/logo_fuerza_popular.svg" 
           alt="Fuerza Popular" 
           className="w-full h-full object-contain pointer-events-none" 
+          style={{ width: '48px', height: '48px' }}
         />
       </div>
     )
   }
   if (id === '2') {
     return (
-      <div className="w-12 h-12 relative select-none rounded-full overflow-hidden shadow-lg border border-red-500/20 bg-white flex items-center justify-center p-1">
+      <div 
+        className="w-12 h-12 relative select-none rounded-full overflow-hidden shadow-lg border border-red-500/20 bg-white flex items-center justify-center p-1"
+        style={{ width: '48px', height: '48px' }}
+      >
         <img 
           src="/logo_juntos_por_el_peru.svg" 
           alt="Juntos por el Perú" 
           className="w-full h-full object-contain pointer-events-none" 
+          style={{ width: '40px', height: '40px' }}
         />
       </div>
     )
   }
   return (
-    <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center shadow-2xl relative border border-slate-700 overflow-hidden select-none">
+    <div 
+      className="w-12 h-12 bg-black rounded-full flex items-center justify-center shadow-2xl relative border border-slate-700 overflow-hidden select-none"
+      style={{ width: '48px', height: '48px' }}
+    >
       <div className="absolute inset-0 bg-gradient-to-tr from-slate-900 via-zinc-800 to-neutral-900 opacity-60"></div>
-      <div className="w-8 h-8 rounded-full bg-[#070b13] border border-slate-800/80 shadow-[inset_0_0_10px_rgba(0,0,0,0.9)] flex items-center justify-center">
+      <div 
+        className="w-8 h-8 rounded-full bg-[#070b13] border border-slate-800/80 shadow-[inset_0_0_10px_rgba(0,0,0,0.9)] flex items-center justify-center"
+        style={{ width: '32px', height: '32px' }}
+      >
         <span className="text-sm opacity-60">⚫</span>
       </div>
       <div className="absolute inset-0.5 border border-dashed border-slate-600/30 rounded-full animate-[spin_20s_linear_infinite]"></div>
@@ -328,6 +342,7 @@ export default function SegundaVueltaPage() {
                     <CheckCircle2 
                       className="w-12 h-12 bg-[#111c2e] text-[#20df92] rounded-full shadow-[0_0_15px_rgba(32,223,146,0.25)]" 
                       strokeWidth={1.2}
+                      style={{ width: '48px', height: '48px' }}
                     />
                   </div>
                 )}
