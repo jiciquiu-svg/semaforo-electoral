@@ -330,7 +330,7 @@ export default function SegundaVueltaPage() {
                       transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
                     >
                       <CheckCircle2 
-                        className="w-12 h-12 bg-[#111c2e] text-[#2dd4bf] rounded-full shadow-[0_0_15px_rgba(45,212,191,0.25)]" 
+                        className="w-12 h-12 bg-[#111c2e] text-[#20df92] rounded-full shadow-[0_0_15px_rgba(32,223,146,0.25)]" 
                         strokeWidth={1.2}
                       />
                     </motion.div>
@@ -477,9 +477,9 @@ export default function SegundaVueltaPage() {
               style={
                 selectedCandidate
                   ? {
-                      backgroundColor: '#00FF00',
+                      backgroundColor: '#20df92',
                       borderColor: 'transparent',
-                      boxShadow: '0 0 20px rgba(0, 255, 0, 0.4)',
+                      boxShadow: '0 0 20px rgba(32, 223, 146, 0.4)',
                       color: '#000000',
                       opacity: votoRegistrando ? 0.7 : 1
                     }
