@@ -53,14 +53,12 @@ function renderPartyLogo(id: string) {
   if (id === '1') {
     return (
       <div 
-        className="w-12 h-12 relative select-none rounded-full overflow-hidden shadow-lg border border-orange-500/20 bg-[#0a0b0d] flex items-center justify-center"
-        style={{ width: '48px', height: '48px' }}
+        className="w-10 h-10 relative select-none rounded-full overflow-hidden shadow-lg border border-orange-500/20 bg-[#0a0b0d] flex items-center justify-center shrink-0"
       >
         <img 
           src="/logo_fuerza_popular.svg" 
           alt="Fuerza Popular" 
           className="w-full h-full object-contain pointer-events-none" 
-          style={{ width: '48px', height: '48px' }}
         />
       </div>
     )
@@ -68,31 +66,26 @@ function renderPartyLogo(id: string) {
   if (id === '2') {
     return (
       <div 
-        className="w-12 h-12 relative select-none rounded-full overflow-hidden shadow-lg border border-red-500/20 bg-white flex items-center justify-center p-1"
-        style={{ width: '48px', height: '48px' }}
+        className="w-10 h-10 relative select-none rounded-full overflow-hidden shadow-lg border border-red-500/20 bg-white flex items-center justify-center p-1 shrink-0"
       >
         <img 
           src="/logo_juntos_por_el_peru.svg" 
           alt="Juntos por el Perú" 
           className="w-full h-full object-contain pointer-events-none" 
-          style={{ width: '40px', height: '40px' }}
         />
       </div>
     )
   }
   return (
     <div 
-      className="w-12 h-12 bg-black rounded-full flex items-center justify-center shadow-2xl relative border border-slate-700 overflow-hidden select-none"
-      style={{ width: '48px', height: '48px' }}
+      className="w-10 h-10 bg-black rounded-full flex items-center justify-center shadow-2xl relative border border-slate-700 overflow-hidden select-none shrink-0"
     >
       <div className="absolute inset-0 bg-gradient-to-tr from-slate-900 via-zinc-800 to-neutral-900 opacity-60"></div>
       <div 
-        className="w-8 h-8 rounded-full bg-[#070b13] border border-slate-800/80 shadow-[inset_0_0_10px_rgba(0,0,0,0.9)] flex items-center justify-center"
-        style={{ width: '32px', height: '32px' }}
+        className="w-6 h-6 rounded-full bg-[#070b13] border border-slate-800/80 shadow-[inset_0_0_10px_rgba(0,0,0,0.9)] flex items-center justify-center"
       >
-        <span className="text-sm opacity-60">⚫</span>
+        <span className="text-xs opacity-60">⚫</span>
       </div>
-      <div className="absolute inset-0.5 border border-dashed border-slate-600/30 rounded-full animate-[spin_20s_linear_infinite]"></div>
     </div>
   )
 }
@@ -244,7 +237,7 @@ export default function SegundaVueltaPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#070b13] flex flex-col justify-between p-4 md:p-6 overflow-y-auto text-[#f4f6fa] select-none font-sans">
+    <div className="min-h-screen bg-[#070b13] flex flex-col justify-between p-3 pb-6 overflow-y-auto text-[#f4f6fa] select-none font-sans">
       
       {/* Header Panel */}
       <header className="relative flex flex-col sm:flex-row justify-between items-center border border-[#1b2a47] bg-[#111c2e] p-4 rounded-2xl shadow-lg gap-2">
@@ -270,8 +263,8 @@ export default function SegundaVueltaPage() {
         </div>
       </header>
 
-      {/* Main Grid: Balotaje Cards (max-w-4xl mx-auto for 40% more compact visual presentation) */}
-      <main className="max-w-4xl mx-auto w-full grid grid-cols-1 md:grid-cols-3 gap-4 my-4 flex-grow items-center">
+      {/* Main Grid: Balotaje Cards (optimizado compacto) */}
+      <main className="max-w-4xl mx-auto w-full grid grid-cols-1 md:grid-cols-3 gap-3 my-2 flex-grow items-stretch">
         {candidatosData.map((cand) => {
           const esSeleccionado = cand.suboptions 
             ? ['3', '4', '5'].includes(selectedCandidate || '')
@@ -287,7 +280,7 @@ export default function SegundaVueltaPage() {
                 // If it doesn't have suboptions, clicking the card selects the candidate
                 if (!yaVoto && !cand.suboptions) setSelectedCandidate(cand.id)
               }}
-              className={`flex flex-col items-center justify-between h-[270px] bg-[#111c2e] border rounded-2xl p-4 shadow-2xl transition-all duration-300 relative group text-center overflow-hidden ${
+              className={`flex flex-col justify-between bg-[#111c2e] border rounded-2xl p-3 shadow-2xl transition-all duration-300 relative group overflow-hidden gap-2 ${
                 yaVoto || cand.suboptions ? 'cursor-default' : 'cursor-pointer active:scale-[0.98]'
               } ${
                 esSeleccionado 
@@ -300,16 +293,16 @@ export default function SegundaVueltaPage() {
                       borderColor: cand.id === '3' 
                         ? (selectedCandidate === '4' ? '#eab308' : selectedCandidate === '5' ? '#8b5cf6' : '#6b7280') 
                         : cand.color,
-                      boxShadow: `0 0 20px ${
+                      boxShadow: `0 0 15px ${
                         cand.id === '3' 
-                          ? (selectedCandidate === '4' ? 'rgba(234,179,8,0.25)' : selectedCandidate === '5' ? 'rgba(139,92,246,0.25)' : 'rgba(107,114,128,0.25)') 
-                          : cand.id === '1' ? 'rgba(249,115,22,0.25)' : 'rgba(239,68,68,0.25)'
+                          ? (selectedCandidate === '4' ? 'rgba(234,179,8,0.2)' : selectedCandidate === '5' ? 'rgba(139,92,246,0.2)' : 'rgba(107,114,128,0.2)') 
+                          : cand.id === '1' ? 'rgba(249,115,22,0.2)' : 'rgba(239,68,68,0.2)'
                       }`
                     }
                   : {}
               }
             >
-              {/* Glowing Top Horizontal Line (center-illuminated gradient, fading to transparent at the sides) */}
+              {/* Glowing Top Horizontal Line */}
               <div 
                 className={`absolute top-0 left-0 right-0 h-[2px] transition-all duration-300 z-10 ${
                   esSeleccionado 
@@ -327,78 +320,95 @@ export default function SegundaVueltaPage() {
                 }}
               />
 
-              {/* Logo & Giant Checkmark Overlay with dynamic complementary opacities */}
-              <div className="relative flex items-center justify-center mb-3">
-                <div 
-                  className={`w-full flex justify-center items-center ${
-                    esSeleccionado && !cand.suboptions ? 'animate-logo-fade' : ''
-                  }`}
-                >
-                  {renderPartyLogo(cand.id)}
+              {/* Flex row en móvil para poner el texto a la derecha del logo */}
+              <div className="flex flex-row md:flex-col items-center md:text-center gap-3 w-full">
+                {/* Logo & Giant Checkmark Overlay */}
+                <div className="relative shrink-0 flex items-center justify-center">
+                  <div 
+                    className={`flex justify-center items-center ${
+                      esSeleccionado && !cand.suboptions ? 'animate-logo-fade' : ''
+                    }`}
+                  >
+                    {renderPartyLogo(cand.id)}
+                  </div>
+                  
+                  {esSeleccionado && !cand.suboptions && (
+                    <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none animate-check-fade">
+                      <CheckCircle2 
+                        className="w-10 h-10 bg-[#111c2e] text-[#20df92] rounded-full shadow-[0_0_10px_rgba(32,223,146,0.2)]" 
+                        strokeWidth={1.5}
+                      />
+                    </div>
+                  )}
                 </div>
-                
-                {esSeleccionado && !cand.suboptions && (
-                  <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none animate-check-fade">
-                    <CheckCircle2 
-                      className="w-12 h-12 bg-[#111c2e] text-[#20df92] rounded-full shadow-[0_0_15px_rgba(32,223,146,0.25)]" 
-                      strokeWidth={1.2}
-                      style={{ width: '48px', height: '48px' }}
-                    />
-                  </div>
-                )}
-              </div>
 
-              {/* Candidate name & Party (symmetrical card content) */}
-              <div className="flex flex-col items-center flex-grow justify-center w-full">
-                <h3 className="font-black text-sm md:text-base text-white tracking-tight leading-snug text-center line-clamp-2 min-h-[40px] flex items-center justify-center">
-                  {cand.name}
-                </h3>
-                <p className="text-xs md:text-sm text-[#00f2fe] font-mono mt-1 uppercase tracking-widest font-extrabold">
-                  {cand.party}
-                </p>
+                {/* Candidate name & Party */}
+                <div className="flex flex-col items-start md:items-center flex-grow min-w-0 w-full text-left md:text-center">
+                  {cand.id !== '3' ? (
+                    <>
+                      <h3 className="font-medium text-sm md:text-base text-white tracking-tight leading-snug line-clamp-2 md:min-h-[40px] flex items-center">
+                        {cand.name}
+                      </h3>
+                      <p className="text-[10px] md:text-xs text-[#00f2fe] font-mono mt-0.5 uppercase tracking-wider font-semibold">
+                        {cand.party}
+                      </p>
+                    </>
+                  ) : (
+                    yaVoto && (
+                      <>
+                        <h3 className="font-medium text-sm md:text-base text-white tracking-tight leading-snug flex items-center">
+                          Ninguno de los dos
+                        </h3>
+                        <p className="text-[10px] md:text-xs text-gray-400 font-mono mt-0.5 uppercase tracking-wider">
+                          Voto Blanco / Viciado
+                        </p>
+                      </>
+                    )
+                  )}
 
-                {/* Suboptions buttons (rendered only if not voted and suboptions exist) */}
-                {!yaVoto && cand.suboptions && (
-                  <div className="flex flex-col gap-1.5 w-full mt-2 z-20">
-                    {cand.suboptions.map((sub) => {
-                      const esSubSeleccionado = selectedCandidate === sub.id
-                      return (
-                        <button
-                          key={sub.id}
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation() // Prevent card click
-                            setSelectedCandidate(sub.id)
-                          }}
-                          className={`w-full py-1 px-3 rounded-full text-[9px] md:text-xs font-bold transition-all border ${
-                            esSubSeleccionado
-                              ? ''
-                              : 'bg-[#070b13]/55 border-[#1b2a47] text-[#788da5] hover:border-[#00f2fe]/60 hover:text-white'
-                          }`}
-                          style={
-                            esSubSeleccionado
-                              ? {
-                                  backgroundColor: sub.color,
-                                  color: '#070b13',
-                                  borderColor: sub.color,
-                                  boxShadow: `0 0 10px ${sub.color}66`
-                                }
-                              : undefined
-                          }
-                        >
-                          {sub.name}
-                        </button>
-                      )
-                    })}
-                  </div>
-                )}
+                  {/* Suboptions buttons */}
+                  {!yaVoto && cand.suboptions && (
+                    <div className="flex flex-col gap-1 w-full mt-1 z-20">
+                      {cand.suboptions.map((sub) => {
+                        const esSubSeleccionado = selectedCandidate === sub.id
+                        return (
+                          <button
+                            key={sub.id}
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation() // Prevent card click
+                              setSelectedCandidate(sub.id)
+                            }}
+                            className={`w-full py-1.5 px-3 rounded-lg text-xs font-semibold transition-all border ${
+                              esSubSeleccionado
+                                ? ''
+                                : 'bg-[#070b13]/55 border-[#1b2a47] text-[#788da5] hover:border-[#00f2fe]/60 hover:text-white'
+                            }`}
+                            style={
+                              esSubSeleccionado
+                                ? {
+                                    backgroundColor: sub.color,
+                                    color: '#070b13',
+                                    borderColor: sub.color,
+                                    boxShadow: `0 0 8px ${sub.color}55`
+                                  }
+                                : undefined
+                            }
+                          >
+                            {sub.name}
+                          </button>
+                        )
+                      })}
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Progress and Live Results */}
-              <div className="border-t border-[#1b2a47] w-full pt-2 mt-auto">
+              <div className="border-t border-[#1b2a47] w-full pt-2">
                 {yaVoto ? (
                   cand.suboptions ? (
-                    <div className="flex flex-col gap-1.5 w-full mt-1 text-left">
+                    <div className="flex flex-col gap-1 w-full mt-1 text-left">
                       {cand.suboptions.map((sub) => {
                         const subPorcentaje = obtenerPorcentajeVoto(sub.id)
                         const subVotos = obtenerVotosCount(sub.id)
@@ -408,7 +418,7 @@ export default function SegundaVueltaPage() {
                             <div className="flex justify-between items-end">
                               <span className="text-[7.5px] text-[#788da5] font-mono uppercase tracking-tight">{sub.name}:</span>
                               <span 
-                                className="text-[9.5px] font-black font-mono leading-none"
+                                className="text-[9.5px] font-mono leading-none"
                                 style={{ color: esSubSeleccionado ? sub.color : '#ffffff' }}
                               >
                                 {subPorcentaje} ({subVotos})
@@ -428,11 +438,11 @@ export default function SegundaVueltaPage() {
                       })}
                     </div>
                   ) : (
-                    <div className="flex flex-col gap-1 w-full">
-                      <div className="flex justify-between items-end">
-                        <span className="text-[9px] text-[#788da5] font-mono uppercase tracking-widest">Intención de Voto:</span>
+                    <div className="flex flex-col gap-1 w-full text-left md:text-center">
+                      <div className="flex justify-between items-end md:flex-col md:items-center">
+                        <span className="text-[9px] text-[#788da5] font-mono uppercase tracking-widest">Intención:</span>
                         <span 
-                          className="text-sm md:text-base font-black font-mono leading-none"
+                          className="text-sm font-mono leading-none"
                           style={{ color: esSeleccionado ? cand.color : '#ffffff' }}
                         >
                           {porcentajeEnVivo}
@@ -448,18 +458,18 @@ export default function SegundaVueltaPage() {
                            }`}
                         />
                       </div>
-                      <span className="text-[7.5px] text-[#788da5] font-mono text-right leading-none">
+                      <span className="text-[7.5px] text-[#788da5] font-mono text-right md:text-center leading-none">
                         {votosCount.toLocaleString()} votos
                       </span>
                     </div>
                   )
                 ) : (
                   cand.suboptions ? (
-                    <div className="flex items-center justify-center py-1 text-[8px] font-mono font-bold text-[#788da5] tracking-widest uppercase">
+                    <div className="flex items-center justify-center py-1 text-[8px] font-mono font-medium text-[#788da5] tracking-widest uppercase">
                       ELIGE UNA OPCIÓN ARRIBA
                     </div>
                   ) : (
-                    <div className="flex items-center justify-center gap-2 py-1 text-[9px] font-mono font-bold text-[#00f2fe] tracking-widest uppercase animate-pulse">
+                    <div className="flex items-center justify-center gap-2 py-1 text-[9px] font-mono font-medium text-[#00f2fe] tracking-widest uppercase animate-pulse">
                       SELECCIONAR
                     </div>
                   )
@@ -470,16 +480,16 @@ export default function SegundaVueltaPage() {
         })}
       </main>
 
-      {/* Confirmation Button with original Comparar Finalistas styles */}
-      <div className="flex flex-col items-center gap-2 my-2 w-full">
+      {/* Botón de Confirmación Compacto Inline */}
+      <div className="w-full max-w-4xl mx-auto mt-4 px-1">
         <AnimatePresence>
           {!yaVoto ? (
             <motion.button
-              whileHover={selectedCandidate && !votoRegistrando ? { scale: 1.05 } : {}}
-              whileTap={selectedCandidate && !votoRegistrando ? { scale: 0.95 } : {}}
+              whileHover={selectedCandidate && !votoRegistrando ? { scale: 1.02 } : {}}
+              whileTap={selectedCandidate && !votoRegistrando ? { scale: 0.98 } : {}}
               onClick={confirmarVoto}
               disabled={!selectedCandidate || votoRegistrando}
-              className={`font-bold px-6 md:px-12 py-4 md:py-5 rounded-2xl flex flex-row items-center justify-center gap-2 md:gap-4 group transition-all border w-[90%] md:w-auto ${
+              className={`w-full py-3 rounded-xl font-semibold text-base transition-all flex flex-row items-center justify-center gap-2 border ${
                 selectedCandidate && !votoRegistrando
                   ? 'cursor-pointer active:scale-95'
                   : 'cursor-not-allowed'
@@ -489,7 +499,7 @@ export default function SegundaVueltaPage() {
                   ? {
                       backgroundColor: '#20df92',
                       borderColor: 'transparent',
-                      boxShadow: '0 0 20px rgba(32, 223, 146, 0.4)',
+                      boxShadow: '0 0 15px rgba(32, 223, 146, 0.3)',
                       color: '#000000',
                       opacity: votoRegistrando ? 0.7 : 1
                     }
@@ -497,26 +507,25 @@ export default function SegundaVueltaPage() {
                       backgroundColor: '#111c2e',
                       borderColor: '#1b2a47',
                       color: '#ffffff',
-                      opacity: 1
+                      opacity: 0.5
                     }
               }
             >
               <Flame 
-                className="group-hover:animate-pulse w-5 h-5 md:w-6 md:h-6" 
+                className="w-5 h-5" 
                 style={{ color: selectedCandidate ? '#000000' : '#ffffff' }}
               />
-              <span className="text-sm md:text-xl text-center leading-tight uppercase tracking-wider font-extrabold">
-                {votoRegistrando ? 'REGISTRANDO VOTO...' : 'CONFIRMA TU VOTO'}
+              <span className="tracking-wider uppercase">
+                {votoRegistrando ? 'REGISTRANDO VOTO...' : (selectedCandidate ? '✅ CONFIRMA TU VOTO' : '🔒 SELECCIONA UNA OPCIÓN')}
               </span>
-              <ChevronRight className="hidden md:block" />
             </motion.button>
           ) : (
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="bg-[#111c2e] border border-[#1b2a47]/50 px-6 py-3.5 rounded-full text-xs font-bold text-[#05ffa1] font-mono flex items-center gap-2 shadow-inner"
+              className="bg-[#111c2e] border border-[#1b2a47]/50 py-3 rounded-xl text-xs font-semibold text-[#05ffa1] font-mono flex items-center justify-center gap-2 shadow-inner w-full text-center"
             >
-              <CheckCircle className="w-4 h-4" /> VOTO REGISTRADO (DISPOSITIVO CON RESTRICCIÓN DE UN SOLO VOTO)
+              <CheckCircle className="w-4 h-4 shrink-0" /> VOTO REGISTRADO (DISPOSITIVO CON RESTRICCIÓN DE UN SOLO VOTO)
             </motion.div>
           )}
         </AnimatePresence>
