@@ -265,7 +265,7 @@ export default function SegundaVueltaPage() {
             <span className="relative inline-flex rounded-full h-2 w-2 bg-[#05ffa1]"></span>
           </span>
           <span className="text-[9px] md:text-[10px] font-mono font-bold text-[#05ffa1] tracking-widest uppercase">
-            {concurrencia.toLocaleString()} PERSONAS VIENDO
+            {concurrencia.toLocaleString()} en linea
           </span>
         </div>
       </header>
@@ -300,8 +300,8 @@ export default function SegundaVueltaPage() {
                       ? (selectedCandidate === '4' ? '#eab308' : selectedCandidate === '5' ? '#8b5cf6' : '#6b7280')
                       : cand.color,
                     boxShadow: `0 0 15px ${cand.id === '3'
-                        ? (selectedCandidate === '4' ? 'rgba(234,179,8,0.2)' : selectedCandidate === '5' ? 'rgba(139,92,246,0.2)' : 'rgba(107,114,128,0.2)')
-                        : cand.id === '1' ? 'rgba(249,115,22,0.2)' : 'rgba(239,68,68,0.2)'
+                      ? (selectedCandidate === '4' ? 'rgba(234,179,8,0.2)' : selectedCandidate === '5' ? 'rgba(139,92,246,0.2)' : 'rgba(107,114,128,0.2)')
+                      : cand.id === '1' ? 'rgba(249,115,22,0.2)' : 'rgba(239,68,68,0.2)'
                       }`
                   }
                   : {}
@@ -310,8 +310,8 @@ export default function SegundaVueltaPage() {
               {/* Glowing Top Horizontal Line */}
               <div
                 className={`absolute top-0 left-0 right-0 h-[2px] transition-all duration-300 z-10 ${esSeleccionado
-                    ? 'opacity-100'
-                    : 'bg-gradient-to-r from-transparent via-[#00f2fe]/40 to-transparent opacity-100 group-hover:via-[#00f2fe]/80'
+                  ? 'opacity-100'
+                  : 'bg-gradient-to-r from-transparent via-[#00f2fe]/40 to-transparent opacity-100 group-hover:via-[#00f2fe]/80'
                   }`}
                 style={{
                   background: esSeleccionado
@@ -495,8 +495,8 @@ export default function SegundaVueltaPage() {
               onClick={confirmarVoto}
               disabled={!selectedCandidate || votoRegistrando}
               className={`w-full py-3 rounded-xl font-semibold text-base transition-all flex flex-row items-center justify-center gap-2 border ${selectedCandidate && !votoRegistrando
-                  ? 'cursor-pointer active:scale-95'
-                  : 'cursor-not-allowed'
+                ? 'cursor-pointer active:scale-95'
+                : 'cursor-not-allowed'
                 }`}
               style={
                 selectedCandidate
@@ -538,7 +538,7 @@ export default function SegundaVueltaPage() {
       {/* Footer Info Panel */}
       <footer className="flex flex-col md:flex-row justify-between items-center border border-[#1b2a47] bg-[#111c2e]/60 px-4 py-3 rounded-2xl gap-2 font-mono text-[9px] text-[#788da5] mb-6">
         <div className="flex items-center gap-1">
-          <span>VOTO LIBRE - FISCALIZACION CIUDADANA AUTOMATIZADA</span>
+          <span>VOTO LIBRE - FISCALIZACION CIUDADNA AUTOMATIZADA</span>
         </div>
         <div className="flex items-center gap-4">
           <span className="flex items-center gap-1.5">
