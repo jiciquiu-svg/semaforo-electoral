@@ -54,11 +54,15 @@ function renderPartyLogo(id: string) {
     return (
       <div 
         className="w-10 h-10 relative select-none rounded-full overflow-hidden shadow-lg border border-orange-500/20 bg-[#0a0b0d] flex items-center justify-center shrink-0"
+        style={{ width: '40px', height: '40px', minWidth: '40px', minHeight: '40px' }}
       >
         <img 
           src="/logo_fuerza_popular.svg" 
           alt="Fuerza Popular" 
           className="w-full h-full object-contain pointer-events-none" 
+          width={40}
+          height={40}
+          style={{ width: '100%', height: '100%' }}
         />
       </div>
     )
@@ -67,11 +71,15 @@ function renderPartyLogo(id: string) {
     return (
       <div 
         className="w-10 h-10 relative select-none rounded-full overflow-hidden shadow-lg border border-red-500/20 bg-white flex items-center justify-center p-1 shrink-0"
+        style={{ width: '40px', height: '40px', minWidth: '40px', minHeight: '40px' }}
       >
         <img 
           src="/logo_juntos_por_el_peru.svg" 
           alt="Juntos por el Perú" 
           className="w-full h-full object-contain pointer-events-none" 
+          width={32}
+          height={32}
+          style={{ width: '80%', height: '80%' }}
         />
       </div>
     )
@@ -79,10 +87,12 @@ function renderPartyLogo(id: string) {
   return (
     <div 
       className="w-10 h-10 bg-black rounded-full flex items-center justify-center shadow-2xl relative border border-slate-700 overflow-hidden select-none shrink-0"
+      style={{ width: '40px', height: '40px', minWidth: '40px', minHeight: '40px' }}
     >
       <div className="absolute inset-0 bg-gradient-to-tr from-slate-900 via-zinc-800 to-neutral-900 opacity-60"></div>
       <div 
         className="w-6 h-6 rounded-full bg-[#070b13] border border-slate-800/80 shadow-[inset_0_0_10px_rgba(0,0,0,0.9)] flex items-center justify-center"
+        style={{ width: '24px', height: '24px', minWidth: '24px', minHeight: '24px' }}
       >
         <span className="text-xs opacity-60">⚫</span>
       </div>
@@ -325,11 +335,12 @@ export default function SegundaVueltaPage() {
               {/* Flex row en móvil para poner el texto a la derecha del logo */}
               <div className="flex flex-row md:flex-col items-center md:text-center gap-3 w-full">
                 {/* Logo & Giant Checkmark Overlay */}
-                <div className="relative shrink-0 flex items-center justify-center">
+                <div className="relative shrink-0 flex items-center justify-center" style={{ width: '40px', height: '40px' }}>
                   <div 
                     className={`flex justify-center items-center ${
                       esSeleccionado && !cand.suboptions ? 'animate-logo-fade' : ''
                     }`}
+                    style={{ width: '40px', height: '40px' }}
                   >
                     {renderPartyLogo(cand.id)}
                   </div>
