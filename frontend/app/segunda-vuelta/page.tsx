@@ -538,7 +538,7 @@ export default function SegundaVueltaPage() {
       {/* Footer Info Panel */}
       <footer className="flex flex-col md:flex-row justify-between items-center border border-[#1b2a47] bg-[#111c2e]/60 px-4 py-3 rounded-2xl gap-2 font-mono text-[9px] text-[#788da5] mb-6">
         <div className="flex items-center gap-1">
-          <span><span className="text-[#05ffa1] font-bold">VOTO LIBRE</span> - FISCALIZACION CIUDADNA AUTOMATIZADA</span>
+          <span className="text-[#05ffa1] font-bold">VOTO LIBRE - FISCALIZACION CIUDADNA AUTOMATIZADA</span>
         </div>
         <div className="flex items-center gap-4">
           <span className="flex items-center gap-1.5">
