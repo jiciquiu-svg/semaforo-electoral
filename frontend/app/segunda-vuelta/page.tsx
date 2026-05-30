@@ -389,27 +389,16 @@ export default function SegundaVueltaPage() {
                             }}
                             className={`
                               aspect-square flex flex-col items-center justify-center
-                              rounded-lg border transition-all active:scale-95 text-center p-1 w-full overflow-hidden
+                              rounded-lg border border-white/20 bg-white/5
+                              transition-all hover:bg-white/10 active:scale-95 text-center p-1 w-full overflow-hidden
                               ${
                                 esSubSeleccionado
-                                  ? ''
-                                  : 'border-white/20 bg-white/5 hover:bg-white/10'
+                                  ? 'border-mint bg-mint/10'
+                                  : ''
                               }
                             `}
-                            style={
-                              esSubSeleccionado
-                                ? {
-                                    borderColor: sub.color,
-                                    backgroundColor: `${sub.color}1a`,
-                                    boxShadow: `0 0 8px ${sub.color}33`
-                                  }
-                                : undefined
-                            }
                           >
-                            <span 
-                              className="text-[9px] md:text-[10px] font-medium text-center leading-tight break-words hyphens-auto w-full px-0.5"
-                              style={{ color: esSubSeleccionado ? sub.color : 'rgba(255,255,255,0.7)' }}
-                            >
+                            <span className="text-white/70 text-[10px] font-medium text-center px-1 break-words hyphens-auto w-full leading-tight">
                               {sub.name}
                             </span>
                           </button>
