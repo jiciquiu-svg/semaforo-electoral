@@ -253,8 +253,8 @@ export default function SegundaVueltaPage() {
       <header className="relative flex flex-col sm:flex-row justify-between items-center border border-[#1b2a47] bg-[#111c2e] p-4 rounded-2xl shadow-lg gap-2">
         <div className="absolute top-0 left-0 w-full sm:w-2 h-1 sm:h-full bg-[#00f2fe]"></div>
         <div className="text-center sm:text-left">
-          <h1 className="text-xl md:text-2xl font-black tracking-tight text-white flex items-center justify-center sm:justify-start gap-2 leading-none italic">
-            SEGUNDA VUELTA 2026
+          <h1 className="text-xl md:text-2xl font-normal tracking-tight text-white flex items-center justify-center sm:justify-start gap-2 leading-none">
+            7 de junio 2026 Segunda Vuelta
           </h1>
           <p className="text-[9px] md:text-[10px] text-[#788da5] font-mono mt-1 uppercase tracking-wider">
             7 DE JUNIO - DECISIÓN FINAL // FISCALIZACIÓN CIUDADANA AUTOMATIZADA
@@ -268,7 +268,7 @@ export default function SegundaVueltaPage() {
             <span className="relative inline-flex rounded-full h-2 w-2 bg-[#05ffa1]"></span>
           </span>
           <span className="text-[9px] md:text-[10px] font-mono font-bold text-[#05ffa1] tracking-widest uppercase">
-            {concurrencia.toLocaleString()} PERSONAS SIMULANDO AHORA
+            {concurrencia.toLocaleString()} PERSONAS VIENDO
           </span>
         </div>
       </header>
@@ -377,17 +377,15 @@ export default function SegundaVueltaPage() {
                         </p>
                       </>
                     ) : (
-                      <div className="text-center mb-2">
-                        <span className="text-white/70 text-xs font-medium uppercase tracking-wider">
-                          NINGUNO DE LOS DOS
-                        </span>
-                      </div>
+                      <h3 className="font-medium text-xs md:text-sm text-white tracking-tight leading-tight text-center line-clamp-2 w-full mb-1">
+                        Ninguno de los dos
+                      </h3>
                     )
                   )}
 
                   {/* Suboptions buttons */}
                   {!yaVoto && cand.suboptions && (
-                    <div className="grid grid-cols-3 gap-2 mt-1 w-full z-20">
+                    <div className="grid grid-cols-3 gap-2 mt-1 mb-3 w-full z-20">
                       {cand.suboptions.map((sub) => {
                         const esSubSeleccionado = selectedCandidate === sub.id
                         return (
@@ -399,7 +397,7 @@ export default function SegundaVueltaPage() {
                               setSelectedCandidate(sub.id)
                             }}
                             className={`
-                              aspect-square flex flex-col items-center justify-center
+                              h-10 flex flex-col items-center justify-center
                               rounded-lg border border-white/20 bg-white/5
                               transition-all hover:bg-white/10 active:scale-95 text-center p-1 w-full overflow-hidden
                               ${
@@ -409,8 +407,12 @@ export default function SegundaVueltaPage() {
                               }
                             `}
                           >
-                            <span className="text-white/70 text-[10px] font-medium text-center px-1 break-words hyphens-auto w-full leading-tight">
-                              {sub.name}
+                            <span 
+                              className={`font-mono text-[9px] md:text-xs uppercase tracking-wider font-semibold text-center px-1 break-words hyphens-auto w-full leading-tight ${
+                                esSubSeleccionado ? 'text-mint' : 'text-[#00f2fe]'
+                              }`}
+                            >
+                              {sub.name.toUpperCase()}
                             </span>
                           </button>
                         )
