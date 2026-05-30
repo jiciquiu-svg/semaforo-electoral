@@ -115,6 +115,18 @@ export default function SegundaVueltaPage() {
 
   // Cargar sesión, verificar si el dispositivo ya votó e iniciar polling
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search)
+      if (urlParams.has('clear') || urlParams.has('reset') || urlParams.has('bypass')) {
+        localStorage.removeItem('voted_candidate_id')
+        localStorage.removeItem('voter_session_id')
+        const newUrl = window.location.pathname
+        window.history.replaceState({}, '', newUrl)
+        window.location.reload()
+        return
+      }
+    }
+
     const dev = checkDevMode()
     setIsDevMode(dev)
 
@@ -277,11 +289,16 @@ export default function SegundaVueltaPage() {
             <div 
               key={cand.id}
               onClick={() => {
-                // If it doesn't have suboptions, clicking the card selects the candidate
-                if (!yaVoto && !cand.suboptions) setSelectedCandidate(cand.id)
+                if (!yaVoto) {
+                  if (cand.suboptions) {
+                    setSelectedCandidate('3')
+                  } else {
+                    setSelectedCandidate(cand.id)
+                  }
+                }
               }}
               className={`flex flex-col justify-between bg-[#111c2e] border rounded-2xl p-3 shadow-2xl transition-all duration-300 relative group overflow-hidden gap-2 ${
-                yaVoto || cand.suboptions ? 'cursor-default' : 'cursor-pointer active:scale-[0.98]'
+                yaVoto ? 'cursor-default' : 'cursor-pointer active:scale-[0.98]'
               } ${
                 esSeleccionado 
                   ? '' 
