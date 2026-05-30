@@ -14,7 +14,6 @@ module.exports = {
         rojo: '#ef4444',
         primary: '#1e3a8a',
         secondary: '#3b82f6',
-        mint: '#05ffa1',
         olympus: {
           bg: "#070b13",
           surface: "#111c2e",

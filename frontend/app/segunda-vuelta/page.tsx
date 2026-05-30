@@ -52,47 +52,37 @@ const candidatosData: Candidate[] = [
 function renderPartyLogo(id: string) {
   if (id === '1') {
     return (
-      <div
+      <div 
         className="w-10 h-10 relative select-none rounded-full overflow-hidden shadow-lg border border-orange-500/20 bg-[#0a0b0d] flex items-center justify-center shrink-0"
-        style={{ width: '40px', height: '40px', minWidth: '40px', minHeight: '40px' }}
       >
-        <img
-          src="/logo_fuerza_popular.svg"
-          alt="Fuerza Popular"
-          className="w-full h-full object-contain pointer-events-none"
-          width={40}
-          height={40}
-          style={{ width: '100%', height: '100%' }}
+        <img 
+          src="/logo_fuerza_popular.svg" 
+          alt="Fuerza Popular" 
+          className="w-full h-full object-contain pointer-events-none" 
         />
       </div>
     )
   }
   if (id === '2') {
     return (
-      <div
+      <div 
         className="w-10 h-10 relative select-none rounded-full overflow-hidden shadow-lg border border-red-500/20 bg-white flex items-center justify-center p-1 shrink-0"
-        style={{ width: '40px', height: '40px', minWidth: '40px', minHeight: '40px' }}
       >
-        <img
-          src="/logo_juntos_por_el_peru.svg"
-          alt="Juntos por el Perú"
-          className="w-full h-full object-contain pointer-events-none"
-          width={32}
-          height={32}
-          style={{ width: '80%', height: '80%' }}
+        <img 
+          src="/logo_juntos_por_el_peru.svg" 
+          alt="Juntos por el Perú" 
+          className="w-full h-full object-contain pointer-events-none" 
         />
       </div>
     )
   }
   return (
-    <div
+    <div 
       className="w-10 h-10 bg-black rounded-full flex items-center justify-center shadow-2xl relative border border-slate-700 overflow-hidden select-none shrink-0"
-      style={{ width: '40px', height: '40px', minWidth: '40px', minHeight: '40px' }}
     >
       <div className="absolute inset-0 bg-gradient-to-tr from-slate-900 via-zinc-800 to-neutral-900 opacity-60"></div>
-      <div
+      <div 
         className="w-6 h-6 rounded-full bg-[#070b13] border border-slate-800/80 shadow-[inset_0_0_10px_rgba(0,0,0,0.9)] flex items-center justify-center"
-        style={{ width: '24px', height: '24px', minWidth: '24px', minHeight: '24px' }}
       >
         <span className="text-xs opacity-60">⚫</span>
       </div>
@@ -171,7 +161,7 @@ export default function SegundaVueltaPage() {
     try {
       let candidateName = ''
       let candidateId = ''
-
+      
       const rootMatch = candidatosData.find(c => c.id === selectedCandidate)
       if (rootMatch) {
         if (rootMatch.suboptions) {
@@ -218,7 +208,7 @@ export default function SegundaVueltaPage() {
           alert(`✅ Voto registrado (Modo desarrollo bypass activo): ${candidateName}`)
           setSelectedCandidate(null)
         }
-
+        
         // Polling inmediato para refrescar estadísticas
         const res = await fetch(`${API_URL}/api/segunda-vuelta/estadisticas`)
         const data = await res.json()
@@ -248,16 +238,19 @@ export default function SegundaVueltaPage() {
 
   return (
     <div className="min-h-screen bg-[#070b13] flex flex-col justify-between p-3 pb-6 overflow-y-auto text-[#f4f6fa] select-none font-sans">
-
+      
       {/* Header Panel */}
       <header className="relative flex flex-col sm:flex-row justify-between items-center border border-[#1b2a47] bg-[#111c2e] p-4 rounded-2xl shadow-lg gap-2">
         <div className="absolute top-0 left-0 w-full sm:w-2 h-1 sm:h-full bg-[#00f2fe]"></div>
         <div className="text-center sm:text-left">
-          <h1 className="text-lg md:text-xl font-normal tracking-tight text-white flex items-center justify-center sm:justify-start gap-2 leading-none">
-            7 de junio - Segunda Vuelta - DECISION FINAL
+          <h1 className="text-xl md:text-2xl font-black tracking-tight text-white flex items-center justify-center sm:justify-start gap-2 leading-none italic">
+            SEGUNDA VUELTA 2026
           </h1>
+          <p className="text-[9px] md:text-[10px] text-[#788da5] font-mono mt-1 uppercase tracking-wider">
+            7 DE JUNIO - DECISIÓN FINAL // FISCALIZACIÓN CIUDADANA AUTOMATIZADA
+          </p>
         </div>
-
+        
         {/* Live counter */}
         <div className="flex items-center gap-2 bg-[#070b13] border border-[#1b2a47] px-4 py-1.5 rounded-full">
           <span className="relative flex h-2 w-2">
@@ -265,7 +258,7 @@ export default function SegundaVueltaPage() {
             <span className="relative inline-flex rounded-full h-2 w-2 bg-[#05ffa1]"></span>
           </span>
           <span className="text-[9px] md:text-[10px] font-mono font-bold text-[#05ffa1] tracking-widest uppercase">
-            {concurrencia.toLocaleString()} en linea
+            {concurrencia.toLocaleString()} PERSONAS SIMULANDO AHORA
           </span>
         </div>
       </header>
@@ -273,52 +266,58 @@ export default function SegundaVueltaPage() {
       {/* Main Grid: Balotaje Cards (optimizado compacto) */}
       <main className="max-w-4xl mx-auto w-full grid grid-cols-2 md:grid-cols-3 gap-3 my-2 flex-grow items-stretch">
         {candidatosData.map((cand) => {
-          const esSeleccionado = cand.suboptions
+          const esSeleccionado = cand.suboptions 
             ? ['3', '4', '5'].includes(selectedCandidate || '')
             : selectedCandidate === cand.id
-
+          
           const porcentajeEnVivo = obtenerPorcentajeVoto(cand.id)
           const votosCount = obtenerVotosCount(cand.id)
 
           return (
-            <div
+            <div 
               key={cand.id}
               onClick={() => {
                 // If it doesn't have suboptions, clicking the card selects the candidate
                 if (!yaVoto && !cand.suboptions) setSelectedCandidate(cand.id)
               }}
-              className={`flex flex-col justify-between bg-[#111c2e] border rounded-2xl p-3 shadow-2xl transition-all duration-300 relative group overflow-hidden gap-2 ${yaVoto || cand.suboptions ? 'cursor-default' : 'cursor-pointer active:scale-[0.98]'
-                } ${esSeleccionado
-                  ? ''
+              className={`flex flex-col justify-between bg-[#111c2e] border rounded-2xl p-3 shadow-2xl transition-all duration-300 relative group overflow-hidden gap-2 ${
+                yaVoto || cand.suboptions ? 'cursor-default' : 'cursor-pointer active:scale-[0.98]'
+              } ${
+                esSeleccionado 
+                  ? '' 
                   : (yaVoto ? 'border-[#1b2a47] opacity-40' : 'border-[#1b2a47] hover:border-[#00f2fe]/40')
-                } ${cand.id === '3' ? 'col-span-2 md:col-span-1' : 'col-span-1'
-                } h-auto min-h-[130px] ${cand.id === '3' && yaVoto ? 'max-h-none' : 'max-h-[160px]'}`}
+              } ${
+                cand.id === '3' ? 'col-span-2 md:col-span-1' : 'col-span-1'
+              } h-auto min-h-[130px] ${cand.id === '3' && yaVoto ? 'max-h-none' : 'max-h-[160px]'}`}
               style={
-                esSeleccionado
-                  ? {
-                    borderColor: cand.id === '3'
-                      ? (selectedCandidate === '4' ? '#eab308' : selectedCandidate === '5' ? '#8b5cf6' : '#6b7280')
-                      : cand.color,
-                    boxShadow: `0 0 15px ${cand.id === '3'
-                      ? (selectedCandidate === '4' ? 'rgba(234,179,8,0.2)' : selectedCandidate === '5' ? 'rgba(139,92,246,0.2)' : 'rgba(107,114,128,0.2)')
-                      : cand.id === '1' ? 'rgba(249,115,22,0.2)' : 'rgba(239,68,68,0.2)'
+                esSeleccionado 
+                  ? { 
+                      borderColor: cand.id === '3' 
+                        ? (selectedCandidate === '4' ? '#eab308' : selectedCandidate === '5' ? '#8b5cf6' : '#6b7280') 
+                        : cand.color,
+                      boxShadow: `0 0 15px ${
+                        cand.id === '3' 
+                          ? (selectedCandidate === '4' ? 'rgba(234,179,8,0.2)' : selectedCandidate === '5' ? 'rgba(139,92,246,0.2)' : 'rgba(107,114,128,0.2)') 
+                          : cand.id === '1' ? 'rgba(249,115,22,0.2)' : 'rgba(239,68,68,0.2)'
                       }`
-                  }
+                    }
                   : {}
               }
             >
               {/* Glowing Top Horizontal Line */}
-              <div
-                className={`absolute top-0 left-0 right-0 h-[2px] transition-all duration-300 z-10 ${esSeleccionado
-                  ? 'opacity-100'
-                  : 'bg-gradient-to-r from-transparent via-[#00f2fe]/40 to-transparent opacity-100 group-hover:via-[#00f2fe]/80'
-                  }`}
+              <div 
+                className={`absolute top-0 left-0 right-0 h-[2px] transition-all duration-300 z-10 ${
+                  esSeleccionado 
+                    ? 'opacity-100' 
+                    : 'bg-gradient-to-r from-transparent via-[#00f2fe]/40 to-transparent opacity-100 group-hover:via-[#00f2fe]/80'
+                }`} 
                 style={{
-                  background: esSeleccionado
-                    ? `linear-gradient(to right, transparent, ${cand.id === '3'
-                      ? (selectedCandidate === '4' ? '#eab308' : selectedCandidate === '5' ? '#8b5cf6' : '#6b7280')
-                      : cand.color
-                    }, transparent)`
+                  background: esSeleccionado 
+                    ? `linear-gradient(to right, transparent, ${
+                        cand.id === '3' 
+                          ? (selectedCandidate === '4' ? '#eab308' : selectedCandidate === '5' ? '#8b5cf6' : '#6b7280') 
+                          : cand.color
+                      }, transparent)`
                     : undefined
                 }}
               />
@@ -326,19 +325,19 @@ export default function SegundaVueltaPage() {
               {/* Flex row en móvil para poner el texto a la derecha del logo */}
               <div className="flex flex-row md:flex-col items-center md:text-center gap-3 w-full">
                 {/* Logo & Giant Checkmark Overlay */}
-                <div className="relative shrink-0 flex items-center justify-center" style={{ width: '40px', height: '40px' }}>
-                  <div
-                    className={`flex justify-center items-center ${esSeleccionado && !cand.suboptions ? 'animate-logo-fade' : ''
-                      }`}
-                    style={{ width: '40px', height: '40px' }}
+                <div className="relative shrink-0 flex items-center justify-center">
+                  <div 
+                    className={`flex justify-center items-center ${
+                      esSeleccionado && !cand.suboptions ? 'animate-logo-fade' : ''
+                    }`}
                   >
                     {renderPartyLogo(cand.id)}
                   </div>
-
+                  
                   {esSeleccionado && !cand.suboptions && (
                     <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none animate-check-fade">
-                      <CheckCircle2
-                        className="w-10 h-10 bg-[#111c2e] text-[#20df92] rounded-full shadow-[0_0_10px_rgba(32,223,146,0.2)]"
+                      <CheckCircle2 
+                        className="w-10 h-10 bg-[#111c2e] text-[#20df92] rounded-full shadow-[0_0_10px_rgba(32,223,146,0.2)]" 
                         strokeWidth={1.5}
                       />
                     </div>
@@ -357,7 +356,7 @@ export default function SegundaVueltaPage() {
                       </p>
                     </>
                   ) : (
-                    yaVoto ? (
+                    yaVoto && (
                       <>
                         <h3 className="font-medium text-xs md:text-sm text-white tracking-tight leading-tight text-center line-clamp-2 w-full">
                           Ninguno de los dos
@@ -366,16 +365,12 @@ export default function SegundaVueltaPage() {
                           Voto Blanco / Viciado
                         </p>
                       </>
-                    ) : (
-                      <h3 className="font-medium text-xs md:text-sm text-white tracking-tight leading-tight text-center line-clamp-2 w-full mb-1">
-                        Ninguno de los dos
-                      </h3>
                     )
                   )}
 
                   {/* Suboptions buttons */}
                   {!yaVoto && cand.suboptions && (
-                    <div className="grid grid-cols-3 gap-2 mt-1 mb-3 w-full z-20">
+                    <div className="grid grid-cols-3 gap-2 mt-2 w-full z-20">
                       {cand.suboptions.map((sub) => {
                         const esSubSeleccionado = selectedCandidate === sub.id
                         return (
@@ -386,22 +381,23 @@ export default function SegundaVueltaPage() {
                               e.stopPropagation() // Prevent card click
                               setSelectedCandidate(sub.id)
                             }}
-                            className={`
-                              h-10 flex flex-col items-center justify-center
-                              rounded-lg border border-white/20 bg-white/5
-                              transition-all hover:bg-white/10 active:scale-95 text-center p-1 w-full overflow-hidden
-                              ${esSubSeleccionado
-                                ? 'border-mint bg-mint/10'
-                                : ''
-                              }
-                            `}
+                            className={`w-full py-1.5 px-1.5 rounded-lg text-[9px] md:text-[10px] font-semibold transition-all border text-center whitespace-nowrap overflow-hidden text-ellipsis ${
+                              esSubSeleccionado
+                                ? ''
+                                : 'bg-[#070b13]/55 border-[#1b2a47] text-[#788da5] hover:border-[#00f2fe]/60 hover:text-white'
+                            }`}
+                            style={
+                              esSubSeleccionado
+                                ? {
+                                    backgroundColor: sub.color,
+                                    color: '#070b13',
+                                    borderColor: sub.color,
+                                    boxShadow: `0 0 8px ${sub.color}55`
+                                  }
+                                : undefined
+                            }
                           >
-                            <span
-                              className={`font-mono text-[9px] md:text-xs uppercase tracking-wider font-semibold text-center px-1 break-words hyphens-auto w-full leading-tight ${esSubSeleccionado ? 'text-mint' : 'text-[#00f2fe]'
-                                }`}
-                            >
-                              {sub.name.toUpperCase()}
-                            </span>
+                            {sub.name}
                           </button>
                         )
                       })}
@@ -423,7 +419,7 @@ export default function SegundaVueltaPage() {
                           <div key={sub.id} className="flex flex-col gap-0.5 w-full">
                             <div className="flex justify-between items-end">
                               <span className="text-[7.5px] text-[#788da5] font-mono uppercase tracking-tight">{sub.name}:</span>
-                              <span
+                              <span 
                                 className="text-[9.5px] font-mono leading-none"
                                 style={{ color: esSubSeleccionado ? sub.color : '#ffffff' }}
                               >
@@ -431,7 +427,7 @@ export default function SegundaVueltaPage() {
                               </span>
                             </div>
                             <div className="w-full bg-[#070b13] rounded-full h-1 overflow-hidden border border-[#1b2a47]/40">
-                              <motion.div
+                              <motion.div 
                                 initial={{ width: 0 }}
                                 animate={{ width: subPorcentaje }}
                                 transition={{ duration: 1.5, ease: "easeOut" }}
@@ -447,7 +443,7 @@ export default function SegundaVueltaPage() {
                     <div className="flex flex-col gap-1 w-full text-left md:text-center">
                       <div className="flex justify-between items-end md:flex-col md:items-center">
                         <span className="text-[9px] text-[#788da5] font-mono uppercase tracking-widest">Intención:</span>
-                        <span
+                        <span 
                           className="text-xs font-mono leading-none"
                           style={{ color: esSeleccionado ? cand.color : '#ffffff' }}
                         >
@@ -455,12 +451,13 @@ export default function SegundaVueltaPage() {
                         </span>
                       </div>
                       <div className="w-full bg-[#070b13] rounded-full h-1.5 overflow-hidden border border-[#1b2a47]/50">
-                        <motion.div
-                          initial={{ width: 0 }}
-                          animate={{ width: porcentajeEnVivo }}
-                          transition={{ duration: 1.5, ease: "easeOut" }}
-                          className={`h-full rounded-full ${cand.id === '1' ? 'bg-orange-500' : 'bg-red-500'
-                            }`}
+                        <motion.div 
+                           initial={{ width: 0 }}
+                           animate={{ width: porcentajeEnVivo }}
+                           transition={{ duration: 1.5, ease: "easeOut" }}
+                           className={`h-full rounded-full ${
+                             cand.id === '1' ? 'bg-orange-500' : 'bg-red-500'
+                           }`}
                         />
                       </div>
                       <span className="text-[7.5px] text-[#788da5] font-mono text-right md:text-center leading-none">
@@ -494,29 +491,30 @@ export default function SegundaVueltaPage() {
               whileTap={selectedCandidate && !votoRegistrando ? { scale: 0.98 } : {}}
               onClick={confirmarVoto}
               disabled={!selectedCandidate || votoRegistrando}
-              className={`w-full py-3 rounded-xl font-semibold text-base transition-all flex flex-row items-center justify-center gap-2 border ${selectedCandidate && !votoRegistrando
-                ? 'cursor-pointer active:scale-95'
-                : 'cursor-not-allowed'
-                }`}
+              className={`w-full py-3 rounded-xl font-semibold text-base transition-all flex flex-row items-center justify-center gap-2 border ${
+                selectedCandidate && !votoRegistrando
+                  ? 'cursor-pointer active:scale-95'
+                  : 'cursor-not-allowed'
+              }`}
               style={
                 selectedCandidate
                   ? {
-                    backgroundColor: '#20df92',
-                    borderColor: 'transparent',
-                    boxShadow: '0 0 15px rgba(32, 223, 146, 0.3)',
-                    color: '#000000',
-                    opacity: votoRegistrando ? 0.7 : 1
-                  }
+                      backgroundColor: '#20df92',
+                      borderColor: 'transparent',
+                      boxShadow: '0 0 15px rgba(32, 223, 146, 0.3)',
+                      color: '#000000',
+                      opacity: votoRegistrando ? 0.7 : 1
+                    }
                   : {
-                    backgroundColor: '#111c2e',
-                    borderColor: '#1b2a47',
-                    color: '#ffffff',
-                    opacity: 0.5
-                  }
+                      backgroundColor: '#111c2e',
+                      borderColor: '#1b2a47',
+                      color: '#ffffff',
+                      opacity: 0.5
+                    }
               }
             >
-              <Flame
-                className="w-5 h-5"
+              <Flame 
+                className="w-5 h-5" 
                 style={{ color: selectedCandidate ? '#000000' : '#ffffff' }}
               />
               <span className="tracking-wider uppercase">
@@ -524,7 +522,7 @@ export default function SegundaVueltaPage() {
               </span>
             </motion.button>
           ) : (
-            <motion.div
+            <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               className="bg-[#111c2e] border border-[#1b2a47]/50 py-3 rounded-xl text-xs font-semibold text-[#05ffa1] font-mono flex items-center justify-center gap-2 shadow-inner w-full text-center"
@@ -538,7 +536,7 @@ export default function SegundaVueltaPage() {
       {/* Footer Info Panel */}
       <footer className="flex flex-col md:flex-row justify-between items-center border border-[#1b2a47] bg-[#111c2e]/60 px-4 py-3 rounded-2xl gap-2 font-mono text-[9px] text-[#788da5] mb-6">
         <div className="flex items-center gap-1">
-          <span className="text-[#05ffa1] font-bold">VOTO LIBRE - FISCALIZACION CIUDADNA AUTOMATIZADA</span>
+          <span>TIPO DE AMBIENTE: {isDevMode ? <span className="text-[#05ffa1] font-bold">DESARROLLO (VOTO LIBRE BYPASS)</span> : <span className="text-rose-500 font-bold">PRODUCCIÓN (RESTRICCIÓN LOCK ACTIVA)</span>}</span>
         </div>
         <div className="flex items-center gap-4">
           <span className="flex items-center gap-1.5">
