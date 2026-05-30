@@ -264,7 +264,7 @@ export default function SegundaVueltaPage() {
       </header>
 
       {/* Main Grid: Balotaje Cards (optimizado compacto) */}
-      <main className="max-w-4xl mx-auto w-full grid grid-cols-1 md:grid-cols-3 gap-3 my-2 flex-grow items-stretch">
+      <main className="max-w-4xl mx-auto w-full grid grid-cols-2 md:grid-cols-3 gap-3 my-2 flex-grow items-stretch">
         {candidatosData.map((cand) => {
           const esSeleccionado = cand.suboptions 
             ? ['3', '4', '5'].includes(selectedCandidate || '')
@@ -286,7 +286,9 @@ export default function SegundaVueltaPage() {
                 esSeleccionado 
                   ? '' 
                   : (yaVoto ? 'border-[#1b2a47] opacity-40' : 'border-[#1b2a47] hover:border-[#00f2fe]/40')
-              }`}
+              } ${
+                cand.id === '3' ? 'col-span-2 md:col-span-1' : 'col-span-1'
+              } h-auto min-h-[130px] ${cand.id === '3' && yaVoto ? 'max-h-none' : 'max-h-[160px]'}`}
               style={
                 esSeleccionado 
                   ? { 
@@ -343,23 +345,23 @@ export default function SegundaVueltaPage() {
                 </div>
 
                 {/* Candidate name & Party */}
-                <div className="flex flex-col items-start md:items-center flex-grow min-w-0 w-full text-left md:text-center">
+                <div className="flex flex-col items-center flex-grow min-w-0 w-full text-center">
                   {cand.id !== '3' ? (
                     <>
-                      <h3 className="font-medium text-sm md:text-base text-white tracking-tight leading-snug line-clamp-2 md:min-h-[40px] flex items-center">
+                      <h3 className="font-medium text-xs md:text-sm text-white tracking-tight leading-tight text-center line-clamp-2 w-full">
                         {cand.name}
                       </h3>
-                      <p className="text-[10px] md:text-xs text-[#00f2fe] font-mono mt-0.5 uppercase tracking-wider font-semibold">
+                      <p className="text-[9px] md:text-xs text-[#00f2fe] font-mono mt-0.5 uppercase tracking-wider font-semibold text-center w-full">
                         {cand.party}
                       </p>
                     </>
                   ) : (
                     yaVoto && (
                       <>
-                        <h3 className="font-medium text-sm md:text-base text-white tracking-tight leading-snug flex items-center">
+                        <h3 className="font-medium text-xs md:text-sm text-white tracking-tight leading-tight text-center line-clamp-2 w-full">
                           Ninguno de los dos
                         </h3>
-                        <p className="text-[10px] md:text-xs text-gray-400 font-mono mt-0.5 uppercase tracking-wider">
+                        <p className="text-[9px] md:text-xs text-gray-400 font-mono mt-0.5 uppercase tracking-wider text-center w-full">
                           Voto Blanco / Viciado
                         </p>
                       </>
@@ -368,7 +370,7 @@ export default function SegundaVueltaPage() {
 
                   {/* Suboptions buttons */}
                   {!yaVoto && cand.suboptions && (
-                    <div className="flex flex-col gap-1 w-full mt-1 z-20">
+                    <div className="grid grid-cols-3 gap-2 mt-2 w-full z-20">
                       {cand.suboptions.map((sub) => {
                         const esSubSeleccionado = selectedCandidate === sub.id
                         return (
@@ -379,7 +381,7 @@ export default function SegundaVueltaPage() {
                               e.stopPropagation() // Prevent card click
                               setSelectedCandidate(sub.id)
                             }}
-                            className={`w-full py-1.5 px-3 rounded-lg text-xs font-semibold transition-all border ${
+                            className={`w-full py-1.5 px-1.5 rounded-lg text-[9px] md:text-[10px] font-semibold transition-all border text-center whitespace-nowrap overflow-hidden text-ellipsis ${
                               esSubSeleccionado
                                 ? ''
                                 : 'bg-[#070b13]/55 border-[#1b2a47] text-[#788da5] hover:border-[#00f2fe]/60 hover:text-white'
@@ -442,7 +444,7 @@ export default function SegundaVueltaPage() {
                       <div className="flex justify-between items-end md:flex-col md:items-center">
                         <span className="text-[9px] text-[#788da5] font-mono uppercase tracking-widest">Intención:</span>
                         <span 
-                          className="text-sm font-mono leading-none"
+                          className="text-xs font-mono leading-none"
                           style={{ color: esSeleccionado ? cand.color : '#ffffff' }}
                         >
                           {porcentajeEnVivo}
