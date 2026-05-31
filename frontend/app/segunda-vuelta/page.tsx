@@ -359,16 +359,16 @@ export default function SegundaVueltaPage() {
                       </p>
                     </>
                   ) : (
-                    yaVoto && (
-                      <>
-                        <h3 className="font-medium text-xs md:text-sm text-white tracking-tight leading-tight text-center line-clamp-2 w-full">
-                          Ninguno de los dos
-                        </h3>
+                    <>
+                      <h3 className="font-bold text-base text-white tracking-tight leading-tight text-center line-clamp-2 w-full max-w-[120px] mx-auto break-words mb-1">
+                        Ninguno de los Dos
+                      </h3>
+                      {yaVoto && (
                         <p className="text-[9px] md:text-xs text-gray-400 font-mono mt-0.5 uppercase tracking-wider text-center w-full">
                           Voto Blanco / Viciado
                         </p>
-                      </>
-                    )
+                      )}
+                    </>
                   )}
 
                   {/* Suboptions buttons */}
