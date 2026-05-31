@@ -255,12 +255,9 @@ export default function SegundaVueltaPage() {
       <header className="relative flex flex-col sm:flex-row justify-between items-center border border-[#1b2a47] bg-[#111c2e] p-4 rounded-2xl shadow-lg gap-2">
         <div className="absolute top-0 left-0 w-full sm:w-2 h-1 sm:h-full bg-[#00f2fe]"></div>
         <div className="text-center sm:text-left">
-          <h1 className="text-xl md:text-2xl font-black tracking-tight text-white flex items-center justify-center sm:justify-start gap-2 leading-none italic">
-            SEGUNDA VUELTA 2026
+          <h1 className="text-xl md:text-2xl font-black tracking-tight text-white flex items-center justify-center sm:justify-start gap-2 leading-none">
+            7 de junio - <span className="text-red-500">Segunda Vuelta</span>
           </h1>
-          <p className="text-[9px] md:text-[10px] text-[#788da5] font-mono mt-1 uppercase tracking-wider">
-            7 DE JUNIO - DECISIÓN FINAL // FISCALIZACIÓN CIUDADANA AUTOMATIZADA
-          </p>
         </div>
         
         {/* Live counter */}
