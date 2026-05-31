@@ -356,7 +356,7 @@ export default function SegundaVueltaPage() {
                       <h3 className="text-sm md:text-base font-bold text-center leading-tight break-words max-w-[180px] mx-auto whitespace-normal">
                         {cand.name}
                       </h3>
-                      <p className="text-[9px] md:text-xs text-[#00f2fe] font-mono mt-0.5 uppercase tracking-wider font-semibold text-center w-full">
+                      <p className="text-[10px] md:text-sm text-[#00f2fe] font-mono mt-0.5 uppercase tracking-wider font-semibold text-center w-full">
                         {cand.party}
                       </p>
                     </>
@@ -395,7 +395,7 @@ export default function SegundaVueltaPage() {
                               ${esSubSeleccionado ? 'border-mint bg-mint/10 justify-between px-3' : 'justify-center'}
                             `}
                           >
-                            <span className="text-[9px] md:text-xs text-[#00f2fe] font-mono uppercase tracking-wider font-semibold leading-tight">
+                            <span className="text-[10px] md:text-sm text-[#00f2fe] font-mono uppercase tracking-wider font-semibold leading-tight">
                               {sub.name}
                             </span>
                             {esSubSeleccionado && (
@@ -410,72 +410,70 @@ export default function SegundaVueltaPage() {
               </div>
 
               {/* Progress and Live Results */}
-              {(!cand.suboptions || yaVoto) && (
-                <div className="border-t border-[#1b2a47] w-full pt-2">
-                  {yaVoto ? (
-                    cand.suboptions ? (
-                      <div className="flex flex-col gap-1 w-full mt-1 text-left">
-                        {cand.suboptions.map((sub) => {
-                          const subPorcentaje = obtenerPorcentajeVoto(sub.id)
-                          const subVotos = obtenerVotosCount(sub.id)
-                          const esSubSeleccionado = selectedCandidate === sub.id
-                          return (
-                            <div key={sub.id} className="flex flex-col gap-0.5 w-full">
-                              <div className="flex justify-between items-end">
-                                <span className="text-[7.5px] text-[#788da5] font-mono uppercase tracking-tight">{sub.name}:</span>
-                                <span 
-                                  className="text-[9.5px] font-mono leading-none"
-                                  style={{ color: esSubSeleccionado ? sub.color : '#ffffff' }}
-                                >
-                                  {subPorcentaje} ({subVotos})
-                                </span>
-                              </div>
-                              <div className="w-full bg-[#070b13] rounded-full h-1 overflow-hidden border border-[#1b2a47]/40">
-                                <motion.div 
-                                  initial={{ width: 0 }}
-                                  animate={{ width: subPorcentaje }}
-                                  transition={{ duration: 1.5, ease: "easeOut" }}
-                                  className="h-full rounded-full"
-                                  style={{ backgroundColor: sub.color }}
-                                />
-                              </div>
+              <div className="border-t border-[#1b2a47] w-full pt-2">
+                {yaVoto ? (
+                  cand.suboptions ? (
+                    <div className="flex flex-col gap-1 w-full mt-1 text-left">
+                      {cand.suboptions.map((sub) => {
+                        const subPorcentaje = obtenerPorcentajeVoto(sub.id)
+                        const subVotos = obtenerVotosCount(sub.id)
+                        const esSubSeleccionado = selectedCandidate === sub.id
+                        return (
+                          <div key={sub.id} className="flex flex-col gap-0.5 w-full">
+                            <div className="flex justify-between items-end">
+                              <span className="text-[7.5px] text-[#788da5] font-mono uppercase tracking-tight">{sub.name}:</span>
+                              <span 
+                                className="text-[9.5px] font-mono leading-none"
+                                style={{ color: esSubSeleccionado ? sub.color : '#ffffff' }}
+                              >
+                                {subPorcentaje} ({subVotos})
+                              </span>
                             </div>
-                          )
-                        })}
-                      </div>
-                    ) : (
-                      <div className="flex flex-col gap-1 w-full text-left md:text-center">
-                        <div className="flex justify-between items-end md:flex-col md:items-center">
-                          <span className="text-[9px] text-[#788da5] font-mono uppercase tracking-widest">Intención:</span>
-                          <span 
-                            className="text-xs font-mono leading-none"
-                            style={{ color: esSeleccionado ? cand.color : '#ffffff' }}
-                          >
-                            {porcentajeEnVivo}
-                          </span>
-                        </div>
-                        <div className="w-full bg-[#070b13] rounded-full h-1.5 overflow-hidden border border-[#1b2a47]/50">
-                          <motion.div 
-                             initial={{ width: 0 }}
-                             animate={{ width: porcentajeEnVivo }}
-                             transition={{ duration: 1.5, ease: "easeOut" }}
-                             className={`h-full rounded-full ${
-                               cand.id === '1' ? 'bg-orange-500' : 'bg-red-500'
-                             }`}
-                          />
-                        </div>
-                        <span className="text-[7.5px] text-[#788da5] font-mono text-right md:text-center leading-none">
-                          {votosCount.toLocaleString()} votos
+                            <div className="w-full bg-[#070b13] rounded-full h-1 overflow-hidden border border-[#1b2a47]/40">
+                              <motion.div 
+                                initial={{ width: 0 }}
+                                animate={{ width: subPorcentaje }}
+                                transition={{ duration: 1.5, ease: "easeOut" }}
+                                className="h-full rounded-full"
+                                style={{ backgroundColor: sub.color }}
+                              />
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  ) : (
+                    <div className="flex flex-col gap-1 w-full text-left md:text-center">
+                      <div className="flex justify-between items-end md:flex-col md:items-center">
+                        <span className="text-[9px] text-[#788da5] font-mono uppercase tracking-widest">Intención:</span>
+                        <span 
+                          className="text-xs font-mono leading-none"
+                          style={{ color: esSeleccionado ? cand.color : '#ffffff' }}
+                        >
+                          {porcentajeEnVivo}
                         </span>
                       </div>
-                    )
-                  ) : (
-                    <div className="flex items-center justify-center gap-2 py-1 text-[9px] font-mono font-medium text-[#00f2fe] tracking-widest uppercase animate-pulse">
-                      SELECCIONAR
+                      <div className="w-full bg-[#070b13] rounded-full h-1.5 overflow-hidden border border-[#1b2a47]/50">
+                        <motion.div 
+                           initial={{ width: 0 }}
+                           animate={{ width: porcentajeEnVivo }}
+                           transition={{ duration: 1.5, ease: "easeOut" }}
+                           className={`h-full rounded-full ${
+                             cand.id === '1' ? 'bg-orange-500' : 'bg-red-500'
+                           }`}
+                        />
+                      </div>
+                      <span className="text-[7.5px] text-[#788da5] font-mono text-right md:text-center leading-none">
+                        {votosCount.toLocaleString()} votos
+                      </span>
                     </div>
-                  )}
-                </div>
-              )}
+                  )
+                ) : (
+                  <div className="flex items-center justify-center gap-2 py-1 text-[9px] font-mono font-medium text-[#00f2fe] tracking-widest uppercase animate-pulse">
+                    SELECCIONAR
+                  </div>
+                )}
+              </div>
             </div>
           )
         })}
