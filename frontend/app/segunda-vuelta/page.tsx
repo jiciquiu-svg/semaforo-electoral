@@ -259,17 +259,6 @@ export default function SegundaVueltaPage() {
             7 de junio - <span className="text-red-500">Segunda Vuelta</span>
           </h1>
         </div>
-        
-        {/* Live counter */}
-        <div className="flex items-center gap-2 bg-[#070b13] border border-[#1b2a47] px-4 py-1.5 rounded-full">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#05ffa1] opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#05ffa1]"></span>
-          </span>
-          <span className="text-[9px] md:text-[10px] font-mono font-bold text-[#05ffa1] tracking-widest uppercase">
-            {concurrencia.toLocaleString()} PERSONAS SIMULANDO AHORA
-          </span>
-        </div>
       </header>
 
       {/* Main Grid: Balotaje Cards (optimizado compacto) */}
@@ -545,6 +534,17 @@ export default function SegundaVueltaPage() {
             </motion.div>
           )}
         </AnimatePresence>
+      </div>
+
+      {/* Live counter (moved below button) */}
+      <div className="flex items-center justify-center gap-2 mt-3 select-none">
+        <span className="relative flex h-2 w-2">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#05ffa1] opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-[#05ffa1]"></span>
+        </span>
+        <span className="text-[10px] font-mono font-bold text-[#05ffa1] tracking-wider uppercase">
+          {concurrencia.toLocaleString()} ....ahora
+        </span>
       </div>
 
       {/* Footer Info Panel */}
