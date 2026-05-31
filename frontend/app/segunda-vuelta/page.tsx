@@ -255,7 +255,7 @@ export default function SegundaVueltaPage() {
       <header className="relative flex flex-col sm:flex-row justify-between items-center border border-[#1b2a47] bg-[#111c2e] p-4 rounded-2xl shadow-lg gap-2">
         <div className="absolute top-0 left-0 w-full sm:w-2 h-1 sm:h-full bg-[#00f2fe]"></div>
         <div className="text-center sm:text-left">
-          <h1 className="text-xl md:text-2xl font-black tracking-tight text-white flex items-center justify-center sm:justify-start gap-2 leading-none">
+          <h1 className="text-white text-2xl font-bold">
             7 de junio - <span className="text-red-500">Segunda Vuelta</span>
           </h1>
         </div>
@@ -351,7 +351,7 @@ export default function SegundaVueltaPage() {
                 <div className="flex flex-col items-center flex-grow min-w-0 w-full text-center">
                   {cand.id !== '3' ? (
                     <>
-                      <h3 className="font-bold text-base text-white tracking-tight leading-tight text-center line-clamp-2 w-full max-w-[120px] mx-auto break-words">
+                      <h3 className="text-sm md:text-base font-bold text-center leading-tight break-words max-w-[120px] mx-auto">
                         {cand.name}
                       </h3>
                       <p className="text-[9px] md:text-xs text-[#00f2fe] font-mono mt-0.5 uppercase tracking-wider font-semibold text-center w-full">
@@ -360,9 +360,11 @@ export default function SegundaVueltaPage() {
                     </>
                   ) : (
                     <>
-                      <h3 className="font-bold text-base text-white tracking-tight leading-tight text-center line-clamp-2 w-full max-w-[120px] mx-auto break-words mb-1">
-                        Ninguno de los Dos
-                      </h3>
+                      <div className="text-center mb-3">
+                        <span className="text-white/80 text-xs font-medium uppercase tracking-wide">
+                          Ninguno de los Dos
+                        </span>
+                      </div>
                       {yaVoto && (
                         <p className="text-[9px] md:text-xs text-gray-400 font-mono mt-0.5 uppercase tracking-wider text-center w-full">
                           Voto Blanco / Viciado
@@ -373,7 +375,7 @@ export default function SegundaVueltaPage() {
 
                   {/* Suboptions buttons */}
                   {!yaVoto && cand.suboptions && (
-                    <div className="grid grid-cols-3 gap-3 mt-2 w-full z-20">
+                    <div className="grid grid-cols-3 gap-3 mt-3 w-full z-20">
                       {cand.suboptions.map((sub) => {
                         const esSubSeleccionado = selectedCandidate === sub.id
                         return (
@@ -384,23 +386,16 @@ export default function SegundaVueltaPage() {
                               e.stopPropagation() // Prevent card click
                               setSelectedCandidate(sub.id)
                             }}
-                            className={`w-full py-4 px-2 rounded-lg text-[10px] font-medium transition-all border text-center break-words leading-tight ${
-                              esSubSeleccionado
-                                ? ''
-                                : 'bg-[#070b13]/55 border-[#1b2a47] text-white/70 hover:border-[#00f2fe]/60 hover:text-white'
-                            }`}
-                            style={
-                              esSubSeleccionado
-                                ? {
-                                    backgroundColor: sub.color,
-                                    color: '#070b13',
-                                    borderColor: sub.color,
-                                    boxShadow: `0 0 8px ${sub.color}55`
-                                  }
-                                : undefined
-                            }
+                            className={`
+                              w-full py-4 px-2 rounded-xl bg-white/5 border border-white/20
+                              transition-all hover:bg-white/10 active:scale-95
+                              flex items-center justify-center text-center
+                              ${esSubSeleccionado ? 'border-mint bg-mint/10' : ''}
+                            `}
                           >
-                            {sub.name}
+                            <span className="text-white/70 text-[10px] font-medium leading-tight">
+                              {sub.name}
+                            </span>
                           </button>
                         )
                       })}
@@ -534,17 +529,17 @@ export default function SegundaVueltaPage() {
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
 
-      {/* Live counter (moved below button) */}
-      <div className="flex items-center justify-center gap-2 mt-3 select-none">
-        <span className="relative flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#05ffa1] opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-[#05ffa1]"></span>
-        </span>
-        <span className="text-[10px] font-mono font-bold text-[#05ffa1] tracking-wider uppercase">
-          {concurrencia.toLocaleString()} ....ahora
-        </span>
+        {/* Live counter (moved below button inside the container) */}
+        <div className="flex items-center justify-center gap-2 mt-4 select-none">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#05ffa1] opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#05ffa1]"></span>
+          </span>
+          <span className="text-[10px] font-mono font-bold text-[#05ffa1] tracking-wider">
+            {concurrencia.toLocaleString()} ....ahora
+          </span>
+        </div>
       </div>
 
       {/* Footer Info Panel */}
