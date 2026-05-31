@@ -27,13 +27,13 @@ const candidatosData: Candidate[] = [
   {
     id: '1',
     name: 'Keiko Fujimori Higuchi',
-    party: 'Fuerza Popular',
+    party: 'FUERZA POPULAR',
     color: '#f97316'
   },
   {
     id: '2',
     name: 'Roberto Sánchez Palomino',
-    party: 'Juntos por el Perú',
+    party: 'JUNTOS POR EL PERÚ',
     color: '#ef4444'
   },
   {
@@ -42,9 +42,9 @@ const candidatosData: Candidate[] = [
     party: 'NINGUNO DE LOS DOS',
     color: '#6b7280',
     suboptions: [
-      { id: '3', name: 'Ninguno', color: '#6b7280' },
-      { id: '4', name: 'Aún no sabe', color: '#eab308' },
-      { id: '5', name: 'No votará', color: '#8b5cf6' }
+      { id: '3', name: 'NINGUNO', color: '#6b7280' },
+      { id: '4', name: 'AUN NO SABE', color: '#eab308' },
+      { id: '5', name: 'NO VOTARE', color: '#8b5cf6' }
     ]
   }
 ]
@@ -254,9 +254,9 @@ export default function SegundaVueltaPage() {
       {/* Header Panel */}
       <header className="relative flex flex-col sm:flex-row justify-between items-center border border-[#1b2a47] bg-[#111c2e] p-4 rounded-2xl shadow-lg gap-2">
         <div className="absolute top-0 left-0 w-full sm:w-2 h-1 sm:h-full bg-[#00f2fe]"></div>
-        <div className="text-center sm:text-left">
-          <h1 className="text-white text-2xl font-bold">
-            7 de junio - <span className="text-red-500">Segunda Vuelta</span>
+        <div className="w-full text-center">
+          <h1 className="text-white text-xl md:text-2xl font-normal tracking-wide text-center" style={{ fontFamily: 'Roboto, sans-serif' }}>
+            7 DE JUNIO - SEGUNDA VUELTA - DECISIÓN FINAL
           </h1>
         </div>
       </header>
@@ -291,7 +291,7 @@ export default function SegundaVueltaPage() {
                   : (yaVoto ? 'border-[#1b2a47] opacity-40' : 'border-[#1b2a47] hover:border-[#00f2fe]/40')
               } ${
                 cand.id === '3' ? 'col-span-2 md:col-span-1' : 'col-span-1'
-              } h-auto min-h-[130px] ${cand.id === '3' && yaVoto ? 'max-h-none' : 'max-h-[160px]'}`}
+              } h-auto min-h-[180px]` }
               style={
                 esSeleccionado 
                   ? { 
@@ -328,30 +328,32 @@ export default function SegundaVueltaPage() {
               {/* Flex row en móvil para poner el texto a la derecha del logo */}
               <div className="flex flex-row md:flex-col items-center md:text-center gap-3 w-full">
                 {/* Logo & Giant Checkmark Overlay */}
-                <div className="relative shrink-0 flex items-center justify-center">
-                  <div 
-                    className={`flex justify-center items-center ${
-                      esSeleccionado && !cand.suboptions ? 'animate-logo-fade' : ''
-                    }`}
-                  >
-                    {renderPartyLogo(cand.id)}
-                  </div>
-                  
-                  {esSeleccionado && !cand.suboptions && (
-                    <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none animate-check-fade">
-                      <CheckCircle2 
-                        className="w-10 h-10 bg-[#111c2e] text-[#20df92] rounded-full shadow-[0_0_10px_rgba(32,223,146,0.2)]" 
-                        strokeWidth={1.5}
-                      />
+                {cand.id !== '3' && (
+                  <div className="relative shrink-0 flex items-center justify-center">
+                    <div 
+                      className={`flex justify-center items-center ${
+                        esSeleccionado && !cand.suboptions ? 'animate-logo-fade' : ''
+                      }`}
+                    >
+                      {renderPartyLogo(cand.id)}
                     </div>
-                  )}
-                </div>
+                    
+                    {esSeleccionado && !cand.suboptions && (
+                      <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none animate-check-fade">
+                        <CheckCircle2 
+                          className="w-10 h-10 bg-[#111c2e] text-[#20df92] rounded-full shadow-[0_0_10px_rgba(32,223,146,0.2)]" 
+                          strokeWidth={1.5}
+                        />
+                      </div>
+                    )}
+                  </div>
+                )}
 
                 {/* Candidate name & Party */}
                 <div className="flex flex-col items-center flex-grow min-w-0 w-full text-center">
                   {cand.id !== '3' ? (
                     <>
-                      <h3 className="text-sm md:text-base font-bold text-center leading-tight break-words max-w-[120px] mx-auto">
+                      <h3 className="text-sm md:text-base font-bold text-center leading-tight break-words max-w-[180px] mx-auto whitespace-normal">
                         {cand.name}
                       </h3>
                       <p className="text-[9px] md:text-xs text-[#00f2fe] font-mono mt-0.5 uppercase tracking-wider font-semibold text-center w-full">
@@ -389,13 +391,16 @@ export default function SegundaVueltaPage() {
                             className={`
                               w-full py-4 px-2 rounded-xl bg-white/5 border border-white/20
                               transition-all hover:bg-white/10 active:scale-95
-                              flex items-center justify-center text-center
-                              ${esSubSeleccionado ? 'border-mint bg-mint/10' : ''}
+                              flex items-center gap-1 text-center transition-all duration-300
+                              ${esSubSeleccionado ? 'border-mint bg-mint/10 justify-between px-3' : 'justify-center'}
                             `}
                           >
-                            <span className="text-white/70 text-[10px] font-medium leading-tight">
+                            <span className="text-[9px] md:text-xs text-[#00f2fe] font-mono uppercase tracking-wider font-semibold leading-tight">
                               {sub.name}
                             </span>
+                            {esSubSeleccionado && (
+                              <CheckCircle className="w-4 h-4 text-[#05ffa1] shrink-0" />
+                            )}
                           </button>
                         )
                       })}
@@ -405,76 +410,72 @@ export default function SegundaVueltaPage() {
               </div>
 
               {/* Progress and Live Results */}
-              <div className="border-t border-[#1b2a47] w-full pt-2">
-                {yaVoto ? (
-                  cand.suboptions ? (
-                    <div className="flex flex-col gap-1 w-full mt-1 text-left">
-                      {cand.suboptions.map((sub) => {
-                        const subPorcentaje = obtenerPorcentajeVoto(sub.id)
-                        const subVotos = obtenerVotosCount(sub.id)
-                        const esSubSeleccionado = selectedCandidate === sub.id
-                        return (
-                          <div key={sub.id} className="flex flex-col gap-0.5 w-full">
-                            <div className="flex justify-between items-end">
-                              <span className="text-[7.5px] text-[#788da5] font-mono uppercase tracking-tight">{sub.name}:</span>
-                              <span 
-                                className="text-[9.5px] font-mono leading-none"
-                                style={{ color: esSubSeleccionado ? sub.color : '#ffffff' }}
-                              >
-                                {subPorcentaje} ({subVotos})
-                              </span>
+              {(!cand.suboptions || yaVoto) && (
+                <div className="border-t border-[#1b2a47] w-full pt-2">
+                  {yaVoto ? (
+                    cand.suboptions ? (
+                      <div className="flex flex-col gap-1 w-full mt-1 text-left">
+                        {cand.suboptions.map((sub) => {
+                          const subPorcentaje = obtenerPorcentajeVoto(sub.id)
+                          const subVotos = obtenerVotosCount(sub.id)
+                          const esSubSeleccionado = selectedCandidate === sub.id
+                          return (
+                            <div key={sub.id} className="flex flex-col gap-0.5 w-full">
+                              <div className="flex justify-between items-end">
+                                <span className="text-[7.5px] text-[#788da5] font-mono uppercase tracking-tight">{sub.name}:</span>
+                                <span 
+                                  className="text-[9.5px] font-mono leading-none"
+                                  style={{ color: esSubSeleccionado ? sub.color : '#ffffff' }}
+                                >
+                                  {subPorcentaje} ({subVotos})
+                                </span>
+                              </div>
+                              <div className="w-full bg-[#070b13] rounded-full h-1 overflow-hidden border border-[#1b2a47]/40">
+                                <motion.div 
+                                  initial={{ width: 0 }}
+                                  animate={{ width: subPorcentaje }}
+                                  transition={{ duration: 1.5, ease: "easeOut" }}
+                                  className="h-full rounded-full"
+                                  style={{ backgroundColor: sub.color }}
+                                />
+                              </div>
                             </div>
-                            <div className="w-full bg-[#070b13] rounded-full h-1 overflow-hidden border border-[#1b2a47]/40">
-                              <motion.div 
-                                initial={{ width: 0 }}
-                                animate={{ width: subPorcentaje }}
-                                transition={{ duration: 1.5, ease: "easeOut" }}
-                                className="h-full rounded-full"
-                                style={{ backgroundColor: sub.color }}
-                              />
-                            </div>
-                          </div>
-                        )
-                      })}
-                    </div>
-                  ) : (
-                    <div className="flex flex-col gap-1 w-full text-left md:text-center">
-                      <div className="flex justify-between items-end md:flex-col md:items-center">
-                        <span className="text-[9px] text-[#788da5] font-mono uppercase tracking-widest">Intención:</span>
-                        <span 
-                          className="text-xs font-mono leading-none"
-                          style={{ color: esSeleccionado ? cand.color : '#ffffff' }}
-                        >
-                          {porcentajeEnVivo}
+                          )
+                        })}
+                      </div>
+                    ) : (
+                      <div className="flex flex-col gap-1 w-full text-left md:text-center">
+                        <div className="flex justify-between items-end md:flex-col md:items-center">
+                          <span className="text-[9px] text-[#788da5] font-mono uppercase tracking-widest">Intención:</span>
+                          <span 
+                            className="text-xs font-mono leading-none"
+                            style={{ color: esSeleccionado ? cand.color : '#ffffff' }}
+                          >
+                            {porcentajeEnVivo}
+                          </span>
+                        </div>
+                        <div className="w-full bg-[#070b13] rounded-full h-1.5 overflow-hidden border border-[#1b2a47]/50">
+                          <motion.div 
+                             initial={{ width: 0 }}
+                             animate={{ width: porcentajeEnVivo }}
+                             transition={{ duration: 1.5, ease: "easeOut" }}
+                             className={`h-full rounded-full ${
+                               cand.id === '1' ? 'bg-orange-500' : 'bg-red-500'
+                             }`}
+                          />
+                        </div>
+                        <span className="text-[7.5px] text-[#788da5] font-mono text-right md:text-center leading-none">
+                          {votosCount.toLocaleString()} votos
                         </span>
                       </div>
-                      <div className="w-full bg-[#070b13] rounded-full h-1.5 overflow-hidden border border-[#1b2a47]/50">
-                        <motion.div 
-                           initial={{ width: 0 }}
-                           animate={{ width: porcentajeEnVivo }}
-                           transition={{ duration: 1.5, ease: "easeOut" }}
-                           className={`h-full rounded-full ${
-                             cand.id === '1' ? 'bg-orange-500' : 'bg-red-500'
-                           }`}
-                        />
-                      </div>
-                      <span className="text-[7.5px] text-[#788da5] font-mono text-right md:text-center leading-none">
-                        {votosCount.toLocaleString()} votos
-                      </span>
-                    </div>
-                  )
-                ) : (
-                  cand.suboptions ? (
-                    <div className="flex items-center justify-center py-1 text-[8px] font-mono font-medium text-[#788da5] tracking-widest uppercase">
-                      ELIGE UNA OPCIÓN ARRIBA
-                    </div>
+                    )
                   ) : (
                     <div className="flex items-center justify-center gap-2 py-1 text-[9px] font-mono font-medium text-[#00f2fe] tracking-widest uppercase animate-pulse">
                       SELECCIONAR
                     </div>
-                  )
-                )}
-              </div>
+                  )}
+                </div>
+              )}
             </div>
           )
         })}
