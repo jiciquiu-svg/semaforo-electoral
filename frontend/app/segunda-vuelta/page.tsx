@@ -351,7 +351,7 @@ export default function SegundaVueltaPage() {
                 <div className="flex flex-col items-center flex-grow min-w-0 w-full text-center">
                   {cand.id !== '3' ? (
                     <>
-                      <h3 className="font-medium text-xs md:text-sm text-white tracking-tight leading-tight text-center line-clamp-2 w-full">
+                      <h3 className="font-bold text-base text-white tracking-tight leading-tight text-center line-clamp-2 w-full max-w-[120px] mx-auto break-words">
                         {cand.name}
                       </h3>
                       <p className="text-[9px] md:text-xs text-[#00f2fe] font-mono mt-0.5 uppercase tracking-wider font-semibold text-center w-full">
