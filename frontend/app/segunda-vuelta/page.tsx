@@ -373,7 +373,7 @@ export default function SegundaVueltaPage() {
 
                   {/* Suboptions buttons */}
                   {!yaVoto && cand.suboptions && (
-                    <div className="grid grid-cols-3 gap-2 mt-2 w-full z-20">
+                    <div className="grid grid-cols-3 gap-3 mt-2 w-full z-20">
                       {cand.suboptions.map((sub) => {
                         const esSubSeleccionado = selectedCandidate === sub.id
                         return (
@@ -384,10 +384,10 @@ export default function SegundaVueltaPage() {
                               e.stopPropagation() // Prevent card click
                               setSelectedCandidate(sub.id)
                             }}
-                            className={`w-full py-1.5 px-1.5 rounded-lg text-[9px] md:text-[10px] font-semibold transition-all border text-center whitespace-nowrap overflow-hidden text-ellipsis ${
+                            className={`w-full py-4 px-2 rounded-lg text-[10px] font-medium transition-all border text-center break-words leading-tight ${
                               esSubSeleccionado
                                 ? ''
-                                : 'bg-[#070b13]/55 border-[#1b2a47] text-[#788da5] hover:border-[#00f2fe]/60 hover:text-white'
+                                : 'bg-[#070b13]/55 border-[#1b2a47] text-white/70 hover:border-[#00f2fe]/60 hover:text-white'
                             }`}
                             style={
                               esSubSeleccionado
